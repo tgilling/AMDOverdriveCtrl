@@ -1,0 +1,17 @@
+*.mk
+*.o
+*.o.d
+*.session
+*.tags
+*.bak
+*.list
+*.deb
+*.ovdr
+*.bz2
+.svn
+/Debug
+/Release
+/DebugFakeATICard
+/ADL_SDK_3.0/
+/deb_package/
+/ADL_SDK/

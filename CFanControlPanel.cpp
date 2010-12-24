@@ -611,8 +611,8 @@ void CFanControlPanel::Notify()
 
     if (mEnable->GetValue())
     {
-	if ((++min_time*TIMER_INTERVAL >= MIN_TIME_SINCE_LAST_CHANGE && fabs(temperature - mLastTemperature) >= HYSTERESIS)
-	    || mForceFanSpeedSetting)
+	if ((++min_time*TIMER_INTERVAL >= (temperature > mLastTemperature ? MIN_TIME_SINCE_LAST_CHANGE / 2 :MIN_TIME_SINCE_LAST_CHANGE)
+	    && fabs(temperature - mLastTemperature) >= HYSTERESIS) || mForceFanSpeedSetting)
 	{
 	    mLastPercentage = percentage;
 	    mLastTemperature = temperature;

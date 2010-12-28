@@ -1,7 +1,9 @@
 History:
 --------
 
-V1.0.1  :	add some sanity check at program startup and eventually report problems 
+V1.0.2	:	...
+
+V1.0.1  :	add some sanity checks at program startup and eventually report 		problems 
 
 V1.0.0	:	initial public release
 
@@ -13,11 +15,13 @@ This project is developed by using the "codelite" IDE (www.codelite.org). A work
 
 Dependencies: 
 
-	AMD Display Library >= 3.0 (http://developer.amd.com/gpu/adlsdk/Pages/default.aspx) 
-	extract the ADL Library into the main project folder and rename the ADL folder to "ADL_SDK" 
+	AMD Display Library >= 3.0 
+	(http://developer.amd.com/gpu/adlsdk/Pages/default.aspx) 
+
+	extract the ADL Library into the main project folder and rename the ADL 	folder to "ADL_SDK" 
 
 	wxWidgets 2.8.X or later
-	If you install the "codelite" IDE you will probably have all what's necessary.
+	If you install the "codelite" IDE you will probably have all what's 		necessary.
 
 Building:
 
@@ -29,4 +33,4 @@ Creating deb package:
 
 	make_deb.sh
 
-   
+

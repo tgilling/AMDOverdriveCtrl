@@ -1,6 +1,8 @@
 History:
 --------
 
+V1.0.1  :	add some sanity check at program startup and eventually report problems 
+
 V1.0.0	:	initial public release
 
 

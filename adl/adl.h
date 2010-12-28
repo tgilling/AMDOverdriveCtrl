@@ -33,6 +33,15 @@
 class ADL
 {
     public:
+
+	static const int ERR_GET_TEMPERATURE_FAILED 		= 0x0001;
+	static const int ERR_GET_FANSPEED_INFO_FAILED		= 0x0002;
+	static const int ERR_GET_CURRENT_FANSPEED_FAILED 	= 0x0004;
+	static const int ERR_GET_OD_PARAMETERS_FAILED 		= 0x0008;
+	static const int ERR_GET_OD_PERF_LEVELS_FAILED 		= 0x0010;
+	static const int ERR_GET_ACTIVITY_FAILED 		= 0x0020;
+	static const int ERR_GET_DEFAULTCLOCKINFO_FAILED 	= 0x0040;
+
 	static ADL* Instance();
 	static void Release();
 
@@ -226,7 +235,7 @@ class ADL
 	void* __stdcall ADL_Main_Memory_Alloc (int iSize);
 
 	bool IsATICardAndCatalystPresent() const;
-	void UpdateData();
+	int UpdateData();
 
 	int mNrOfAdapters;
 	LPAdapterInfo mpAdapterInfo;

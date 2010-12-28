@@ -112,7 +112,6 @@ bool COvdrSettingsPanel::CommitOverdriveValues()
 	return true;
     }
     return false;
-
 }
 
 void COvdrSettingsPanel::UpdateDisplayValues()
@@ -152,6 +151,16 @@ void COvdrSettingsPanel::mButtonSetClick(wxCommandEvent& WXUNUSED(event))
     mpSettingsPanelLow->GetValues(level0, gpu0, mem0, v0);
     mpSettingsPanelMid->GetValues(level1, gpu1, mem1, v1);
     mpSettingsPanelHigh->GetValues(level2, gpu2, mem2, v2);
+
+    if (mem0 != mem1 || mem1 != mem2)
+    {
+	if (wxMessageBox(wxT("You have choosen different memory clock settings\nfor the three performance levels.\n\n")
+			 wxT("This is not recommended because you will\nencounter screen flickering at level changes.\n\n")
+			 wxT("Are you sure you want to set these values?"), wxT("Are you sure?"), wxYES_NO|wxCENTRE|wxICON_WARNING) == wxNO)
+	{
+	    return;
+	}
+    }
 
     if (gpu0 <= gpu1 && gpu1 <= gpu2 && mem0 <= mem1 && mem1 <= mem2)
     {

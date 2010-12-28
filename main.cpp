@@ -54,93 +54,201 @@ bool MainApp::OnInit()
     }
     else
     {
-        MainDialog* main_dialog = new MainDialog(NULL);
+	int result = 0;
 
-        if(getenv("HOME"))
-        {
-            wxString file_path = wxString::FromAscii(getenv("HOME"));
-            file_path += wxT("/.AMDOverdriveCtrl");
-            mkdir(file_path.ToUTF8(), 700);
-
-            // each start
-            wxString filename = file_path + wxT("/Current_Startup.ovdr");
-            main_dialog->SaveXML(filename);
-	    main_dialog->SetStartupProfileName(filename);
-
-            // only very first start
-            filename = file_path +wxT("/VeryFirstStart.ovdr");
-            if(!wxFileExists(filename))
-            {
-                main_dialog->SaveXML(filename);
-            }
-
-            // only create if not existing
-            filename = file_path +wxT("/autostart");
-            if(!wxFileExists(filename))
-            {
-		wxString script =
-		    wxT("#!/bin/bash\n")
-		    wxT("# Autostart script for AMD/ATI OverdriveCtrl\n")
-		    wxT("sleep 20\n")
-		    wxT("AMDOverdriveCtrl --enable-app-profiles\n");
-
-                wxFFileOutputStream file(filename, wxT("wt"));
-		file.Write(script.ToUTF8(), script.Length());
-		file.Close();
-
-		mode_t mode;
-		mode = S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
-		chmod(filename.ToUTF8(), mode);
-            }
-
-	    // see if we have  a default profile
-            filename = file_path +wxT("/default.ovdr");
-            if(wxFileExists(filename))
-	    {
-		if (main_dialog->LoadXML(filename))
-		{
-		    printf("Default profile found and loaded.\n");
-		}
-	    }
-	}
-
-        wxString tmp = wxString::Format(wxT("Usage: %s [overdrive_profile_filename [--batch-mode]] | [--enable-app-profiles]\n"), argv[0]);
-        printf("%s\n", (const char*)tmp.ToUTF8());
-
-        if(argc >= 2)
-        {
-            wxString tmp = wxT("--enable-app-profiles");
-            if(tmp.CompareTo(argv[2], wxString::ignoreCase) == 0 ||
-	       tmp.CompareTo(argv[1], wxString::ignoreCase) == 0)
-            {
-                main_dialog->EnableAppProfiles();
-            }
-	    else
-	    {
-		if (!main_dialog->LoadXML(argv[1]))
-		{
-		    wxString profile = argv[1];
-		    wxMessageBox(wxT("\nThe specified startup profile '") + profile + wxT("' is missing."), wxT("AMD/ATI OverdriveCtrl warning"), wxOK|wxCENTRE|wxICON_WARNING);
-		}
-	    }
-
-            tmp = wxT("--batch-mode");
-            if(tmp.CompareTo(argv[2], wxString::ignoreCase) == 0)
-            {
-		main_dialog->SetStartupProfileName(wxT(""));
-                delete main_dialog;
-                return false;
-            }
-        }
-
-        SetTopWindow(main_dialog);
-
-	if (argc == 1)
+	if ((result = adl->UpdateData()) != 0)
 	{
-	    GetTopWindow()->Show();
-	}
+	    wxString problem = wxT("\nI'm sorry.\n\nSome necessary functions are not supported by\n"
+				   "either your hardware, the Catalyst driver or the ADL.\n\n"
+				   "Here is a list of problems:\n");
 
-        return true;
+	    if (result & ADL::ERR_GET_TEMPERATURE_FAILED)
+	    {
+		problem += wxT("\nFailed to read the GPU temperature.");
+	    }
+
+	    if (result & ADL::ERR_GET_FANSPEED_INFO_FAILED)
+	    {
+		problem += wxT("\nFailed to get fan speed information.");
+	    }
+
+	    if (result & ADL::ERR_GET_CURRENT_FANSPEED_FAILED)
+	    {
+		problem += wxT("\nFailed to read current fan speed.");
+	    }
+
+	    if (result & ADL::ERR_GET_OD_PARAMETERS_FAILED)
+	    {
+		problem += wxT("\nFailed to get Overdrive parameters.");
+	    }
+
+	    if (result & ADL::ERR_GET_OD_PERF_LEVELS_FAILED)
+	    {
+		problem += wxT("\nFailed to get Overdrive performance levels.");
+	    }	    
+
+	    if (result & ADL::ERR_GET_ACTIVITY_FAILED)
+	    {
+		problem += wxT("\nFailed to read current GPU activity.");
+	    }
+
+	    if (result & ADL::ERR_GET_DEFAULTCLOCKINFO_FAILED)
+	    {
+		problem += wxT("\nFailed to read default GPU/Memory clocks.");
+	    }
+
+	    wxMessageBox(problem, wxT("Problems occured!"), wxOK|wxCENTRE|wxICON_ERROR);
+
+	    return false;
+	}
+	else
+	{
+	    wxString problem = wxT("\nI'm sorry.\n\nSome necessary functions seem not to be supported by your hardware.\n\n"
+				   "Here is a list of problems:\n");
+
+	    if (adl->mODParameters.sEngineClock.iMin == adl->mODParameters.sEngineClock.iMax)
+	    {
+		problem += wxT("\nThe GPU clock seems not to be adjustable.");
+		result |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
+	    }
+
+	    if (adl->mODParameters.sMemoryClock.iMin == adl->mODParameters.sMemoryClock.iMax)
+	    {
+		problem += wxT("\nThe memory clock seems not to be adjustable.");
+		result |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
+	    }
+
+	    if (adl->mODParameters.sVddc.iMin == adl->mODParameters.sVddc.iMax)
+	    {
+		problem += wxT("\nThe voltage settings seem not to be adjustable.");
+		result |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
+	    }
+
+	    if (adl->mODParameters.sEngineClock.iMin > adl->mODParameters.sEngineClock.iMax)
+	    {
+		problem += wxT("\nThe reported GPU clock range makes no sense.");
+		result |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
+	    }
+
+	    if (adl->mODParameters.sMemoryClock.iMin > adl->mODParameters.sMemoryClock.iMax)
+	    {
+		problem += wxT("\nThe reported memory clock range makes no sense.");
+		result |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
+	    }
+
+	    if (adl->mODParameters.sVddc.iMin > adl->mODParameters.sVddc.iMax)
+	    {
+		problem += wxT("\nThe reported voltage adjustement range makes no sense.");
+		result |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
+	    }
+
+	    if (adl->mFanSpeedInfo.iMinRPM == adl->mFanSpeedInfo.iMaxRPM || adl->mFanSpeedInfo.iMinPercent == adl->mFanSpeedInfo.iMaxPercent)
+	    {
+		problem += wxT("\nFan speed controlling seems not to be supported.");
+		result |= ADL::ERR_GET_FANSPEED_INFO_FAILED;
+	    }
+
+	    if (adl->mFanSpeedInfo.iMinRPM > adl->mFanSpeedInfo.iMaxRPM || adl->mFanSpeedInfo.iMinPercent > adl->mFanSpeedInfo.iMaxPercent)
+	    {
+		problem += wxT("\nThe reported fan speed controlling range makes no sense.");
+		result |= ADL::ERR_GET_FANSPEED_INFO_FAILED;
+	    }
+
+	    if (result != 0)
+	    {
+		wxMessageBox(problem, wxT("Problems occured!"), wxOK|wxCENTRE|wxICON_ERROR);
+
+		return false;
+	    }
+
+	    MainDialog* main_dialog = new MainDialog(NULL);
+
+	    if(getenv("HOME"))
+	    {
+		wxString file_path = wxString::FromAscii(getenv("HOME"));
+		file_path += wxT("/.AMDOverdriveCtrl");
+		mkdir(file_path.ToUTF8(), 700);
+
+		// each start
+		wxString filename = file_path + wxT("/Current_Startup.ovdr");
+		main_dialog->SaveXML(filename);
+		main_dialog->SetStartupProfileName(filename);
+
+		// only very first start
+		filename = file_path +wxT("/VeryFirstStart.ovdr");
+		if(!wxFileExists(filename))
+		{
+		    main_dialog->SaveXML(filename);
+		}
+
+		// only create if not existing
+		filename = file_path +wxT("/autostart");
+		if(!wxFileExists(filename))
+		{
+		    wxString script =
+			wxT("#!/bin/bash\n")
+			wxT("# Autostart script for AMD/ATI OverdriveCtrl\n")
+			wxT("sleep 20\n")
+			wxT("AMDOverdriveCtrl --enable-app-profiles\n");
+
+		    wxFFileOutputStream file(filename, wxT("wt"));
+		    file.Write(script.ToUTF8(), script.Length());
+		    file.Close();
+
+		    mode_t mode;
+		    mode = S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
+		    chmod(filename.ToUTF8(), mode);
+		}
+
+		// see if we have  a default profile
+		filename = file_path +wxT("/default.ovdr");
+		if(wxFileExists(filename))
+		{
+		    if (main_dialog->LoadXML(filename))
+		    {
+			printf("Default profile found and loaded.\n");
+		    }
+		}
+	    }
+
+	    wxString tmp = wxString::Format(wxT("Usage: %s [overdrive_profile_filename [--batch-mode]] | [--enable-app-profiles]\n"), argv[0]);
+	    printf("%s\n", (const char*)tmp.ToUTF8());
+
+	    if(argc >= 2)
+	    {
+		wxString tmp = wxT("--enable-app-profiles");
+		if(tmp.CompareTo(argv[2], wxString::ignoreCase) == 0 ||
+		   tmp.CompareTo(argv[1], wxString::ignoreCase) == 0)
+		{
+		    main_dialog->EnableAppProfiles();
+		}
+		else
+		{
+		    if (!main_dialog->LoadXML(argv[1]))
+		    {
+			wxString profile = argv[1];
+			wxMessageBox(wxT("\nThe specified startup profile '") + profile + wxT("' is missing."), wxT("AMD/ATI OverdriveCtrl warning"), wxOK|wxCENTRE|wxICON_WARNING);
+		    }
+		}
+
+		tmp = wxT("--batch-mode");
+		if(tmp.CompareTo(argv[2], wxString::ignoreCase) == 0)
+		{
+		    main_dialog->SetStartupProfileName(wxT(""));
+		    delete main_dialog;
+		    return false;
+		}
+	    }
+
+	    SetTopWindow(main_dialog);
+
+	    if (argc == 1)
+	    {
+		GetTopWindow()->Show();
+	    }
+
+	    return true;
+	}
     }
 }
 

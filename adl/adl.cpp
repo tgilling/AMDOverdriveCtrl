@@ -528,9 +528,12 @@ bool ADL::Init()
 		memset (mpAdapterInfo, '\0', sizeof(AdapterInfo) * mNrOfAdapters);
 	        if (ADL_Adapter_AdapterInfo_Get (mpAdapterInfo, sizeof (AdapterInfo) * mNrOfAdapters) != ADL_OK)
 		{
-		    cout << "problem" << endl;
+		    cout << "ERROR: no adapter info available!" << endl;
 		}
-		UpdateData();
+		if (UpdateData() != 0)
+		{
+		    cout << "ERROR: failed to read card values!" << endl;
+		}
 	    }
 	    else
 	    {
@@ -557,14 +560,16 @@ bool ADL::IsATICardAndCatalystPresent() const
     return (mNrOfAdapters > 0);
 }
 
-void ADL::UpdateData()
+int ADL::UpdateData()
 {
+    int result = 0;
+
     if (mNrOfAdapters > 0)
     {
     #ifdef FAKE_ATI_CARD
 	mFanSpeedInfo.iMinRPM = 500;
 	mFanSpeedInfo.iMaxRPM = 4000;
-	mFanSpeedInfo.iMaxPercent = 79;
+	mFanSpeedInfo.iMaxPercent = 85;
 	mFanSpeedInfo.iMinPercent = 12;
 
 	mODActivity.iMaximumBusLanes = 16;
@@ -632,11 +637,11 @@ void ADL::UpdateData()
 	}
 
 	mODParameters.sEngineClock.iMax = 85000;
-	mODParameters.sEngineClock.iMin = 10000;
+	mODParameters.sEngineClock.iMin = 11000;
 	mODParameters.sEngineClock.iStep =  500;
 
 	mODParameters.sMemoryClock.iMax = 110000;
-	mODParameters.sMemoryClock.iMin =  20000;
+	mODParameters.sMemoryClock.iMin =  10000;
 	mODParameters.sMemoryClock.iStep =  1000;
 
 	mODParameters.sVddc.iMax = 1263;
@@ -645,21 +650,25 @@ void ADL::UpdateData()
 
 	mODParameters.iNumberOfPerformanceLevels = 3;
 
+	result = 0;
+
     #else
 
 	mTemperature.iSize = sizeof(ADLTemperature);
 	if (ADL_Overdrive5_Temperature_Get(0, 0, &mTemperature) != ADL_OK)
 	{
 	    mTemperature.iTemperature = 0;
+	    result |= ERR_GET_TEMPERATURE_FAILED;
 	}
 
 	mFanSpeedInfo.iSize = sizeof(ADLFanSpeedInfo);
 	if (ADL_Overdrive5_FanSpeedInfo_Get(0, 0, &mFanSpeedInfo) != ADL_OK)
 	{
 	    mFanSpeedInfo.iMinRPM = 0;
-	    mFanSpeedInfo.iMaxRPM = 0;
-	    mFanSpeedInfo.iMaxPercent = 0;
+	    mFanSpeedInfo.iMaxRPM = 1;
 	    mFanSpeedInfo.iMinPercent = 0;
+	    mFanSpeedInfo.iMaxPercent = 1;
+	    result |= ERR_GET_FANSPEED_INFO_FAILED;
 	}
 
 	mCurrentFanSpeed.iSize = sizeof(ADLFanSpeedValue);
@@ -667,6 +676,7 @@ void ADL::UpdateData()
 	if (ADL_Overdrive5_FanSpeed_Get(0, 0, &mCurrentFanSpeed) != ADL_OK)
 	{
 	    mCurrentFanSpeed.iFanSpeed = 0;
+	    result |= ERR_GET_CURRENT_FANSPEED_FAILED;
 	}
 
 	mODParameters.iSize = sizeof(ADLODParameters);
@@ -683,7 +693,12 @@ void ADL::UpdateData()
 	    {
 		free(mpODPerformanceLevels);
 		mpODPerformanceLevels = NULL;
+		result |= ERR_GET_OD_PERF_LEVELS_FAILED;
 	    }
+	}
+	else
+	{
+	    result |= ERR_GET_OD_PARAMETERS_FAILED;
 	}
 
 	mODActivity.iSize = sizeof(ADLPMActivity);
@@ -694,6 +709,7 @@ void ADL::UpdateData()
 	    mODActivity.iVddc = 0;
 	    mODActivity.iCurrentPerformanceLevel = 0;
 	    mODActivity.iActivityPercent = 0;
+	    result |= ERR_GET_ACTIVITY_FAILED;
 	}
 
 	mODClockInfo.iSize = sizeof(ADLAdapterODClockInfo);
@@ -703,7 +719,9 @@ void ADL::UpdateData()
 	    mODClockInfo.sEngineClock.iDefaultClock = 0;
 	    mODClockInfo.sMemoryClock.iCurrentClock = 0;
 	    mODClockInfo.sMemoryClock.iDefaultClock = 0;
+	    result |= ERR_GET_DEFAULTCLOCKINFO_FAILED;
 	}
     #endif
     }
+    return result;
 }

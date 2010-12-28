@@ -469,7 +469,7 @@ void CFanControlPanel::CalculateBezierPoints()
     double step= (double)1.0 / (NR_OF_BEZIER_POINTS - 1);
     double t = 0.0;
 
-    for (int bcnt = 0; bcnt != NR_OF_BEZIER_POINTS; bcnt++)
+    for (int bcnt = 0; bcnt < NR_OF_BEZIER_POINTS; bcnt++)
     {
 	if ((1.0 - t) < 5e-6)
 	{
@@ -611,7 +611,7 @@ void CFanControlPanel::Notify()
 
     if (mEnable->GetValue())
     {
-	if ((++min_time*TIMER_INTERVAL >= (temperature > mLastTemperature ? MIN_TIME_SINCE_LAST_CHANGE / 2 :MIN_TIME_SINCE_LAST_CHANGE)
+	if ((++min_time*TIMER_INTERVAL >= (temperature > mLastTemperature ? MIN_TIME_SINCE_LAST_CHANGE / 2 : MIN_TIME_SINCE_LAST_CHANGE)
 	    && fabs(temperature - mLastTemperature) >= HYSTERESIS) || mForceFanSpeedSetting)
 	{
 	    mLastPercentage = percentage;

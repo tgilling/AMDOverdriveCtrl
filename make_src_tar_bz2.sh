@@ -2,17 +2,30 @@
 
 # create source archive
 
-rm -f ./AMDOverdriveCtrl.src.tar.bz2
-tar cf ./AMDOverdriveCtrl.src.tar *.h
-tar rf ./AMDOverdriveCtrl.src.tar *.cpp
-tar rf ./AMDOverdriveCtrl.src.tar *.workspace
-tar rf ./AMDOverdriveCtrl.src.tar *.project
-tar rf ./AMDOverdriveCtrl.src.tar *.mk
-tar rf ./AMDOverdriveCtrl.src.tar *.fbp
-tar rf ./AMDOverdriveCtrl.src.tar *.sh
-tar rf ./AMDOverdriveCtrl.src.tar *.txt
-tar rf ./AMDOverdriveCtrl.src.tar bin2h
-tar rf ./AMDOverdriveCtrl.src.tar Copyright
-tar rf ./AMDOverdriveCtrl.src.tar adl/*
-tar rf ./AMDOverdriveCtrl.src.tar create_deb/*
-bzip2 ./AMDOverdriveCtrl.src.tar
+ver=`cat Revision.h | grep VERSION | tr -d " A-Za-z;="`
+rev=`cat Revision.h | grep REVISION | tr -d " A-Za-z;="`
+build=`cat Revision.h | grep BUILD | tr -d " A-Za-z;="`
+
+rm -f ./AMDOverdriveCtrl_$ver.$rev.$build.src.tar.bz2
+rm -rf ./AMDOverdriveCtrl.src
+mkdir ./AMDOverdriveCtrl.src
+mkdir ./AMDOverdriveCtrl.src/adl
+mkdir ./AMDOverdriveCtrl.src/create_deb
+
+cp *.h ./AMDOverdriveCtrl.src
+cp *.cpp ./AMDOverdriveCtrl.src
+cp *.workspace ./AMDOverdriveCtrl.src
+cp *.project ./AMDOverdriveCtrl.src
+cp *.mk ./AMDOverdriveCtrl.src
+cp *.fbp ./AMDOverdriveCtrl.src
+cp *.sh ./AMDOverdriveCtrl.src
+cp *.txt ./AMDOverdriveCtrl.src
+cp bin2h ./AMDOverdriveCtrl.src
+cp Copyright ./AMDOverdriveCtrl.src
+cp -r adl/* ./AMDOverdriveCtrl.src/adl
+cp -r create_deb/* ./AMDOverdriveCtrl.src/create_deb
+
+tar cfj ./AMDOverdriveCtrl.$ver.$rev.$build.src.tar.bz2 ./AMDOverdriveCtrl.src/*
+
+rm -rf ./AMDOverdriveCtrl.src
+

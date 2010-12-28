@@ -1,3 +1,11 @@
+History:
+--------
+
+V1.0.0	:	initial public release
+
+
+Notes:
+------
 
 This project is developed by using the "codelite" IDE (www.codelite.org). A workspace for this IDE is included.
 

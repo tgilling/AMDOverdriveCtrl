@@ -13,6 +13,7 @@ mkdir ./AMDOverdriveCtrl.src/adl
 mkdir ./AMDOverdriveCtrl.src/create_deb
 mkdir ./AMDOverdriveCtrl.src/ADL_SDK
 
+cp makefile ./AMDOverdriveCtrl.src
 cp *.h ./AMDOverdriveCtrl.src
 cp *.cpp ./AMDOverdriveCtrl.src
 cp *.workspace ./AMDOverdriveCtrl.src

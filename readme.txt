@@ -1,6 +1,8 @@
 History:
 --------
 
+V1.0.2  :	corrected some minor deb packaging problems
+
 V1.0.1  :	add some sanity checks at program startup and eventually report
  		problems 
 		created simple makefile for compiling without codelite
@@ -36,6 +38,6 @@ Uninstalling:
 
 Creating deb package:
 
-	make_deb.sh
+	'create_deb/make_deb.sh'
 
 

@@ -30,7 +30,7 @@
 
 #include "CFanSpeedPanel.h"
 #include "CFanControlPanel.h"
-#include "adl/adl.h"
+#include "adl.h"
 #include "Color.h"
 
 const int TIMER_INTERVAL_PROFILE = 2000;

@@ -1,0 +1,5 @@
+AMDOverdriveCtrl (1.0.2) all; urgency=low
+
+  * corrected some minor deb packaging problems
+
+ -- Thorsten Gilling <tgilling@web.de>  Thu, 30 Dec 2010 00:00:00 +0000

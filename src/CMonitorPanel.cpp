@@ -27,7 +27,7 @@
 
 
 #include "CMonitorPanel.h"
-#include "adl/adl.h"
+#include "adl.h"
 #include "Color.h"
 
 CMonitorPanel::CMonitorPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)

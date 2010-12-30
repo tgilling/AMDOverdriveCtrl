@@ -1,0 +1,34 @@
+.TH AMDOverdriveCtrl 1 "30 December 2010"
+.SH NAME
+AMDOverdriveCtrl \- Control and monitor frequencies and voltages
+.SH SYNOPSIS
+AMDOverdriveCtrl [*.ovdr [--batch-mode]] | [--enable-app-profiles]
+.SH DESCRIPTION
+This tool let's you control the frequency and fan settings of your
+AMD/ATI video card. It depends on the proprietary AMD/ATI Catalyst 
+display driver and makes use of the AMD Display Library (ADL) library. 
+.SH OPTIONS
+.B *.ovdr
+Any previously saved settings file (optional)
+.PP
+.B --batch-mode
+Set the values from the settings file and exit.
+.PP
+.B --enable-app-profiles
+Start with application monitoring enabled.
+.SH HOMEPAGE
+http://sourceforge.net/projects/amdovdrvctrl/
+.SH EXAMPLE
+.PP
+.nf
+.B AMDOverdriveCtrl default.ovdr --batch-mode
+Set 'default.ovdr' values and then quit
+
+.B AMDOverdriveCtrl --enable-app-profiles
+Start with application monitoring
+
+.B AMDOverdriveCtrl HighPerformance.ovdr 
+Set 'HighPerformance.ovdr' values and minimize to tray
+.fi
+.SH AUTHOR
+Thorsten Gilling <tgilling@web.de>

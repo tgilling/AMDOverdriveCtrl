@@ -3,7 +3,7 @@
 
    BIN2H - Generate C Header from binary file
    input file was  : create_deb/icon.png
-   generation date : Fri Dec 24 23:35:15 2010
+   generation date : Thu Dec 30 19:30:26 2010
 
 -----------------------------------------------------------------------------*/
 

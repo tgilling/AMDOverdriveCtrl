@@ -27,7 +27,7 @@
 
 
 #include "COvdrSettingsPanel.h"
-#include "adl/adl.h"
+#include "adl.h"
 
 COvdrSettingsPanel::COvdrSettingsPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
     : COvdrSettingsPanelBase(parent, id, pos, size, style)

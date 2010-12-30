@@ -31,7 +31,7 @@
 
 #include <wx/wx.h>
 #include "gui.h"
-#include "adl/adl.h"
+#include "adl.h"
 
 class CFanSpeedPanel;
 

@@ -27,7 +27,7 @@
 
 
 #include "CSettingsPanel.h"
-#include "adl/adl.h"
+#include "adl.h"
 
 CSettingsPanel::CSettingsPanel(int PerfLevel, wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
     : CSettingsPanelBase(parent, id, pos, size, style)

@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if wxversion=`wx-config --version`; then
+    echo wxWidgets version $wxversion found. Type "'"make"'" now.
+else
+    echo wxWidgets is required.
+fi
+
+

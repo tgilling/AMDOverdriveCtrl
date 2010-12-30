@@ -2,7 +2,7 @@
 Encoding=UTF-8
 Name=AMDOverdriveCtrl
 Exec=AMDOverdriveCtrl
-Icon=/usr/share/AMDOverdriveCtrl/images/icon.png
+Icon=/usr/share/AMDOverdriveCtrl/images/icon.xpm
 Terminal=false
 Type=Application
 Categories=System;

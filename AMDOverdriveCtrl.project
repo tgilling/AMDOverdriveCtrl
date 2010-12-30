@@ -8,44 +8,44 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
-    <File Name="gui.cpp"/>
-    <File Name="main.cpp"/>
-    <File Name="CMonitorPanel.cpp"/>
-    <File Name="CInfoPanel.cpp"/>
-    <File Name="CFanSpeedPanel.cpp"/>
-    <File Name="CSettingsPanel.cpp"/>
-    <File Name="CAuthorPanel.cpp"/>
-    <File Name="CTaskBarIcon.cpp"/>
-    <File Name="CFanControlPanel.cpp"/>
-    <File Name="BezierMath.cpp"/>
-    <File Name="Color.cpp"/>
-    <File Name="CAppProfilePanel.cpp"/>
-    <File Name="COvdrSettingsPanel.cpp"/>
+    <File Name="src/gui.cpp"/>
+    <File Name="src/main.cpp"/>
+    <File Name="src/CMonitorPanel.cpp"/>
+    <File Name="src/CInfoPanel.cpp"/>
+    <File Name="src/CFanSpeedPanel.cpp"/>
+    <File Name="src/CSettingsPanel.cpp"/>
+    <File Name="src/CAuthorPanel.cpp"/>
+    <File Name="src/CTaskBarIcon.cpp"/>
+    <File Name="src/CFanControlPanel.cpp"/>
+    <File Name="src/BezierMath.cpp"/>
+    <File Name="src/Color.cpp"/>
+    <File Name="src/CAppProfilePanel.cpp"/>
+    <File Name="src/COvdrSettingsPanel.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="include">
-    <File Name="gui.h"/>
-    <File Name="main.h"/>
-    <VirtualDirectory Name="AMD ADL">
-      <File Name="adl/adl_functions.h"/>
-      <File Name="adl/adl.cpp"/>
-      <File Name="adl/adl.h"/>
-      <File Name="CTaskBarIcon.h"/>
+    <File Name="src/gui.h"/>
+    <File Name="src/main.h"/>
+    <VirtualDirectory Name="ADL Utils">
+      <File Name="src/adl_functions.h"/>
+      <File Name="src/adl.cpp"/>
+      <File Name="src/adl.h"/>
     </VirtualDirectory>
-    <File Name="CMonitorPanel.h"/>
-    <File Name="CInfoPanel.h"/>
-    <File Name="CFanSpeedPanel.h"/>
-    <File Name="CSettingsPanel.h"/>
-    <File Name="CAuthorPanel.h"/>
-    <File Name="CFanControlPanel.h"/>
-    <File Name="BezierMath.h"/>
-    <File Name="Color.h"/>
-    <File Name="CAppProfilePanel.h"/>
-    <File Name="COvdrSettingsPanel.h"/>
-    <File Name="Revision.h"/>
+    <File Name="src/CMonitorPanel.h"/>
+    <File Name="src/CInfoPanel.h"/>
+    <File Name="src/CFanSpeedPanel.h"/>
+    <File Name="src/CSettingsPanel.h"/>
+    <File Name="src/CAuthorPanel.h"/>
+    <File Name="src/CFanControlPanel.h"/>
+    <File Name="src/BezierMath.h"/>
+    <File Name="src/Color.h"/>
+    <File Name="src/CAppProfilePanel.h"/>
+    <File Name="src/COvdrSettingsPanel.h"/>
+    <File Name="src/Revision.h"/>
+    <File Name="src/CTaskBarIcon.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="resources">
-    <File Name="gui.fbp"/>
-    <File Name="icon.png.h"/>
+    <File Name="src/gui.fbp"/>
+    <File Name="src/icon.png.h"/>
     <File Name="create_deb/icon.png"/>
   </VirtualDirectory>
   <Settings Type="Executable">
@@ -88,10 +88,9 @@
       </CustomBuild>
       <AdditionalRules>
         <CustomPostBuild/>
-        <CustomPreBuild>icon.png.h
-icon.png.h: create_deb/icon.png
-	./bin2h create_deb/icon.png ../icon.png
-</CustomPreBuild>
+        <CustomPreBuild>src/icon.png.h
+src/icon.png.h: create_deb/icon.png
+	./bin2h create_deb/icon.png ../src/icon.png</CustomPreBuild>
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Debug fake ATI card" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
@@ -125,9 +124,9 @@ icon.png.h: create_deb/icon.png
       </CustomBuild>
       <AdditionalRules>
         <CustomPostBuild/>
-        <CustomPreBuild>icon.png.h
-icon.png.h: create_deb/icon.png
-	./bin2h create_deb/icon.png ../icon.png</CustomPreBuild>
+        <CustomPreBuild>src/icon.png.h
+src/icon.png.h: create_deb/icon.png
+	./bin2h create_deb/icon.png ../src/icon.png</CustomPreBuild>
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
@@ -160,9 +159,10 @@ icon.png.h: create_deb/icon.png
       </CustomBuild>
       <AdditionalRules>
         <CustomPostBuild/>
-        <CustomPreBuild>icon.png.h
-icon.png.h: create_deb/icon.png
-	./bin2h create_deb/icon.png ../icon.png</CustomPreBuild>
+        <CustomPreBuild>src/icon.png.h
+src/icon.png.h: create_deb/icon.png
+	./bin2h create_deb/icon.png ../src/icon.png
+</CustomPreBuild>
       </AdditionalRules>
     </Configuration>
   </Settings>

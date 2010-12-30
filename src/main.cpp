@@ -30,7 +30,7 @@
 #include <wx/wfstream.h>
 
 #include "main.h"
-#include "adl/adl.h"
+#include "adl.h"
 #include "icon.png.h"
 
 const int TIMER_INTERVAL = 1000;

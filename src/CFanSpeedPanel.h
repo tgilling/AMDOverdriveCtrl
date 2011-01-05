@@ -89,6 +89,7 @@ class CFanSpeedPanel : public CFanSpeedPanelBase, wxTimer
         virtual void EnterPanel(wxMouseEvent& event);
         virtual void LeavePanel(wxMouseEvent& event);
         virtual void MouseMotion(wxMouseEvent& event);
+	virtual void LeftDblClick(wxMouseEvent& event);
 };
 
 #endif

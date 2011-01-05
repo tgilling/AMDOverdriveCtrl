@@ -455,6 +455,19 @@ void CFanSpeedPanel::MouseMotion(wxMouseEvent& event)
     }
 }
 
+void CFanSpeedPanel::LeftDblClick(wxMouseEvent& event)
+{
+    mMousePositionX = event.GetX();
+    mMousePositionY = event.GetY();
+    int percentage = adl->mFanSpeedInfo.iMinPercent + (mMousePositionX-10)*(adl->mFanSpeedInfo.iMaxPercent-adl->mFanSpeedInfo.iMinPercent)/320;
+
+    mpFanControlPanel->EnableFanControllerMode(false, false);
+    SetFanSpeed(percentage);
+    mTargetFanSpeed->SetValue(wxString::Format(wxT("%d %%"), percentage));
+    mFanSpeedLevelFixed = true;
+}
+
+
 void CFanSpeedPanel::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
     DrawFanProfile();

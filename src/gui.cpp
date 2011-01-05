@@ -726,6 +726,7 @@ CFanSpeedPanelBase::CFanSpeedPanelBase( wxWindow* parent, wxWindowID id, const w
 	mFanSpeedPlus->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CFanSpeedPanelBase::mFanSpeedPlusClick ), NULL, this );
 	mFanProfile->Connect( wxEVT_ENTER_WINDOW, wxMouseEventHandler( CFanSpeedPanelBase::EnterPanel ), NULL, this );
 	mFanProfile->Connect( wxEVT_LEAVE_WINDOW, wxMouseEventHandler( CFanSpeedPanelBase::LeavePanel ), NULL, this );
+	mFanProfile->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( CFanSpeedPanelBase::LeftDblClick ), NULL, this );
 	mFanProfile->Connect( wxEVT_MOTION, wxMouseEventHandler( CFanSpeedPanelBase::MouseMotion ), NULL, this );
 	mButtonProfile->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CFanSpeedPanelBase::mButtonProfileClick ), NULL, this );
 	mButtonDefault->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CFanSpeedPanelBase::mButtonDefaultClick ), NULL, this );
@@ -749,6 +750,7 @@ CFanSpeedPanelBase::~CFanSpeedPanelBase()
 	mFanSpeedPlus->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CFanSpeedPanelBase::mFanSpeedPlusClick ), NULL, this );
 	mFanProfile->Disconnect( wxEVT_ENTER_WINDOW, wxMouseEventHandler( CFanSpeedPanelBase::EnterPanel ), NULL, this );
 	mFanProfile->Disconnect( wxEVT_LEAVE_WINDOW, wxMouseEventHandler( CFanSpeedPanelBase::LeavePanel ), NULL, this );
+	mFanProfile->Disconnect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( CFanSpeedPanelBase::LeftDblClick ), NULL, this );
 	mFanProfile->Disconnect( wxEVT_MOTION, wxMouseEventHandler( CFanSpeedPanelBase::MouseMotion ), NULL, this );
 	mButtonProfile->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CFanSpeedPanelBase::mButtonProfileClick ), NULL, this );
 	mButtonDefault->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CFanSpeedPanelBase::mButtonDefaultClick ), NULL, this );

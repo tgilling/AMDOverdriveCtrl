@@ -239,6 +239,7 @@ class CFanSpeedPanelBase : public wxPanel
 		virtual void mFanSpeedPlusClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void EnterPanel( wxMouseEvent& event ) { event.Skip(); }
 		virtual void LeavePanel( wxMouseEvent& event ) { event.Skip(); }
+		virtual void LeftDblClick( wxMouseEvent& event ) { event.Skip(); }
 		virtual void MouseMotion( wxMouseEvent& event ) { event.Skip(); }
 		virtual void mButtonProfileClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void mButtonDefaultClick( wxCommandEvent& event ) { event.Skip(); }

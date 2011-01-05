@@ -43,6 +43,7 @@ class Color
 	static wxColour MID_GRAY;
 	static wxColour DARK_GRAY;
 	static wxColour LIGHT_GRAY;
+	static wxColour GREEN;
 };
 
 #endif

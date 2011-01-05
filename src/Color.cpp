@@ -39,3 +39,4 @@ wxColour Color::CYAN = wxColour(0,155,200);
 wxColour Color::MID_GRAY = wxColour(175,175,175);
 wxColour Color::DARK_GRAY = wxColour(100,100,100);
 wxColour Color::LIGHT_GRAY = wxColour(240,240,240);
+wxColour Color::GREEN = wxColour(50,240,50);

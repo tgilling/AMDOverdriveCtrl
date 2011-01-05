@@ -233,7 +233,7 @@ void CAppProfilePanel::mButtonEditProfileClick(wxCommandEvent& WXUNUSED(event))
 
 bool CAppProfilePanel::EnableAppProfiles(bool enable)
 {
-    if (!mDefaultProfileName->GetValue().IsEmpty() && enable)
+    if (!mDefaultProfileName->GetValue().IsEmpty() && enable && wxFileExists(mDefaultProfile))
     {
 	mEnable->SetValue(true);
 	mEnabled = true;
@@ -251,9 +251,9 @@ bool CAppProfilePanel::EnableAppProfiles(bool enable)
 
 void CAppProfilePanel::mEnableOnCheckBox(wxCommandEvent& WXUNUSED(event))
 {
-    if (mDefaultProfileName->GetValue().IsEmpty())
+    if (mDefaultProfileName->GetValue().IsEmpty() || !wxFileExists(mDefaultProfile))
     {
-	wxMessageBox(wxT("Please choose a default profile."), wxT("Problem!"), wxOK|wxCENTRE|wxICON_ERROR);
+	wxMessageBox(wxT("Please choose a valid default profile."), wxT("Problem!"), wxOK|wxCENTRE|wxICON_ERROR);
 	mEnable->SetValue(false);
     }
     else
@@ -309,6 +309,22 @@ void CAppProfilePanel::UpdateDisplay()
 	}
 
 	++index;
+    }
+
+    if (mDefaultProfile.IsEmpty())
+    {
+	mDefaultProfileName->SetBackgroundColour(Color::WHITE);
+    }
+    else
+    {
+	if (!wxFileExists(mDefaultProfile))
+	{
+	    mDefaultProfileName->SetBackgroundColour(Color::RED);
+	}
+	else
+	{
+	    mDefaultProfileName->SetBackgroundColour(Color::GREEN);
+	}
     }
 
     mDefaultProfileName->SetValue(mDefaultProfile.AfterLast('/'));

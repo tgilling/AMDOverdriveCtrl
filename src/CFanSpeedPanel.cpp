@@ -183,9 +183,10 @@ void CFanSpeedPanel::mButtonProfileClick(wxCommandEvent& WXUNUSED(event))
 
 void CFanSpeedPanel::mButtonSetClick(wxCommandEvent& WXUNUSED(event))
 {
+    mpFanControlPanel->EnableFanControllerMode(false, false);
     SetFanSpeed(mFanSpeedSlider->GetValue());
+    mTargetFanSpeed->SetValue(wxString::Format(wxT("%d %%"), mFanSpeedSlider->GetValue()));
     mFanSpeedLevelFixed = true;
-    mpFanControlPanel->EnableFanControllerMode(false);
 }
 
 void CFanSpeedPanel::mButtonDefaultClick(wxCommandEvent& WXUNUSED(event))
@@ -195,7 +196,7 @@ void CFanSpeedPanel::mButtonDefaultClick(wxCommandEvent& WXUNUSED(event))
 
 bool CFanSpeedPanel::SetDefaultFanSpeed()
 {
-    if(adl->ADL_Overdrive5_FanSpeedToDefault_Set != NULL && adl->ADL_Overdrive5_FanSpeedToDefault_Set(0, 0))
+    if(adl->ADL_Overdrive5_FanSpeedToDefault_Set != NULL && adl->ADL_Overdrive5_FanSpeedToDefault_Set(0, 0) != ADL_OK)
     {
         return false;
     }

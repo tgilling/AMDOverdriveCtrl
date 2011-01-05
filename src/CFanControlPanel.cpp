@@ -573,13 +573,16 @@ int CFanControlPanel::CalcFanPercentage(int temperature)
     return mCtrlPoints[NR_OF_CTRL_POINTS-1].y;
 }
 
-void CFanControlPanel::EnableFanControllerMode(bool enable)
+void CFanControlPanel::EnableFanControllerMode(bool enable, bool reset_to_default)
 {
     mEnable->SetValue(enable);
 
     if (!enable)
     {
-	mpFanSpeedPanel->SetDefaultFanSpeed();
+	if (reset_to_default)
+	{
+	    mpFanSpeedPanel->SetDefaultFanSpeed();
+	}
 	Stop();
 	mCurrentTemperature->SetLabel(wxT(""));
 	mCurrentFanSpeed->SetLabel(wxT(""));

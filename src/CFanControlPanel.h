@@ -60,7 +60,7 @@ class CFanControlPanel : public CFanControlPanelBase, wxTimer
         int GetCurveType();
         void SetCurveType(int type);
 
-	void EnableFanControllerMode(bool enable);
+	void EnableFanControllerMode(bool enable, bool reset_to_default=true);
 	bool IsFanControllerEnabled();
 
     protected:

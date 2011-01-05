@@ -249,6 +249,7 @@ typedef int ( *ADL_WORKSTATION_LOADBALANCING_CAPS ) (int iAdapterIndex, int *lpR
 
 // ------------------------------------------------------------------------------------------------------------
 
+#ifdef LINUX
 // ADL Linux
 typedef int ( *ADL_ADAPTER_MEMORYINFO_GET ) (int iAdapterIndex, ADLMemoryInfo *lpMemoryInfo);
 typedef int ( *ADL_CONTROLLER_COLOR_SET ) (int iAdapterIndex, int iControllerIndex, ADLGamma adlGamma);
@@ -262,7 +263,7 @@ typedef int ( *ADL_DISPLAY_LUTCOLOR_SET ) (int iAdapterIndex, int iDisplayIndex,
 typedef int ( *ADL_DISPLAY_LUTCOLOR_GET ) (int iAdapterIndex, int iDisplayIndex, ADLGamma *lpGammaCurrent, ADLGamma *lpGammaDefault, ADLGamma *lpGammaMin, ADLGamma *lpGammaMax);
 typedef int ( *ADL_ADAPTER_XSCREENINFO_GET ) (LPXScreenInfo lpXScreenInfo, int iInputSize);
 typedef int ( *ADL_DISPLAY_XRANDRDISPLAYNAME_GET ) (int iAdapterIndex, int iDisplayIndex, char *lpXrandrDisplayName, int iBuffSize);
-
+#endif
 // ------------------------------------------------------------------------------------------------------------
 
 

@@ -99,6 +99,7 @@ wxMenu*	CTaskBarIcon::CreatePopupMenu()
 	app_profiles->Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CTaskBarIcon::OnMenuClick), NULL, this);
     }
 
+    #ifdef LINUX
     if(getenv("HOME"))
     {
 	wxString filename = wxString::FromAscii(getenv("HOME"));
@@ -113,6 +114,7 @@ wxMenu*	CTaskBarIcon::CreatePopupMenu()
 	    item->Check(true);
 	}
     }
+    #endif
 
     menu->Append(OVDR_TB_CMD_EXIT, wxT("Exit"), wxT(""), false);
     menu->Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CTaskBarIcon::OnMenuClick), NULL, this);    
@@ -179,9 +181,11 @@ void CTaskBarIcon::OnMenuClick(wxCommandEvent& event)
 		file.Write(script.ToUTF8(), script.Length());
 		file.Close();
 
-		mode_t mode;
-		mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
-		chmod(filename.ToUTF8(), mode);
+		#ifdef LINUX
+			mode_t mode;
+			mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+			chmod(filename.ToUTF8(), mode);
+		#endif
 	    }
 	}
 	break;

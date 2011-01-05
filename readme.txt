@@ -1,6 +1,8 @@
 History:
 --------
 
+V1.0.3  :	check for supported HW features and disable parts of the program if necessary
+
 V1.0.2  :	corrected some minor deb packaging problems
 
 V1.0.1  :	add some sanity checks at program startup and eventually report
@@ -24,7 +26,7 @@ Dependencies:
 	extract the ADL Library into the main project folder and rename the ADL
  	folder to "ADL_SDK" 
 
-	wxWidgets 2.8.X or later
+	wxWidgets 2.8.10 or later
 	If you install the "codelite" IDE you will probably have all what's
 	necessary.
 
@@ -38,6 +40,12 @@ Uninstalling:
 
 Creating deb package:
 
-	'create_deb/make_deb.sh'
+	'make deb'
+
+Creating source tarball:
+
+	'make dist' 
+	or 
+	'make dist_adl'		(include ADL_SDK folder)
 
 

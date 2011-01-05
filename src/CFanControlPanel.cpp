@@ -53,6 +53,14 @@ CFanControlPanel::CFanControlPanel(CFanSpeedPanel* FanSpeedPanel, wxWindow* pare
 {
     adl = ADL::Instance();
 
+    if (!(adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED_INFO) ||
+	!(adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED) ||
+	!(adl->GetSupportedFeatures() & ADL::FEAT_GET_TEMPERATURE))
+    {
+	Show(false);
+	EnableFanControllerMode(false);
+    }
+
     mCurveType->AppendString(wxT("Linear"));
     mCurveType->AppendString(wxT("Steps"));
     mCurveType->AppendString(wxT("Bezier"));
@@ -210,96 +218,111 @@ void CFanControlPanel::mCurveTypeOnChoice(wxCommandEvent& WXUNUSED(event))
 
 void CFanControlPanel::DrawGrid()
 {
-    int temperature = mMousePosition.x;
-    int percentage = CalcFanPercentage(temperature);
-
-    wxPaintDC dc(mCurve);
-
-    dc.SetBrush(wxBrush(mCurve->GetBackgroundColour()));
-    dc.SetPen(wxPen(Color::BLACK, 0, wxTRANSPARENT));
-    dc.DrawRectangle(wxPoint(0,0), wxSize(370, 310));
-
-    dc.SetPen(wxPen(Color::MID_GRAY, 1));
-    dc.SetTextForeground(Color::RED);
-
-    for(int i=0; i<5; i++)
+    if ((adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED_INFO) && (adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED))
     {
-        dc.DrawLine(wxPoint(30+i*76,20), wxPoint(30+i*76,295));
-        dc.DrawLine(wxPoint(25,290-i*68), wxPoint(340,290-i*68));
+	int temperature = mMousePosition.x;
+	int percentage = CalcFanPercentage(temperature);
 
-	dc.DrawText(wxString::Format(wxT("%.0f"), MIN_TEMP+((MAX_TEMP-MIN_TEMP)/4.0)*i), wxPoint(30+i*76-11, 293));
-	dc.DrawText(wxString::Format(wxT("%.0f"), adl->mFanSpeedInfo.iMinPercent+((double)adl->mFanSpeedInfo.iMaxPercent-(double)adl->mFanSpeedInfo.iMinPercent)/4.0*i), wxPoint(5, 290-i*68-8));
-    }
+	wxWindowDC dc(mCurve);
 
-    dc.DrawText(wxT("°C"), wxPoint(348, 282));
-    dc.DrawText(wxT("%"), wxPoint(25, 0));
+	wxColour background = mCurve->GetBackgroundColour();
+	unsigned char r = background.Red();
+	unsigned char g = background.Green();
+	unsigned char b = background.Blue();
 
-    dc.SetPen(wxPen(Color::DARK_GRAY, 3));
-    dc.DrawLine(wxPoint(30,20), wxPoint(30,290));
-    dc.DrawLine(wxPoint(30,290), wxPoint(340,290));
+	dc.SetBrush(wxBrush(background));
+	dc.SetPen(wxPen(Color::BLACK, 0, wxTRANSPARENT));
+	dc.DrawRectangle(wxPoint(0,0), wxSize(370, 310));
 
-    switch (mCurveType->GetSelection())
-    {
-	case LINEAR_CURVE_TYPE:
+	for (int y=0; y<50; y++)
 	{
-	    DrawLinear(dc);
-
-	}
-	break;
-
-	case STEPS_CURVE_TYPE:
-	{
-	    DrawSteps(dc);
-	}
-	break;
-
-	case BEZIER_CURVE_TYPE:
-	{
-	    DrawBezier(dc);
-	}
-	break;
-    }
-
-    if (mDisplayValues)
-    {
-	if (mTrackingPoint == -1)
-	{
-	    dc.SetPen(wxPen(Color::RED, 1, wxSHORT_DASH));
-	    dc.DrawLine(wxPoint(mMousePositionScreen.x,20), wxPoint(mMousePositionScreen.x, 290));
+	    dc.SetBrush(wxColour(r-y*75/140, g-y*75/140, b-y*75/140));
+	    dc.DrawRectangle(wxPoint(32, 19+y*272/50), wxSize(302, 272/50+1));
 	}
 
-	if (mCurveType->GetSelection() != BEZIER_CURVE_TYPE ||
-	    mTrackingPoint == -1 || mTrackingPoint == 0 || mTrackingPoint == NR_OF_CTRL_POINTS-1)
+	dc.SetBrush(wxBrush(Color::LIGHT_GRAY));
+	dc.SetPen(wxPen(Color::MID_GRAY, 1));
+	dc.SetTextForeground(Color::RED);
+
+	for(int i=0; i<5; i++)
 	{
-	    dc.DrawText(wxString::Format(wxT("%d°C"), temperature), wxPoint(mMousePositionScreen.x+17, mMousePositionScreen.y+10));
-	    dc.DrawText(wxString::Format(wxT("%d%%"), percentage), wxPoint(mMousePositionScreen.x+17, mMousePositionScreen.y+22));
+	    dc.DrawLine(wxPoint(30+i*76,19), wxPoint(30+i*76,295));
+	    dc.DrawLine(wxPoint(25,290-i*68), wxPoint(340,290-i*68));
+
+	    dc.DrawText(wxString::Format(wxT("%.0f"), MIN_TEMP+((MAX_TEMP-MIN_TEMP)/4.0)*i), wxPoint(30+i*76-11, 293));
+	    dc.DrawText(wxString::Format(wxT("%.0f"), adl->mFanSpeedInfo.iMinPercent+((double)adl->mFanSpeedInfo.iMaxPercent-(double)adl->mFanSpeedInfo.iMinPercent)/4.0*i), wxPoint(5, 290-i*68-8));
 	}
-    }
 
-    if (mEnable->GetValue())
-    {
-	if (mLastPercentage != 0.0 && mLastTemperature != 0.0)
+	dc.DrawText(wxT("°C"), wxPoint(348, 282));
+	dc.DrawText(wxT("%"), wxPoint(25, 0));
+
+	dc.SetPen(wxPen(Color::DARK_GRAY, 3));
+	dc.DrawLine(wxPoint(30,20), wxPoint(30,290));
+	dc.DrawLine(wxPoint(30,290), wxPoint(340,290));
+
+	switch (mCurveType->GetSelection())
 	{
-	    double screen_temp = 30.0 + (mLastTemperature-MIN_TEMP) * 304.0 / (MAX_TEMP-MIN_TEMP);
-	    double screen_percentage = 290.0 - (mLastPercentage - adl->mFanSpeedInfo.iMinPercent) * 262.0 / (adl->mFanSpeedInfo.iMaxPercent-adl->mFanSpeedInfo.iMinPercent);
+	    case LINEAR_CURVE_TYPE:
+	    {
+		DrawLinear(dc);
 
-	    wxPoint p1(screen_temp, 20);
-	    wxPoint p2(screen_temp, 290);
-	    wxPoint p3(30, screen_percentage);
-	    wxPoint p4(336, screen_percentage);
+	    }
+	    break;
 
-	    dc.SetPen(wxPen(Color::BLUE, 2, wxSHORT_DASH));
-	    dc.DrawLine(p1, p2);
-	    dc.DrawLine(p3, p4);
+	    case STEPS_CURVE_TYPE:
+	    {
+		DrawSteps(dc);
+	    }
+	    break;
 
-	    dc.SetTextForeground(Color::BLUE);
-	    dc.DrawText(wxString::Format(wxT("%.1f°C"), mLastTemperature), wxPoint(screen_temp-14,0));
-	    dc.DrawText(wxString::Format(wxT("%.0f%%"), mLastPercentage), wxPoint(340, screen_percentage-8));
+	    case BEZIER_CURVE_TYPE:
+	    {
+		DrawBezier(dc);
+	    }
+	    break;
+	}
+
+	if (mDisplayValues)
+	{
+	    if (mTrackingPoint == -1)
+	    {
+		dc.SetPen(wxPen(Color::RED, 1, wxSHORT_DASH));
+		dc.DrawLine(wxPoint(mMousePositionScreen.x,20), wxPoint(mMousePositionScreen.x, 290));
+	    }
+
+	    if (mCurveType->GetSelection() != BEZIER_CURVE_TYPE ||
+		mTrackingPoint == -1 || mTrackingPoint == 0 || mTrackingPoint == NR_OF_CTRL_POINTS-1)
+	    {
+		dc.DrawText(wxString::Format(wxT("%d°C"), temperature), wxPoint(mMousePositionScreen.x+17, mMousePositionScreen.y+10));
+		dc.DrawText(wxString::Format(wxT("%d%%"), percentage), wxPoint(mMousePositionScreen.x+17, mMousePositionScreen.y+22));
+	    }
+	}
+
+	if (mEnable->GetValue())
+	{
+	    if (mLastPercentage != 0.0 && mLastTemperature != 0.0)
+	    {
+		double screen_temp = 30.0 + (mLastTemperature-MIN_TEMP) * 304.0 / (MAX_TEMP-MIN_TEMP);
+		double screen_percentage = 290.0 - (mLastPercentage - adl->mFanSpeedInfo.iMinPercent) * 262.0 / (adl->mFanSpeedInfo.iMaxPercent-adl->mFanSpeedInfo.iMinPercent);
+
+		wxPoint p1(screen_temp, 20);
+		wxPoint p2(screen_temp, 290);
+		wxPoint p3(30, screen_percentage);
+		wxPoint p4(336, screen_percentage);
+
+		dc.SetPen(wxPen(Color::BLUE, 2, wxSHORT_DASH));
+		dc.DrawLine(p1, p2);
+		dc.DrawLine(p3, p4);
+
+		dc.SetTextForeground(Color::BLUE);
+		dc.DrawText(wxString::Format(wxT("%.1f°C"), mLastTemperature), wxPoint(screen_temp-14,0));
+		dc.DrawText(wxString::Format(wxT("%.0f%%"), mLastPercentage), wxPoint(340, screen_percentage-8));
+	    }
 	}
     }
 }
 
-void CFanControlPanel::DrawBezier(wxPaintDC& dc)
+void CFanControlPanel::DrawBezier(wxWindowDC& dc)
 {
     CheckAndDrawEndPoints(dc);
 
@@ -330,7 +353,7 @@ void CFanControlPanel::DrawBezier(wxPaintDC& dc)
     }
 }
 
-void CFanControlPanel::DrawSteps(wxPaintDC& dc)
+void CFanControlPanel::DrawSteps(wxWindowDC& dc)
 {
     CheckAndDrawEndPoints(dc);
 
@@ -354,7 +377,7 @@ void CFanControlPanel::DrawSteps(wxPaintDC& dc)
     }
 }
 
-void CFanControlPanel::DrawLinear(wxPaintDC& dc)
+void CFanControlPanel::DrawLinear(wxWindowDC& dc)
 {
     CheckAndDrawEndPoints(dc);
 
@@ -375,7 +398,7 @@ void CFanControlPanel::DrawLinear(wxPaintDC& dc)
     }
 }
 
-void CFanControlPanel::CheckAndDrawEndPoints(wxPaintDC& dc)
+void CFanControlPanel::CheckAndDrawEndPoints(wxWindowDC& dc)
 {
     if (mCtrlPoints[0].x != MIN_TEMP)
     {

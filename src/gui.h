@@ -29,6 +29,7 @@
 #include <wx/image.h>
 #include <wx/icon.h>
 #include <wx/statbmp.h>
+#include <wx/hyperlink.h>
 #include <wx/checkbox.h>
 #include <wx/choice.h>
 #include <wx/listctrl.h>
@@ -64,7 +65,7 @@ class MainDialogBase : public wxDialog
 	
 	public:
 		
-		MainDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AMD/ATI OverdriveCtrl"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 395,485 ), long style = wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE|wxMINIMIZE_BOX ); 
+		MainDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AMDOverdriveCtrl"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 395,485 ), long style = wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE|wxMINIMIZE_BOX ); 
 		~MainDialogBase();
 	
 };
@@ -262,6 +263,7 @@ class CAuthorPanelBase : public wxPanel
 		wxStaticBitmap* mBitmap;
 		
 		wxStaticText* mText1;
+		wxHyperlinkCtrl* m_hyperlink1;
 		wxStaticText* mText2;
 		wxStaticText* mText3;
 	
@@ -292,7 +294,7 @@ class CMonitorPanelBase : public wxPanel
 		wxPanel* mFanSpeed;
 		wxStaticText* m_staticText321;
 		
-		wxPanel* mFrequencies;
+		wxPanel* mPerfLevel;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnPaint( wxPaintEvent& event ) { event.Skip(); }

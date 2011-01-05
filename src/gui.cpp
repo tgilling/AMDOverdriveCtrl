@@ -791,6 +791,9 @@ CAuthorPanelBase::CAuthorPanelBase( wxWindow* parent, wxWindowID id, const wxPoi
 	bSizer20 = new wxBoxSizer( wxVERTICAL );
 	
 	bSizer20->SetMinSize( wxSize( 385,-1 ) ); 
+	m_hyperlink1 = new wxHyperlinkCtrl( this, wxID_ANY, _("AMDOverdriveCtrl on SourceForge"), wxT("http://www.sourceforge.net/projects/amdovdrvctrl"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
+	bSizer20->Add( m_hyperlink1, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+	
 	mText2 = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	mText2->Wrap( -1 );
 	mText2->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 93, 90, false, wxEmptyString ) );
@@ -910,8 +913,8 @@ CMonitorPanelBase::CMonitorPanelBase( wxWindow* parent, wxWindowID id, const wxP
 	
 	fgSizer25->Add( 29, 0, 1, wxEXPAND, 5 );
 	
-	mFrequencies = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( 340,95 ), wxTAB_TRAVERSAL );
-	fgSizer25->Add( mFrequencies, 1, wxALL|wxEXPAND, 5 );
+	mPerfLevel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( 340,95 ), wxTAB_TRAVERSAL );
+	fgSizer25->Add( mPerfLevel, 1, wxALL|wxEXPAND, 5 );
 	
 	fgSizer161->Add( fgSizer25, 1, wxEXPAND, 5 );
 	
@@ -957,9 +960,9 @@ CMonitorPanelBase::CMonitorPanelBase( wxWindow* parent, wxWindowID id, const wxP
 	mFanSpeed->Connect( wxEVT_ENTER_WINDOW, wxMouseEventHandler( CMonitorPanelBase::EnterPanel ), NULL, this );
 	mFanSpeed->Connect( wxEVT_LEAVE_WINDOW, wxMouseEventHandler( CMonitorPanelBase::LeavePanel ), NULL, this );
 	mFanSpeed->Connect( wxEVT_MOTION, wxMouseEventHandler( CMonitorPanelBase::MouseMotion ), NULL, this );
-	mFrequencies->Connect( wxEVT_ENTER_WINDOW, wxMouseEventHandler( CMonitorPanelBase::EnterPanel ), NULL, this );
-	mFrequencies->Connect( wxEVT_LEAVE_WINDOW, wxMouseEventHandler( CMonitorPanelBase::LeavePanel ), NULL, this );
-	mFrequencies->Connect( wxEVT_MOTION, wxMouseEventHandler( CMonitorPanelBase::MouseMotion ), NULL, this );
+	mPerfLevel->Connect( wxEVT_ENTER_WINDOW, wxMouseEventHandler( CMonitorPanelBase::EnterPanel ), NULL, this );
+	mPerfLevel->Connect( wxEVT_LEAVE_WINDOW, wxMouseEventHandler( CMonitorPanelBase::LeavePanel ), NULL, this );
+	mPerfLevel->Connect( wxEVT_MOTION, wxMouseEventHandler( CMonitorPanelBase::MouseMotion ), NULL, this );
 }
 
 CMonitorPanelBase::~CMonitorPanelBase()
@@ -999,9 +1002,9 @@ CMonitorPanelBase::~CMonitorPanelBase()
 	mFanSpeed->Disconnect( wxEVT_ENTER_WINDOW, wxMouseEventHandler( CMonitorPanelBase::EnterPanel ), NULL, this );
 	mFanSpeed->Disconnect( wxEVT_LEAVE_WINDOW, wxMouseEventHandler( CMonitorPanelBase::LeavePanel ), NULL, this );
 	mFanSpeed->Disconnect( wxEVT_MOTION, wxMouseEventHandler( CMonitorPanelBase::MouseMotion ), NULL, this );
-	mFrequencies->Disconnect( wxEVT_ENTER_WINDOW, wxMouseEventHandler( CMonitorPanelBase::EnterPanel ), NULL, this );
-	mFrequencies->Disconnect( wxEVT_LEAVE_WINDOW, wxMouseEventHandler( CMonitorPanelBase::LeavePanel ), NULL, this );
-	mFrequencies->Disconnect( wxEVT_MOTION, wxMouseEventHandler( CMonitorPanelBase::MouseMotion ), NULL, this );
+	mPerfLevel->Disconnect( wxEVT_ENTER_WINDOW, wxMouseEventHandler( CMonitorPanelBase::EnterPanel ), NULL, this );
+	mPerfLevel->Disconnect( wxEVT_LEAVE_WINDOW, wxMouseEventHandler( CMonitorPanelBase::LeavePanel ), NULL, this );
+	mPerfLevel->Disconnect( wxEVT_MOTION, wxMouseEventHandler( CMonitorPanelBase::MouseMotion ), NULL, this );
 	
 }
 

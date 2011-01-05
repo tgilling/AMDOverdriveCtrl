@@ -32,7 +32,7 @@
 #ifdef FAKE_ATI_CARD
 #define GPA(x,y) x=NULL;
 #else
-#define GPA(x,y) x=(y)GetProcAddress(hDLL, #x); if(x == NULL) { cout << "API: " << #x << " is missing." << endl; return false; }
+#define GPA(x,y) x=(y)GetProcAddress(hDLL, #x); if(x == NULL) { cout << "API: " << #x << " is missing." << endl; /*return false;*/ }
 #endif
 
 using namespace std;
@@ -194,6 +194,7 @@ ADL::ADL()
     , ADL_Workstation_LoadBalancing_Get(NULL)
     , ADL_Workstation_LoadBalancing_Set(NULL)
     , ADL_Workstation_LoadBalancing_Caps(NULL)
+#ifdef LINUX
     , ADL_Adapter_MemoryInfo_Get(NULL)
     , ADL_DesktopConfig_Get(NULL)
     , ADL_DesktopConfig_Set(NULL)
@@ -204,6 +205,7 @@ ADL::ADL()
     , ADL_Display_LUTColor_Get(NULL)
     , ADL_Adapter_XScreenInfo_Get(NULL)
     , ADL_Display_XrandrDisplayName_Get(NULL)
+#endif
     , mNrOfAdapters(0)
     , mpAdapterInfo(NULL)
     , mpODPerformanceLevels(NULL)
@@ -245,7 +247,7 @@ void ADL::Release()
     #if defined (LINUX)
 	dlclose(ms_instance->hDLL);
     #else
-	FreeLibrary(hDLL);
+	FreeLibrary(ms_instance->hDLL);
     #endif
 
         delete ms_instance;
@@ -253,10 +255,12 @@ void ADL::Release()
     ms_instance = NULL;
 }
 
+#ifdef LINUX
 void* ADL::GetProcAddress(void* pLibrary, const char* name)
 {
     return dlsym(pLibrary, name);
 }
+#endif
 
 // Memory allocation function
 void* __stdcall ADL::sADL_Main_Memory_Alloc (int iSize)
@@ -393,6 +397,7 @@ bool ADL::Init()
     GPA(ADL_Display_SLSMapConfig_SetState, ADL_DISPLAY_SLSMAPCONFIG_SETSTATE)
     GPA(ADL_Display_SLSMapConfig_Rearrange, ADL_DISPLAY_SLSMAPCONFIG_REARRANGE)
     #ifndef LINUX
+	//ADL_Display_PossibleMode_WinXP_Get= NULL;
 	GPA(ADL_Display_PossibleMode_WinXP_Get, ADL_DISPLAY_POSSIBLEMODE_WINXP_GET)
     #else
 	ADL_Display_PossibleMode_WinXP_Get = NULL;
@@ -497,17 +502,6 @@ bool ADL::Init()
     GPA(ADL_Display_LUTColor_Get, ADL_DISPLAY_LUTCOLOR_GET)
     GPA(ADL_Adapter_XScreenInfo_Get, ADL_ADAPTER_XSCREENINFO_GET)
     GPA(ADL_Display_XrandrDisplayName_Get, ADL_DISPLAY_XRANDRDISPLAYNAME_GET)
-#else
-    ADL_Adapter_MemoryInfo_Get = NULL;
-    ADL_DesktopConfig_Get = NULL;
-    ADL_DesktopConfig_Set = NULL;
-    ADL_NumberOfDisplayEnable_Get = NULL;
-    ADL_DisplayEnable_Set = NULL;
-    ADL_Display_IdentifyDisplay = NULL;
-    ADL_Display_LUTColor_Set = NULL;
-    ADL_Display_LUTColor_Get = NULL;
-    ADL_Adapter_XScreenInfo_Get = NULL;
-    ADL_Display_XrandrDisplayName_Get = NULL;
 #endif
 
 #ifndef FAKE_ATI_CARD
@@ -651,6 +645,28 @@ int ADL::UpdateData()
 	mODParameters.iNumberOfPerformanceLevels = 3;
 
 	result = 0;
+//	result = ERR_GET_CURRENT_FANSPEED_FAILED;
+//	mCurrentFanSpeed.iFanSpeed = 0;
+//	mFanSpeedInfo.iMinRPM = 0;
+//	mFanSpeedInfo.iMaxRPM = 0;
+//	mFanSpeedInfo.iMaxPercent = 0;
+//	mFanSpeedInfo.iMinPercent = 0;
+
+//	result = ERR_GET_TEMPERATURE_FAILED;
+//	mTemperature.iTemperature = 0;
+
+//	result = ERR_GET_OD_PERF_LEVELS_FAILED | ERR_GET_ACTIVITY_FAILED;
+//	mODParameters.sEngineClock.iMax = 0;
+//	mODParameters.sEngineClock.iMin = 0;
+//	mODParameters.sEngineClock.iStep = 0;
+//
+//	mODParameters.sMemoryClock.iMax = 0;
+//	mODParameters.sMemoryClock.iMin = 0;
+//	mODParameters.sMemoryClock.iStep = 0;
+//
+//	mODParameters.sVddc.iMax = 0;
+//	mODParameters.sVddc.iMin = 0;
+//	mODParameters.sVddc.iStep = 0;
 
     #else
 
@@ -665,9 +681,9 @@ int ADL::UpdateData()
 	if (ADL_Overdrive5_FanSpeedInfo_Get(0, 0, &mFanSpeedInfo) != ADL_OK)
 	{
 	    mFanSpeedInfo.iMinRPM = 0;
-	    mFanSpeedInfo.iMaxRPM = 1;
+	    mFanSpeedInfo.iMaxRPM = 0;
 	    mFanSpeedInfo.iMinPercent = 0;
-	    mFanSpeedInfo.iMaxPercent = 1;
+	    mFanSpeedInfo.iMaxPercent = 0;
 	    result |= ERR_GET_FANSPEED_INFO_FAILED;
 	}
 
@@ -723,5 +739,8 @@ int ADL::UpdateData()
 	}
     #endif
     }
-    return result;
+
+    mFeatures = ~result;
+
+    return mFeatures;
 }

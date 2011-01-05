@@ -29,6 +29,7 @@
 
 #include "CAppProfilePanel.h"
 #include "Color.h"
+#include "adl.h"
 
 CAppProfilePanel::CAppProfilePanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
     : CAppProfilePanelBase(parent, id, pos, size, style)
@@ -49,7 +50,11 @@ CAppProfilePanel::CAppProfilePanel(wxWindow* parent, wxWindowID id, const wxPoin
     {
 	mAppProfileDataFilePath = wxString::FromAscii(getenv("HOME"));
 	mAppProfileDataFilePath += wxT("/.AMDOverdriveCtrl");
-	mkdir(mAppProfileDataFilePath.ToAscii(), 0750);
+	#ifdef LINUX
+	    mkdir(mAppProfileDataFilePath.ToAscii(), 0750);
+	#else
+	    mkdir(mAppProfileDataFilePath.ToAscii());
+	#endif
 
 	mAppProfileDataFilePath += wxT("/AppProfiles.xml");
 
@@ -67,15 +72,15 @@ CAppProfilePanel::CAppProfilePanel(wxWindow* parent, wxWindowID id, const wxPoin
 		    {
 			if (child->GetName() == wxT("APP_PROFILE_DEFAULT"))
 			{
-			    wxString profile = child->GetAttribute(wxT("profile"), wxT(""));
+			    wxString profile = child->GetPropVal(wxT("profile"), wxT(""));
 			    mDefaultProfile = profile;
 			    mAppProfiles.clear();
 			}
 			else if (child->GetName() == wxT("APP_PROFILE"))
 			{
-			    wxString nr = child->GetAttribute(wxT("nr"), wxT("0"));
-			    wxString app = child->GetAttribute(wxT("app"), wxT(""));
-			    wxString profile = child->GetAttribute(wxT("profile"), wxT(""));
+			    wxString nr = child->GetPropVal(wxT("nr"), wxT("0"));
+			    wxString app = child->GetPropVal(wxT("app"), wxT(""));
+			    wxString profile = child->GetPropVal(wxT("profile"), wxT(""));
 
 			    mAppProfiles.push_back(AppProfile(app, profile));
 			    UpdateDisplay();
@@ -85,6 +90,14 @@ CAppProfilePanel::CAppProfilePanel(wxWindow* parent, wxWindowID id, const wxPoin
 		}
 	    }
 	}
+    }
+
+    ADL* adl = ADL::Instance();
+
+    if (!(adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PERF_LEVELS) &&
+        !(adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED))
+    {
+	Show(false);
     }
 }
 

@@ -42,10 +42,10 @@ typedef struct
 {
     double x;
     double y;
-} POINT;
+} _POINT;
 
-typedef POINT CTRL_POINTS[NR_OF_CTRL_POINTS];
-typedef POINT BEZIER_POINTS[NR_OF_BEZIER_POINTS];
+typedef _POINT CTRL_POINTS[NR_OF_CTRL_POINTS];
+typedef _POINT BEZIER_POINTS[NR_OF_BEZIER_POINTS];
 
 class CFanControlPanel : public CFanControlPanelBase, wxTimer
 {
@@ -93,10 +93,10 @@ class CFanControlPanel : public CFanControlPanelBase, wxTimer
 
         void DrawGrid();
 
-        void DrawBezier(wxPaintDC& dc);
-        void DrawSteps(wxPaintDC& dc);
-        void DrawLinear(wxPaintDC& dc);
-        void CheckAndDrawEndPoints(wxPaintDC& dc);
+        void DrawBezier(wxWindowDC& dc);
+        void DrawSteps(wxWindowDC& dc);
+        void DrawLinear(wxWindowDC& dc);
+        void CheckAndDrawEndPoints(wxWindowDC& dc);
 
         void InitCtrlPoints();
 

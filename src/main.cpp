@@ -42,6 +42,8 @@ IMPLEMENT_APP(MainApp);
 // application class implementation
 ////////////////////////////////////////////////////////////////////////////////
 
+static int MissingFeatures = 0;
+
 bool MainApp::OnInit()
 {
     ADL* adl = ADL::Instance();
@@ -54,201 +56,201 @@ bool MainApp::OnInit()
     }
     else
     {
-	int result = 0;
+	wxString problem = wxT("Some functions are not supported by\n"
+			       "either your hardware, the Catalyst driver or the ADL.\n\n"
+			       "Here is a list of problems:\n");
 
-	if ((result = adl->UpdateData()) != 0)
+	MissingFeatures = ~adl->UpdateData();
+
+	if (MissingFeatures != 0)
 	{
-	    wxString problem = wxT("\nI'm sorry.\n\nSome necessary functions are not supported by\n"
-				   "either your hardware, the Catalyst driver or the ADL.\n\n"
-				   "Here is a list of problems:\n");
-
-	    if (result & ADL::ERR_GET_TEMPERATURE_FAILED)
+	    if (MissingFeatures & ADL::ERR_GET_TEMPERATURE_FAILED)
 	    {
-		problem += wxT("\nFailed to read the GPU temperature.");
+		problem += wxT("\n - failed to read the GPU temperature.");
 	    }
 
-	    if (result & ADL::ERR_GET_FANSPEED_INFO_FAILED)
+	    if (MissingFeatures & ADL::ERR_GET_FANSPEED_INFO_FAILED)
 	    {
-		problem += wxT("\nFailed to get fan speed information.");
+		problem += wxT("\n - failed to get fan speed information.");
 	    }
 
-	    if (result & ADL::ERR_GET_CURRENT_FANSPEED_FAILED)
+	    if (MissingFeatures & ADL::ERR_GET_CURRENT_FANSPEED_FAILED)
 	    {
-		problem += wxT("\nFailed to read current fan speed.");
+		problem += wxT("\n - failed to read current fan speed.");
 	    }
 
-	    if (result & ADL::ERR_GET_OD_PARAMETERS_FAILED)
+	    if (MissingFeatures & ADL::ERR_GET_OD_PARAMETERS_FAILED)
 	    {
-		problem += wxT("\nFailed to get Overdrive parameters.");
+		problem += wxT("\n - failed to get Overdrive parameters.");
 	    }
 
-	    if (result & ADL::ERR_GET_OD_PERF_LEVELS_FAILED)
+	    if (MissingFeatures & ADL::ERR_GET_OD_PERF_LEVELS_FAILED)
 	    {
-		problem += wxT("\nFailed to get Overdrive performance levels.");
+		problem += wxT("\n - failed to get Overdrive performance levels.");
 	    }	    
 
-	    if (result & ADL::ERR_GET_ACTIVITY_FAILED)
+	    if (MissingFeatures & ADL::ERR_GET_ACTIVITY_FAILED)
 	    {
-		problem += wxT("\nFailed to read current GPU activity.");
+		problem += wxT("\n - failed to read current GPU activity.");
 	    }
 
-	    if (result & ADL::ERR_GET_DEFAULTCLOCKINFO_FAILED)
+	    if (MissingFeatures & ADL::ERR_GET_DEFAULTCLOCKINFO_FAILED)
 	    {
-		problem += wxT("\nFailed to read default GPU/Memory clocks.");
+		problem += wxT("\n - failed to read default GPU/Memory clocks.");
 	    }
-
-	    wxMessageBox(problem, wxT("Problems occured!"), wxOK|wxCENTRE|wxICON_ERROR);
-
-	    return false;
 	}
-	else
-	{
-	    wxString problem = wxT("\nI'm sorry.\n\nSome necessary functions seem not to be supported by your hardware.\n\n"
-				   "Here is a list of problems:\n");
 
+	if (MissingFeatures == 0)
+	{
 	    if (adl->mODParameters.sEngineClock.iMin == adl->mODParameters.sEngineClock.iMax)
 	    {
-		problem += wxT("\nThe GPU clock seems not to be adjustable.");
-		result |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
+		problem += wxT("\n - the GPU clock seems not to be adjustable.");
+		MissingFeatures |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
 	    }
 
 	    if (adl->mODParameters.sMemoryClock.iMin == adl->mODParameters.sMemoryClock.iMax)
 	    {
-		problem += wxT("\nThe memory clock seems not to be adjustable.");
-		result |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
+		problem += wxT("\n - the memory clock seems not to be adjustable.");
+		MissingFeatures |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
 	    }
 
 	    if (adl->mODParameters.sVddc.iMin == adl->mODParameters.sVddc.iMax)
 	    {
-		problem += wxT("\nThe voltage settings seem not to be adjustable.");
-		result |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
+		problem += wxT("\n - the voltage settings seem not to be adjustable.");
+		MissingFeatures |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
 	    }
 
 	    if (adl->mODParameters.sEngineClock.iMin > adl->mODParameters.sEngineClock.iMax)
 	    {
-		problem += wxT("\nThe reported GPU clock range makes no sense.");
-		result |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
+		problem += wxT("\n - the reported GPU clock range makes no sense.");
+		MissingFeatures |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
 	    }
 
 	    if (adl->mODParameters.sMemoryClock.iMin > adl->mODParameters.sMemoryClock.iMax)
 	    {
-		problem += wxT("\nThe reported memory clock range makes no sense.");
-		result |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
+		problem += wxT("\n - the reported memory clock range makes no sense.");
+		MissingFeatures |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
 	    }
 
 	    if (adl->mODParameters.sVddc.iMin > adl->mODParameters.sVddc.iMax)
 	    {
-		problem += wxT("\nThe reported voltage adjustement range makes no sense.");
-		result |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
+		problem += wxT("\n - the reported voltage adjustement range makes no sense.");
+		MissingFeatures |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
 	    }
 
 	    if (adl->mFanSpeedInfo.iMinRPM == adl->mFanSpeedInfo.iMaxRPM || adl->mFanSpeedInfo.iMinPercent == adl->mFanSpeedInfo.iMaxPercent)
 	    {
-		problem += wxT("\nFan speed controlling seems not to be supported.");
-		result |= ADL::ERR_GET_FANSPEED_INFO_FAILED;
+		problem += wxT("\n - fan speed controlling seems not to be supported.");
+		MissingFeatures |= ADL::ERR_GET_FANSPEED_INFO_FAILED;
 	    }
 
 	    if (adl->mFanSpeedInfo.iMinRPM > adl->mFanSpeedInfo.iMaxRPM || adl->mFanSpeedInfo.iMinPercent > adl->mFanSpeedInfo.iMaxPercent)
 	    {
-		problem += wxT("\nThe reported fan speed controlling range makes no sense.");
-		result |= ADL::ERR_GET_FANSPEED_INFO_FAILED;
+		problem += wxT("\n - the reported fan speed controlling range makes no sense.");
+		MissingFeatures |= ADL::ERR_GET_FANSPEED_INFO_FAILED;
+	    }
+	}
+
+	if (MissingFeatures != 0 && argc == 1)
+	{
+	    problem += wxT("\n\nSome parts of the program will be disabled.");
+	    wxMessageBox(problem, wxT("Problems occured!"), wxOK|wxCENTRE|wxICON_ERROR);
+	}
+
+	MainDialog* main_dialog = new MainDialog(NULL);
+
+	if(getenv("HOME"))
+	{
+	    wxString file_path = wxString::FromAscii(getenv("HOME"));
+	    file_path += wxT("/.AMDOverdriveCtrl");
+
+	    #ifdef LINUX
+		mkdir(file_path.ToUTF8(), 700);
+	    #else
+		mkdir(file_path.ToUTF8());
+	    #endif
+
+	    // each start
+	    wxString filename = file_path + wxT("/Current_Startup.ovdr");
+	    main_dialog->SaveXML(filename);
+	    main_dialog->SetStartupProfileName(filename);
+
+	    // only very first start
+	    filename = file_path +wxT("/VeryFirstStart.ovdr");
+	    if(!wxFileExists(filename))
+	    {
+		main_dialog->SaveXML(filename);
 	    }
 
-	    if (result != 0)
+	    #ifdef LINUX
+	    // only create if not existing
+	    filename = file_path +wxT("/autostart");
+	    if(!wxFileExists(filename))
 	    {
-		wxMessageBox(problem, wxT("Problems occured!"), wxOK|wxCENTRE|wxICON_ERROR);
+		wxString script =
+		    wxT("#!/bin/bash\n")
+		    wxT("# Autostart script for AMD/ATI OverdriveCtrl\n")
+		    wxT("sleep 20\n")
+		    wxT("AMDOverdriveCtrl --enable-app-profiles\n");
 
+		wxFFileOutputStream file(filename, wxT("wt"));
+		file.Write(script.ToUTF8(), script.Length());
+		file.Close();
+
+		mode_t mode;
+		mode = S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
+		chmod(filename.ToUTF8(), mode);
+	    }
+	    #endif
+
+	    // see if we have  a default profile
+	    filename = file_path +wxT("/default.ovdr");
+	    if(wxFileExists(filename))
+	    {
+		if (main_dialog->LoadXML(filename))
+		{
+		    printf("Default profile found and loaded.\n");
+		}
+	    }
+	}
+
+	wxString tmp = wxString::Format(wxT("Usage: %s [overdrive_profile_filename [--batch-mode]] | [--enable-app-profiles]\n"), argv[0]);
+	printf("%s\n", (const char*)tmp.ToUTF8());
+
+	if(argc >= 2)
+	{
+	    wxString tmp = wxT("--enable-app-profiles");
+	    if(tmp.CompareTo(argv[2], wxString::ignoreCase) == 0 ||
+	       tmp.CompareTo(argv[1], wxString::ignoreCase) == 0)
+	    {
+		main_dialog->EnableAppProfiles();
+	    }
+	    else
+	    {
+		if (!main_dialog->LoadXML(argv[1]))
+		{
+		    wxString profile = argv[1];
+		    wxMessageBox(wxT("\nThe specified startup profile '") + profile + wxT("' is missing."), wxT("AMD/ATI OverdriveCtrl warning"), wxOK|wxCENTRE|wxICON_WARNING);
+		}
+	    }
+
+	    tmp = wxT("--batch-mode");
+	    if(tmp.CompareTo(argv[2], wxString::ignoreCase) == 0)
+	    {
+		main_dialog->SetStartupProfileName(wxT(""));
+		delete main_dialog;
 		return false;
 	    }
-
-	    MainDialog* main_dialog = new MainDialog(NULL);
-
-	    if(getenv("HOME"))
-	    {
-		wxString file_path = wxString::FromAscii(getenv("HOME"));
-		file_path += wxT("/.AMDOverdriveCtrl");
-		mkdir(file_path.ToUTF8(), 700);
-
-		// each start
-		wxString filename = file_path + wxT("/Current_Startup.ovdr");
-		main_dialog->SaveXML(filename);
-		main_dialog->SetStartupProfileName(filename);
-
-		// only very first start
-		filename = file_path +wxT("/VeryFirstStart.ovdr");
-		if(!wxFileExists(filename))
-		{
-		    main_dialog->SaveXML(filename);
-		}
-
-		// only create if not existing
-		filename = file_path +wxT("/autostart");
-		if(!wxFileExists(filename))
-		{
-		    wxString script =
-			wxT("#!/bin/bash\n")
-			wxT("# Autostart script for AMD/ATI OverdriveCtrl\n")
-			wxT("sleep 20\n")
-			wxT("AMDOverdriveCtrl --enable-app-profiles\n");
-
-		    wxFFileOutputStream file(filename, wxT("wt"));
-		    file.Write(script.ToUTF8(), script.Length());
-		    file.Close();
-
-		    mode_t mode;
-		    mode = S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
-		    chmod(filename.ToUTF8(), mode);
-		}
-
-		// see if we have  a default profile
-		filename = file_path +wxT("/default.ovdr");
-		if(wxFileExists(filename))
-		{
-		    if (main_dialog->LoadXML(filename))
-		    {
-			printf("Default profile found and loaded.\n");
-		    }
-		}
-	    }
-
-	    wxString tmp = wxString::Format(wxT("Usage: %s [overdrive_profile_filename [--batch-mode]] | [--enable-app-profiles]\n"), argv[0]);
-	    printf("%s\n", (const char*)tmp.ToUTF8());
-
-	    if(argc >= 2)
-	    {
-		wxString tmp = wxT("--enable-app-profiles");
-		if(tmp.CompareTo(argv[2], wxString::ignoreCase) == 0 ||
-		   tmp.CompareTo(argv[1], wxString::ignoreCase) == 0)
-		{
-		    main_dialog->EnableAppProfiles();
-		}
-		else
-		{
-		    if (!main_dialog->LoadXML(argv[1]))
-		    {
-			wxString profile = argv[1];
-			wxMessageBox(wxT("\nThe specified startup profile '") + profile + wxT("' is missing."), wxT("AMD/ATI OverdriveCtrl warning"), wxOK|wxCENTRE|wxICON_WARNING);
-		    }
-		}
-
-		tmp = wxT("--batch-mode");
-		if(tmp.CompareTo(argv[2], wxString::ignoreCase) == 0)
-		{
-		    main_dialog->SetStartupProfileName(wxT(""));
-		    delete main_dialog;
-		    return false;
-		}
-	    }
-
-	    SetTopWindow(main_dialog);
-
-	    if (argc == 1)
-	    {
-		GetTopWindow()->Show();
-	    }
-
-	    return true;
 	}
+
+	SetTopWindow(main_dialog);
+
+	if (argc == 1)
+	{
+	    GetTopWindow()->Show();
+	}
+
+	return true;
     }
 }
 
@@ -282,6 +284,7 @@ MainDialog::MainDialog(wxWindow *parent)
     mpFanSpeedPanel = new CFanSpeedPanel(mNotebook);
     mpFanControlPanel = new CFanControlPanel(mpFanSpeedPanel, mNotebook);
     mpFanSpeedPanel->SetFanControlPanel(mpFanControlPanel);
+
     mpAppProfilePanel = new CAppProfilePanel(mNotebook);
     mpOvdrSettingsPanel = new COvdrSettingsPanel(mNotebook);
 
@@ -348,21 +351,29 @@ void MainDialog::OnNotebookPageChanged(wxNotebookEvent& WXUNUSED(event))
     if(mNotebook->GetCurrentPage() == mpInfoPanel)
     {
         mpInfoPanel->StartTimer();
-        mpFanSpeedPanel->StopTimer();
+        if (mpFanSpeedPanel != NULL)
+	{
+	    mpFanSpeedPanel->StopTimer();
+	}
 
         mpInfoPanel->UpdateDisplayValues();
     }
     else if(mNotebook->GetCurrentPage() == mpFanSpeedPanel)
     {
         mpInfoPanel->StopTimer();
-        mpFanSpeedPanel->StartTimer();
-
-        mpFanSpeedPanel->UpdateDisplayValues();
+        if (mpFanSpeedPanel != NULL)
+	{
+	    mpFanSpeedPanel->StartTimer();
+	    mpFanSpeedPanel->UpdateDisplayValues();
+	}
     }
     else
     {
         mpInfoPanel->StopTimer();
-        mpFanSpeedPanel->StopTimer();
+        if (mpFanSpeedPanel != NULL)
+	{
+	    mpFanSpeedPanel->StopTimer();
+	}
     }
 }
 
@@ -416,10 +427,10 @@ bool MainDialog::LoadXML(wxString filename)
 		    {
 			long llevel, lgpu, lmem, lvoltage;
 
-			wxString level = child->GetAttribute(wxT("level"), wxT("2"));
-			wxString gpu = child->GetAttribute(wxT("gpu"), wxT("0"));
-			wxString mem = child->GetAttribute(wxT("mem"), wxT("0"));
-			wxString voltage = child->GetAttribute(wxT("voltage"), wxT("0"));
+			wxString level = child->GetPropVal(wxT("level"), wxT("2"));
+			wxString gpu = child->GetPropVal(wxT("gpu"), wxT("0"));
+			wxString mem = child->GetPropVal(wxT("mem"), wxT("0"));
+			wxString voltage = child->GetPropVal(wxT("voltage"), wxT("0"));
 
 			level.ToLong(&llevel);
 			gpu.ToLong(&lgpu);
@@ -434,7 +445,7 @@ bool MainDialog::LoadXML(wxString filename)
 		    else if(child->GetName() == wxT("FAN_SETTING"))
 		    {
 			long percentage;
-			wxString fanspeed = child->GetAttribute(wxT("percentage"), wxT("AUTO"));
+			wxString fanspeed = child->GetPropVal(wxT("percentage"), wxT("AUTO"));
 			fanspeed.ToLong(&percentage);
 
 			if(percentage != 0)
@@ -451,7 +462,7 @@ bool MainDialog::LoadXML(wxString filename)
 		    }
 		    else if (child->GetName() == wxT("FAN_CTRL"))
 		    {
-			wxString enable = child->GetAttribute(wxT("enabled"), wxT("no"));
+			wxString enable = child->GetPropVal(wxT("enabled"), wxT("no"));
 			if (enable == wxT("yes"))
 			{
 			    enable_fan_ctrl = true;
@@ -464,7 +475,7 @@ bool MainDialog::LoadXML(wxString filename)
 		    else if (child->GetName() == wxT("FAN_CTRL_CURVE"))
 		    {
 			long type;
-			wxString curve_type = child->GetAttribute(wxT("type"), wxT("0"));
+			wxString curve_type = child->GetPropVal(wxT("type"), wxT("0"));
 			curve_type.ToLong(&type);
 
 			mpFanControlPanel->SetCurveType(type);
@@ -474,9 +485,9 @@ bool MainDialog::LoadXML(wxString filename)
 		    {
 			long nr, temperature, percentage;
 
-			wxString s_nr = child->GetAttribute(wxT("nr"), wxT("0"));
-			wxString s_temperature = child->GetAttribute(wxT("temperature"), wxT("0"));
-			wxString s_percentage = child->GetAttribute(wxT("percentage"), wxT("100"));
+			wxString s_nr = child->GetPropVal(wxT("nr"), wxT("0"));
+			wxString s_temperature = child->GetPropVal(wxT("temperature"), wxT("0"));
+			wxString s_percentage = child->GetPropVal(wxT("percentage"), wxT("100"));
 
 			s_nr.ToLong(&nr);
 			s_temperature.ToLong(&temperature);
@@ -495,7 +506,7 @@ bool MainDialog::LoadXML(wxString filename)
 		    {
 			long time;
 
-			wxString s_time = child->GetAttribute(wxT("interval"), wxT("10"));
+			wxString s_time = child->GetPropVal(wxT("interval"), wxT("10"));
 
 			s_time.ToLong(&time);
 

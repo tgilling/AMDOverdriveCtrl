@@ -37,11 +37,11 @@ CAuthorPanel::CAuthorPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, 
     : CAuthorPanelBase(parent, id, pos, size, style)
 {
     wxString text1 =
-        wxString::Format(wxT("\n\nAMD/ATI OverdriveCtrl\n\nV%d.%d.%d\n"), VERSION, REVISION, BUILD);
+        wxString::Format(wxT("\n\nAMDOverdriveCtrl\n\nV%d.%d.%d\n"), VERSION, REVISION, BUILD);
 
-    wxString text2 = wxT("Copyright(c) Thorsten Gilling\n(tgilling@web.de)\n")  + wxString::FromUTF8(__DATE__) + wxT(" , ") +
-			  wxString::FromUTF8(__TIME__) + wxT("\n\nThis program is free software\nYou can redistribute it"
-			  "and/or modify it\nunder the terms of the GNU GPL2\n"
+    wxString text2 = wxT("Copyright(c) Thorsten Gilling\n<tgilling@web.de>\n"
+			 "\nThis program is free software\nYou can redistribute it "
+			 "and/or modify it\nunder the terms of the GNU GPL2"
                      );
 
     wxString text3 = wxT(

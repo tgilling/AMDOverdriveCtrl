@@ -42,6 +42,14 @@ class ADL
 	static const int ERR_GET_ACTIVITY_FAILED 		= 0x0020;
 	static const int ERR_GET_DEFAULTCLOCKINFO_FAILED 	= 0x0040;
 
+	static const int FEAT_GET_TEMPERATURE			= 0x0001;
+	static const int FEAT_GET_FANSPEED_INFO			= 0x0002;
+	static const int FEAT_GET_FANSPEED			= 0x0004;
+	static const int FEAT_GET_OD_PARAMETERS			= 0x0008;
+	static const int FEAT_GET_OD_PERF_LEVELS		= 0x0010;
+	static const int FEAT_GET_ACTIVITY			= 0x0020;
+	static const int FEAT_GET_DEFAULT_CLOCK			= 0x0040;
+
 	static ADL* Instance();
 	static void Release();
 
@@ -217,6 +225,7 @@ class ADL
 	ADL_WORKSTATION_LOADBALANCING_SET		ADL_Workstation_LoadBalancing_Set;
 	ADL_WORKSTATION_LOADBALANCING_CAPS		ADL_Workstation_LoadBalancing_Caps;
 
+#ifdef LINUX
 	ADL_ADAPTER_MEMORYINFO_GET			ADL_Adapter_MemoryInfo_Get;
 	ADL_DESKTOPCONFIG_GET				ADL_DesktopConfig_Get;
 	ADL_DESKTOPCONFIG_SET				ADL_DesktopConfig_Set;
@@ -227,6 +236,7 @@ class ADL
 	ADL_DISPLAY_LUTCOLOR_GET			ADL_Display_LUTColor_Get;
 	ADL_ADAPTER_XSCREENINFO_GET			ADL_Adapter_XScreenInfo_Get;
 	ADL_DISPLAY_XRANDRDISPLAYNAME_GET		ADL_Display_XrandrDisplayName_Get;
+#endif
 
 	// Optional Memory de-allocation function
 	void __stdcall ADL_Main_Memory_Free (void** lpBuffer);
@@ -236,6 +246,7 @@ class ADL
 
 	bool IsATICardAndCatalystPresent() const;
 	int UpdateData();
+	int GetSupportedFeatures() { return ms_instance->mFeatures; }
 
 	int mNrOfAdapters;
 	LPAdapterInfo mpAdapterInfo;
@@ -266,6 +277,8 @@ class ADL
     #endif
 
 	bool Init();
+
+	int mFeatures;
 
 };
 

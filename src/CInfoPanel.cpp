@@ -48,6 +48,39 @@ CInfoPanel::CInfoPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
 
             mInactiveTextColor = mInfoLevelLow->GetForegroundColour();
             mActiveTextColor = Color::RED;
+
+	    if (!(adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED_INFO) ||	!(adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED))
+	    {
+		mInfoMinFanSpeed->Disable();
+		mInfoMaxFanSpeed->Disable();
+		mInfoCurrentFanSpeed->Disable();
+	    }
+
+	    if (!(adl->GetSupportedFeatures() & ADL::FEAT_GET_TEMPERATURE))
+	    {
+		mInfoTemperature->Disable();
+	    }
+
+	    if (!(adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PERF_LEVELS) ||
+	        !(adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PARAMETERS) ||
+		!(adl->GetSupportedFeatures() & ADL::FEAT_GET_ACTIVITY))
+	    {
+		mInfoOVGPULow->Disable();
+		mInfoOVGPUMid->Disable();
+		mInfoOVGPUHigh->Disable();
+
+		mInfoOVMemLow->Disable();
+		mInfoOVMemMid->Disable();
+		mInfoOVMemHigh->Disable();
+
+		mInfoOVVoltLow->Disable();
+		mInfoOVVoltMid->Disable();
+		mInfoOVVoltHigh->Disable();
+
+                mInfoLevelLow->Disable();
+                mInfoLevelMid->Disable();
+                mInfoLevelHigh->Disable();
+	    }
         }
         else
         {
@@ -90,9 +123,9 @@ void CInfoPanel::UpdateDisplayValues()
         mInfoCurrentMemory->SetValue(wxString::Format(wxT("%d MHz"), adl->mODActivity.iMemoryClock/100));
         mInfoCurrentVoltage->SetValue(wxString::Format(wxT("%.3f V"), (float)adl->mODActivity.iVddc/1000.0));
 
-        mInfoMinFanSpeed->SetValue(wxString::Format(wxT("%d rpm"), adl->mFanSpeedInfo.iMinRPM));
-        mInfoMaxFanSpeed->SetValue(wxString::Format(wxT("%d rpm"), adl->mFanSpeedInfo.iMaxRPM));
-        mInfoCurrentFanSpeed->SetValue(wxString::Format(wxT("%d rpm"), adl->mCurrentFanSpeed.iFanSpeed));
+	mInfoMinFanSpeed->SetValue(wxString::Format(wxT("%d rpm"), adl->mFanSpeedInfo.iMinRPM));
+	mInfoMaxFanSpeed->SetValue(wxString::Format(wxT("%d rpm"), adl->mFanSpeedInfo.iMaxRPM));
+	mInfoCurrentFanSpeed->SetValue(wxString::Format(wxT("%d rpm"), adl->mCurrentFanSpeed.iFanSpeed));
 
         mInfoOVGPULow->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[0].iEngineClock/100));
         mInfoOVGPUMid->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[1].iEngineClock/100));

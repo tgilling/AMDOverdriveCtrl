@@ -37,6 +37,12 @@ COvdrSettingsPanel::COvdrSettingsPanel(wxWindow* parent, wxWindowID id, const wx
 {
     adl = ADL::Instance();
 
+    if (!(adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PARAMETERS) ||
+	!(adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PERF_LEVELS))
+    {
+	Show(false);
+    }
+
     mpSettingsPanelLow = new CSettingsPanel(0, mOvdrNotebook);
     mpSettingsPanelMid = new CSettingsPanel(1, mOvdrNotebook);
     mpSettingsPanelHigh = new CSettingsPanel(2, mOvdrNotebook);
@@ -70,48 +76,52 @@ void COvdrSettingsPanel::SetOverdriveValues(int PerfLevel, int gpu, int mem, int
 
 bool COvdrSettingsPanel::CommitOverdriveValues()
 {
-#ifdef FAKE_ATI_CARD
-    for (int i=0; i<NR_OF_LEVELS; i++)
+    if ((adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PARAMETERS) && (adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PERF_LEVELS))
     {
-	printf("SetOverdriveValues: Level %d, %dMHz, %dMHz, %.3fV\n", i, mGPU[i], mMem[i], (double)mVoltage[i]/1000.0);
+    #ifdef FAKE_ATI_CARD
+	for (int i=0; i<NR_OF_LEVELS; i++)
+	{
+	    printf("SetOverdriveValues: Level %d, %dMHz, %dMHz, %.3fV\n", i, mGPU[i], mMem[i], (double)mVoltage[i]/1000.0);
+	}
+	return true;
+    #endif
+
+	ADLODParameters para;
+	ADLODPerformanceLevels* levels;
+
+	ADL* adl = ADL::Instance();
+
+	if(adl->ADL_Overdrive5_ODParameters_Get != NULL && adl->ADL_Overdrive5_ODParameters_Get(0, &para) == ADL_OK)
+	{
+	    int perf_level_size = sizeof(ADLODPerformanceLevels) + sizeof(ADLODPerformanceLevel) * (para.iNumberOfPerformanceLevels - 1);
+	    levels = (ADLODPerformanceLevels*)malloc(perf_level_size);
+	    levels->iSize = perf_level_size;
+
+	    if(adl->ADL_Overdrive5_ODPerformanceLevels_Get(0, 0, levels) == ADL_OK)
+	    {
+		for (int i=0; i<NR_OF_LEVELS; i++)
+		{
+		    levels->aLevels[i].iEngineClock = mGPU[i] * 100;
+		    levels->aLevels[i].iMemoryClock = mMem[i] * 100;
+		    levels->aLevels[i].iVddc = mVoltage[i];
+
+		    printf("SetOverdriveValues: Level %d, %dMHz, %dMHz, %.3fV\n", i, mGPU[i], mMem[i], (double)mVoltage[i]/1000.0);
+		}
+	    }
+
+	    if(adl->ADL_Overdrive5_ODPerformanceLevels_Set(0, levels) != ADL_OK)
+	    {
+		return false;
+	    }
+
+	    free(levels);
+	    levels = NULL;
+
+	    return true;
+	}
+	return false;
     }
     return true;
-#endif
-
-    ADLODParameters para;
-    ADLODPerformanceLevels* levels;
-
-    ADL* adl = ADL::Instance();
-
-    if(adl->ADL_Overdrive5_ODParameters_Get != NULL && adl->ADL_Overdrive5_ODParameters_Get(0, &para) == ADL_OK)
-    {
-        int perf_level_size = sizeof(ADLODPerformanceLevels) + sizeof(ADLODPerformanceLevel) * (para.iNumberOfPerformanceLevels - 1);
-        levels = (ADLODPerformanceLevels*)malloc(perf_level_size);
-        levels->iSize = perf_level_size;
-
-        if(adl->ADL_Overdrive5_ODPerformanceLevels_Get(0, 0, levels) == ADL_OK)
-        {
-	    for (int i=0; i<NR_OF_LEVELS; i++)
-	    {
-		levels->aLevels[i].iEngineClock = mGPU[i] * 100;
-		levels->aLevels[i].iMemoryClock = mMem[i] * 100;
-		levels->aLevels[i].iVddc = mVoltage[i];
-
-		printf("SetOverdriveValues: Level %d, %dMHz, %dMHz, %.3fV\n", i, mGPU[i], mMem[i], (double)mVoltage[i]/1000.0);
-	    }
-        }
-
-        if(adl->ADL_Overdrive5_ODPerformanceLevels_Set(0, levels) != ADL_OK)
-        {
-            return false;
-        }
-
-        free(levels);
-        levels = NULL;
-
-	return true;
-    }
-    return false;
 }
 
 void COvdrSettingsPanel::UpdateDisplayValues()

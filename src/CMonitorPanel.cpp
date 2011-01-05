@@ -59,6 +59,23 @@ CMonitorPanel::CMonitorPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos
     mTimerInterval->SetLabel(wxString::Format(wxT("%.1fs"), ((float)mSampleInterval/1000.0)));
 
     Start(mSampleInterval, false);
+
+    if (!(adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED) ||	!(adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED))
+    {
+	mFanSpeedSlider->Disable();
+    }
+
+    if (!(adl->GetSupportedFeatures() & ADL::FEAT_GET_TEMPERATURE))
+    {
+	mTempSlider->Disable();
+    }
+
+    if (!(adl->GetSupportedFeatures() & ADL::FEAT_GET_ACTIVITY) &&
+        !(adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED) &&
+	!(adl->GetSupportedFeatures() & ADL::FEAT_GET_TEMPERATURE))
+    {
+	Show(false);
+    }
 }
 
 CMonitorPanel::~CMonitorPanel()
@@ -76,11 +93,22 @@ void CMonitorPanel::OnPaint(wxPaintEvent& WXUNUSED(event))
 
 void CMonitorPanel::DrawGrid(wxPanel* panel)
 {
-    wxPaintDC dc(panel);
+    wxWindowDC dc(panel);
 
-    dc.SetBrush(wxBrush(panel->GetBackgroundColour()));
+    wxColour background = panel->GetBackgroundColour();
+    unsigned char r = background.Red();
+    unsigned char g = background.Green();
+    unsigned char b = background.Blue();
+
+    dc.SetBrush(wxBrush(background));
     dc.SetPen(wxPen(Color::BLACK,0, wxTRANSPARENT));
     dc.DrawRectangle(wxPoint(0,0), wxSize(340, 95));
+
+    for (int y=0; y<50; y++)
+    {
+	dc.SetBrush(wxColour(r-y*75/140, g-y*75/140, b-y*75/140));
+	dc.DrawRectangle(wxPoint(11, 19+y*65/50), wxSize(299, 65/50+1));
+    }
 
     dc.SetPen(wxPen(Color::MID_GRAY, 1));
 
@@ -179,7 +207,7 @@ void CMonitorPanel::DrawValues(wxPanel* panel, int* values, wxColour col)
         }
     }
 
-    wxPaintDC dc(panel);
+    wxWindowDC dc(panel);
     dc.SetPen(wxPen(col, 1));
     dc.DrawLines(count, line_points);
 
@@ -325,9 +353,20 @@ void CMonitorPanel::UpdateDisplay()
 {
     DrawGrid(mTemperature);
     DrawGrid(mFanSpeed);
-    DrawGrid(mFrequencies);
+    DrawGrid(mPerfLevel);
 
-    DrawValues(mTemperature, mTemperatureValues, Color::RED);
-    DrawValues(mFanSpeed, mFanSpeedValues, Color::RED);
-    DrawValues(mFrequencies, mPerfLevelValues, Color::RED);
+    if (adl->GetSupportedFeatures() & ADL::FEAT_GET_TEMPERATURE)
+    {
+	DrawValues(mTemperature, mTemperatureValues, Color::RED);
+    }
+
+    if ((adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED_INFO) && (adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED))
+    {
+	DrawValues(mFanSpeed, mFanSpeedValues, Color::RED);
+    }
+
+    if (adl->GetSupportedFeatures() & ADL::FEAT_GET_ACTIVITY)
+    {
+	DrawValues(mPerfLevel, mPerfLevelValues, Color::RED);
+    }
 }

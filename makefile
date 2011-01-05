@@ -85,7 +85,6 @@ dist:
 	@cp -r ./create_deb/* ./AMDOverdriveCtrl/create_deb
 	@cp -r ./documentation/* ./AMDOverdriveCtrl/documentation
 	@cp -r ./screenshots/* ./AMDOverdriveCtrl/screenshots
-	@cp -r ./scripts/*.sh ./AMDOverdriveCtrl/scripts
 	@tar cfj ./temp.tar.bz2 ./AMDOverdriveCtrl/*
 	@rm -rf ./AMDOverdriveCtrl
 	@sh ./rename_bz2.sh temp AMDOverdriveCtrl
@@ -111,7 +110,6 @@ dist_adl:
 	@cp -r ./create_deb/* ./AMDOverdriveCtrl/create_deb
 	@cp -r ./documentation/* ./AMDOverdriveCtrl/documentation
 	@cp -r ./screenshots/* ./AMDOverdriveCtrl/screenshots
-	@cp -r ./scripts/*.sh ./AMDOverdriveCtrl/scripts
 	@cp -r ./ADL_SDK/* ./AMDOverdriveCtrl/ADL_SDK
 	@tar cfj ./temp.tar.bz2 ./AMDOverdriveCtrl/*
 	@rm -rf ./AMDOverdriveCtrl

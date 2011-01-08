@@ -418,7 +418,10 @@ void CFanControlPanel::CheckAndDrawEndPoints(wxWindowDC& dc)
 	MapPointToScreen(p1);
 	MapPointToScreen(p2);
 
-	dc.SetPen(wxPen(Color::RED, 2));
+	dc.SetPen(wxPen(Color::RED, 3));
+	dc.DrawLine(p1, p2);
+
+	dc.SetPen(wxPen(Color::LIGHT_RED, 1));
 	dc.DrawLine(p1, p2);
     }
 
@@ -430,7 +433,10 @@ void CFanControlPanel::CheckAndDrawEndPoints(wxWindowDC& dc)
 	MapPointToScreen(p1);
 	MapPointToScreen(p2);
 
-	dc.SetPen(wxPen(Color::RED, 2));
+	dc.SetPen(wxPen(Color::RED, 3));
+	dc.DrawLine(p1, p2);
+
+	dc.SetPen(wxPen(Color::LIGHT_RED, 1));
 	dc.DrawLine(p1, p2);
     }
 }

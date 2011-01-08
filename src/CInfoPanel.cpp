@@ -37,55 +37,48 @@ CInfoPanel::CInfoPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
 {
     if((adl = ADL::Instance()) != NULL)
     {
-        if(adl->IsATICardAndCatalystPresent())
-        {
-            UpdateDisplayValues();
+	UpdateDisplayValues();
 
-            mDefaultGPUMHz->SetLabel(wxString::Format(wxT("GPU (%d)"), adl->mODClockInfo.sEngineClock.iDefaultClock/100));
-            mDefaultMemMHz->SetLabel(wxString::Format(wxT("Mem (%d)"), adl->mODClockInfo.sMemoryClock.iDefaultClock/100));
+	mDefaultGPUMHz->SetLabel(wxString::Format(wxT("GPU (%d)"), adl->mODClockInfo.sEngineClock.iDefaultClock/100));
+	mDefaultMemMHz->SetLabel(wxString::Format(wxT("Mem (%d)"), adl->mODClockInfo.sMemoryClock.iDefaultClock/100));
 
-            mInfoActivity->SetRange(100);
+	mInfoActivity->SetRange(100);
 
-            mInactiveTextColor = mInfoLevelLow->GetForegroundColour();
-            mActiveTextColor = Color::RED;
+	mInactiveTextColor = mInfoLevelLow->GetForegroundColour();
+	mActiveTextColor = Color::RED;
 
-	    if (!(adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED_INFO) ||	!(adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED))
-	    {
-		mInfoMinFanSpeed->Disable();
-		mInfoMaxFanSpeed->Disable();
-		mInfoCurrentFanSpeed->Disable();
-	    }
+	if (!(adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED_INFO) ||	!(adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED))
+	{
+	    mInfoMinFanSpeed->Disable();
+	    mInfoMaxFanSpeed->Disable();
+	    mInfoCurrentFanSpeed->Disable();
+	}
 
-	    if (!(adl->GetSupportedFeatures() & ADL::FEAT_GET_TEMPERATURE))
-	    {
-		mInfoTemperature->Disable();
-	    }
+	if (!(adl->GetSupportedFeatures() & ADL::FEAT_GET_TEMPERATURE))
+	{
+	    mInfoTemperature->Disable();
+	}
 
-	    if (!(adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PERF_LEVELS) ||
-	        !(adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PARAMETERS) ||
-		!(adl->GetSupportedFeatures() & ADL::FEAT_GET_ACTIVITY))
-	    {
-		mInfoOVGPULow->Disable();
-		mInfoOVGPUMid->Disable();
-		mInfoOVGPUHigh->Disable();
+	if (!(adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PERF_LEVELS) ||
+	    !(adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PARAMETERS) ||
+	    !(adl->GetSupportedFeatures() & ADL::FEAT_GET_ACTIVITY))
+	{
+	    mInfoOVGPULow->Disable();
+	    mInfoOVGPUMid->Disable();
+	    mInfoOVGPUHigh->Disable();
 
-		mInfoOVMemLow->Disable();
-		mInfoOVMemMid->Disable();
-		mInfoOVMemHigh->Disable();
+	    mInfoOVMemLow->Disable();
+	    mInfoOVMemMid->Disable();
+	    mInfoOVMemHigh->Disable();
 
-		mInfoOVVoltLow->Disable();
-		mInfoOVVoltMid->Disable();
-		mInfoOVVoltHigh->Disable();
+	    mInfoOVVoltLow->Disable();
+	    mInfoOVVoltMid->Disable();
+	    mInfoOVVoltHigh->Disable();
 
-                mInfoLevelLow->Disable();
-                mInfoLevelMid->Disable();
-                mInfoLevelHigh->Disable();
-	    }
-        }
-        else
-        {
-            wxMessageBox(wxT("This program needs a AMD/ATI Card and the proprietary Catalyst drivers."), wxT("ERROR"));
-        }
+	    mInfoLevelLow->Disable();
+	    mInfoLevelMid->Disable();
+	    mInfoLevelHigh->Disable();
+	}
     }
     else
     {

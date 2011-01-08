@@ -41,29 +41,26 @@ CSettingsPanel::CSettingsPanel(int PerfLevel, wxWindow* parent, wxWindowID id, c
 
     mPerfLevel = PerfLevel;
 
-    if(adl != NULL && adl->IsATICardAndCatalystPresent())
-    {
-        UpdateDisplayValues();
+    UpdateDisplayValues();
 
-        mGPUStartValue = adl->mpODPerformanceLevels->aLevels[mPerfLevel].iEngineClock;
-        mMemStartValue = adl->mpODPerformanceLevels->aLevels[mPerfLevel].iMemoryClock;
-        mVoltageStartValue = adl->mpODPerformanceLevels->aLevels[mPerfLevel].iVddc;
+    mGPUStartValue = adl->mpODPerformanceLevels->aLevels[mPerfLevel].iEngineClock;
+    mMemStartValue = adl->mpODPerformanceLevels->aLevels[mPerfLevel].iMemoryClock;
+    mVoltageStartValue = adl->mpODPerformanceLevels->aLevels[mPerfLevel].iVddc;
 
-        mGPUFreqSlider->SetRange(adl->mODParameters.sEngineClock.iMin/100, adl->mODParameters.sEngineClock.iMax/100);
-	mGPUFreqSlider->SetValue(adl->mpODPerformanceLevels->aLevels[mPerfLevel].iEngineClock/100);
-        mMinGPUFreq->SetValue(wxString::Format(wxT("%d"), adl->mODParameters.sEngineClock.iMin/100));
-        mMaxGPUFreq->SetValue(wxString::Format(wxT("%d"), adl->mODParameters.sEngineClock.iMax/100));
+    mGPUFreqSlider->SetRange(adl->mODParameters.sEngineClock.iMin/100, adl->mODParameters.sEngineClock.iMax/100);
+    mGPUFreqSlider->SetValue(adl->mpODPerformanceLevels->aLevels[mPerfLevel].iEngineClock/100);
+    mMinGPUFreq->SetValue(wxString::Format(wxT("%d"), adl->mODParameters.sEngineClock.iMin/100));
+    mMaxGPUFreq->SetValue(wxString::Format(wxT("%d"), adl->mODParameters.sEngineClock.iMax/100));
 
-	mMemFreqSlider->SetRange(adl->mODParameters.sMemoryClock.iMin/100, adl->mODParameters.sMemoryClock.iMax/100);
-	mMemFreqSlider->SetValue(adl->mpODPerformanceLevels->aLevels[mPerfLevel].iMemoryClock/100);
-        mMinMemFreq->SetValue(wxString::Format(wxT("%d"), adl->mODParameters.sMemoryClock.iMin/100));
-        mMaxMemFreq->SetValue(wxString::Format(wxT("%d"), adl->mODParameters.sMemoryClock.iMax/100));
+    mMemFreqSlider->SetRange(adl->mODParameters.sMemoryClock.iMin/100, adl->mODParameters.sMemoryClock.iMax/100);
+    mMemFreqSlider->SetValue(adl->mpODPerformanceLevels->aLevels[mPerfLevel].iMemoryClock/100);
+    mMinMemFreq->SetValue(wxString::Format(wxT("%d"), adl->mODParameters.sMemoryClock.iMin/100));
+    mMaxMemFreq->SetValue(wxString::Format(wxT("%d"), adl->mODParameters.sMemoryClock.iMax/100));
 
-	mVoltageSlider->SetRange(adl->mODParameters.sVddc.iMin, adl->mODParameters.sVddc.iMax);
-	mVoltageSlider->SetValue(adl->mpODPerformanceLevels->aLevels[mPerfLevel].iVddc);
-        mMinVoltage->SetValue(wxString::Format(wxT("%.3f"), (float)adl->mODParameters.sVddc.iMin/1000.0));
-        mMaxVoltage->SetValue(wxString::Format(wxT("%.3f"), (float)adl->mODParameters.sVddc.iMax/1000.0));
-    }
+    mVoltageSlider->SetRange(adl->mODParameters.sVddc.iMin, adl->mODParameters.sVddc.iMax);
+    mVoltageSlider->SetValue(adl->mpODPerformanceLevels->aLevels[mPerfLevel].iVddc);
+    mMinVoltage->SetValue(wxString::Format(wxT("%.3f"), (float)adl->mODParameters.sVddc.iMin/1000.0));
+    mMaxVoltage->SetValue(wxString::Format(wxT("%.3f"), (float)adl->mODParameters.sVddc.iMax/1000.0));
 }
 
 CSettingsPanel::~CSettingsPanel()
@@ -73,19 +70,16 @@ CSettingsPanel::~CSettingsPanel()
 
 void CSettingsPanel::UpdateDisplayValues()
 {
-    if(adl != NULL && adl->IsATICardAndCatalystPresent())
-    {
-        adl->UpdateData();
+    adl->UpdateData();
 
-        mCurrentGPUFreq->SetValue(wxString::Format(wxT("%d"), adl->mpODPerformanceLevels->aLevels[mPerfLevel].iEngineClock/100));
-        mGPUFreqSlider->SetValue(adl->mpODPerformanceLevels->aLevels[mPerfLevel].iEngineClock/100);
+    mCurrentGPUFreq->SetValue(wxString::Format(wxT("%d"), adl->mpODPerformanceLevels->aLevels[mPerfLevel].iEngineClock/100));
+    mGPUFreqSlider->SetValue(adl->mpODPerformanceLevels->aLevels[mPerfLevel].iEngineClock/100);
 
-        mCurrentMemFreq->SetValue(wxString::Format(wxT("%d"), adl->mpODPerformanceLevels->aLevels[mPerfLevel].iMemoryClock/100));
-        mMemFreqSlider->SetValue(adl->mpODPerformanceLevels->aLevels[mPerfLevel].iMemoryClock/100);
+    mCurrentMemFreq->SetValue(wxString::Format(wxT("%d"), adl->mpODPerformanceLevels->aLevels[mPerfLevel].iMemoryClock/100));
+    mMemFreqSlider->SetValue(adl->mpODPerformanceLevels->aLevels[mPerfLevel].iMemoryClock/100);
 
-        mCurrentVoltage->SetValue(wxString::Format(wxT("%.3f"), (float)adl->mpODPerformanceLevels->aLevels[mPerfLevel].iVddc/1000.0));
-        mVoltageSlider->SetValue(adl->mpODPerformanceLevels->aLevels[mPerfLevel].iVddc);
-    }
+    mCurrentVoltage->SetValue(wxString::Format(wxT("%.3f"), (float)adl->mpODPerformanceLevels->aLevels[mPerfLevel].iVddc/1000.0));
+    mVoltageSlider->SetValue(adl->mpODPerformanceLevels->aLevels[mPerfLevel].iVddc);
 }
 
 void CSettingsPanel::mGPUFreqMinusClick(wxCommandEvent& WXUNUSED(event))

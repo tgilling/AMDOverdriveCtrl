@@ -473,9 +473,13 @@ class CColorTempPanelBase : public wxPanel
 		wxStaticText* m_staticText42;
 		wxTextCtrl* mColorTempDay;
 		wxSlider* mColorTempDaySlider;
+		wxButton* mButtonTestDayColor;
+		wxButton* mButtonSetDayColor;
 		wxStaticText* m_staticText421;
 		wxTextCtrl* mColorTempNight;
 		wxSlider* mColorTempNightSlider;
+		wxButton* mButtonTestNightColor;
+		wxButton* mButtonSetNightColor;
 		wxStaticText* m_staticText422;
 		wxTextCtrl* mTransition;
 		wxSlider* mTransitionSlider;
@@ -488,9 +492,14 @@ class CColorTempPanelBase : public wxPanel
 		virtual void mLongitudeOnText( wxCommandEvent& event ) { event.Skip(); }
 		virtual void mLatitudeOnText( wxCommandEvent& event ) { event.Skip(); }
 		virtual void mColorTempDaySliderOnScroll( wxScrollEvent& event ) { event.Skip(); }
+		virtual void ButtonTestDayColorClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void ButtonSetDayColorClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void mColorTempNightSliderOnScroll( wxScrollEvent& event ) { event.Skip(); }
+		virtual void ButtonTestNightColorClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void ButtonSetNightColorClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void mTransitionSliderOnScroll( wxScrollEvent& event ) { event.Skip(); }
 		virtual void mCurveOnLeftDown( wxMouseEvent& event ) { event.Skip(); }
+		virtual void mCurveOnLeftUp( wxMouseEvent& event ) { event.Skip(); }
 		virtual void mCurveOnMotion( wxMouseEvent& event ) { event.Skip(); }
 		
 	

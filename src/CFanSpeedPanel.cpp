@@ -98,24 +98,21 @@ CFanSpeedPanel::CFanSpeedPanel(wxWindow* parent, wxWindowID id, const wxPoint& p
 	}
     }
 
-    if(adl != NULL)
+    if ((adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED_INFO) && (adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED))
     {
-	if ((adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED_INFO) && (adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED))
-        {
-	    UpdateDisplayValues();
-	    mFanSpeedSlider->SetRange(adl->mFanSpeedInfo.iMinPercent, adl->mFanSpeedInfo.iMaxPercent);
-	    mFanSpeedSlider->SetValue(adl->mCurrentFanSpeed.iFanSpeed * 100 / adl->mFanSpeedInfo.iMaxRPM);
-	    mMinFanSpeed->SetValue(wxString::Format(wxT("%d %%"), adl->mFanSpeedInfo.iMinPercent));
-	    mMaxFanSpeed->SetValue(wxString::Format(wxT("%d %%"), adl->mFanSpeedInfo.iMaxPercent));
-	    mTargetFanSpeed->SetValue(wxString::Format(wxT("%d %%"), adl->mCurrentFanSpeed.iFanSpeed * 100 / adl->mFanSpeedInfo.iMaxRPM));
-	    mMinRPM->SetLabel(wxString::Format(wxT("%d"), adl->mFanSpeedInfo.iMinRPM));
-	    mMaxRPM->SetLabel(wxString::Format(wxT("%d"), adl->mFanSpeedInfo.iMaxRPM));
-	    SetDefaultFanSpeed();
-	}
-	else
-	{
-	    Show(false);
-	}
+	UpdateDisplayValues();
+	mFanSpeedSlider->SetRange(adl->mFanSpeedInfo.iMinPercent, adl->mFanSpeedInfo.iMaxPercent);
+	mFanSpeedSlider->SetValue(adl->mCurrentFanSpeed.iFanSpeed * 100 / adl->mFanSpeedInfo.iMaxRPM);
+	mMinFanSpeed->SetValue(wxString::Format(wxT("%d %%"), adl->mFanSpeedInfo.iMinPercent));
+	mMaxFanSpeed->SetValue(wxString::Format(wxT("%d %%"), adl->mFanSpeedInfo.iMaxPercent));
+	mTargetFanSpeed->SetValue(wxString::Format(wxT("%d %%"), adl->mCurrentFanSpeed.iFanSpeed * 100 / adl->mFanSpeedInfo.iMaxRPM));
+	mMinRPM->SetLabel(wxString::Format(wxT("%d"), adl->mFanSpeedInfo.iMinRPM));
+	mMaxRPM->SetLabel(wxString::Format(wxT("%d"), adl->mFanSpeedInfo.iMaxRPM));
+	SetDefaultFanSpeed();
+    }
+    else
+    {
+	Show(false);
     }
 }
 
@@ -196,7 +193,7 @@ void CFanSpeedPanel::mButtonDefaultClick(wxCommandEvent& WXUNUSED(event))
 
 bool CFanSpeedPanel::SetDefaultFanSpeed()
 {
-    if(adl->ADL_Overdrive5_FanSpeedToDefault_Set != NULL && adl->ADL_Overdrive5_FanSpeedToDefault_Set(0, 0) != ADL_OK)
+    if(SAVE_CALL(adl->ADL_Overdrive5_FanSpeedToDefault_Set)(0, 0) != ADL_OK)
     {
         return false;
     }
@@ -218,7 +215,7 @@ bool CFanSpeedPanel::SetFanSpeed(int percent, bool controller_mode)
     speed_value.iFanSpeed = percent;
     speed_value.iSpeedType = ADL_DL_FANCTRL_SPEED_TYPE_PERCENT;
 
-    if(adl->ADL_Overdrive5_FanSpeed_Set != NULL && adl->ADL_Overdrive5_FanSpeed_Set(0, 0, &speed_value) != ADL_OK)
+    if(SAVE_CALL(adl->ADL_Overdrive5_FanSpeed_Set)(0, 0, &speed_value) != ADL_OK)
     {
 	return false;
     }

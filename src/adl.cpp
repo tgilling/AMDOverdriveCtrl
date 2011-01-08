@@ -671,14 +671,14 @@ int ADL::UpdateData()
     #else
 
 	mTemperature.iSize = sizeof(ADLTemperature);
-	if (ADL_Overdrive5_Temperature_Get(0, 0, &mTemperature) != ADL_OK)
+	if (SAVE_CALL(ADL_Overdrive5_Temperature_Get)(0, 0, &mTemperature) != ADL_OK)
 	{
 	    mTemperature.iTemperature = 0;
 	    result |= ERR_GET_TEMPERATURE_FAILED;
 	}
 
 	mFanSpeedInfo.iSize = sizeof(ADLFanSpeedInfo);
-	if (ADL_Overdrive5_FanSpeedInfo_Get(0, 0, &mFanSpeedInfo) != ADL_OK)
+	if (SAVE_CALL(ADL_Overdrive5_FanSpeedInfo_Get)(0, 0, &mFanSpeedInfo) != ADL_OK)
 	{
 	    mFanSpeedInfo.iMinRPM = 0;
 	    mFanSpeedInfo.iMaxRPM = 0;
@@ -689,14 +689,14 @@ int ADL::UpdateData()
 
 	mCurrentFanSpeed.iSize = sizeof(ADLFanSpeedValue);
 	mCurrentFanSpeed.iFlags = ADL_DL_FANCTRL_SPEED_TYPE_RPM;
-	if (ADL_Overdrive5_FanSpeed_Get(0, 0, &mCurrentFanSpeed) != ADL_OK)
+	if (SAVE_CALL(ADL_Overdrive5_FanSpeed_Get)(0, 0, &mCurrentFanSpeed) != ADL_OK)
 	{
 	    mCurrentFanSpeed.iFanSpeed = 0;
 	    result |= ERR_GET_CURRENT_FANSPEED_FAILED;
 	}
 
 	mODParameters.iSize = sizeof(ADLODParameters);
-	if (ADL_Overdrive5_ODParameters_Get(0, &mODParameters) == ADL_OK)
+	if (SAVE_CALL(ADL_Overdrive5_ODParameters_Get)(0, &mODParameters) == ADL_OK)
 	{
 	    if (mpODPerformanceLevels == NULL)
 	    {
@@ -705,7 +705,7 @@ int ADL::UpdateData()
 		mpODPerformanceLevels->iSize = perf_level_size;
 	    }
 
-	    if (ADL_Overdrive5_ODPerformanceLevels_Get(0, 0, mpODPerformanceLevels) != ADL_OK)
+	    if (SAVE_CALL(ADL_Overdrive5_ODPerformanceLevels_Get)(0, 0, mpODPerformanceLevels) != ADL_OK)
 	    {
 		free(mpODPerformanceLevels);
 		mpODPerformanceLevels = NULL;
@@ -718,7 +718,7 @@ int ADL::UpdateData()
 	}
 
 	mODActivity.iSize = sizeof(ADLPMActivity);
-	if (ADL_Overdrive5_CurrentActivity_Get(0, &mODActivity) != ADL_OK)
+	if (SAVE_CALL(ADL_Overdrive5_CurrentActivity_Get)(0, &mODActivity) != ADL_OK)
 	{
 	    mODActivity.iEngineClock = 0;
 	    mODActivity.iMemoryClock = 0;
@@ -729,7 +729,7 @@ int ADL::UpdateData()
 	}
 
 	mODClockInfo.iSize = sizeof(ADLAdapterODClockInfo);
-	if (ADL_Display_ODClockInfo_Get(0, &mODClockInfo) != ADL_OK)
+	if (SAVE_CALL(ADL_Display_ODClockInfo_Get)(0, &mODClockInfo) != ADL_OK)
 	{
 	    mODClockInfo.sEngineClock.iCurrentClock = 0;
 	    mODClockInfo.sEngineClock.iDefaultClock = 0;

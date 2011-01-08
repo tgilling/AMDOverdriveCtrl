@@ -32,29 +32,30 @@
 #include <wx/datetime.h>
 #include <wx/wx.h>
 #include "gui.h"
-
-class ADL;
+#include "adl.h"
 
 class CColorTempPanel : public CColorTempPanelBase, public wxTimer
 {
-    enum STATES
-    {
-	INACTIVE,
-	DAY,
-	NIGHT,
-	TRANSITION_FROM_DAY_TO_NIGHT,
-	TRANSITION_FROM_NIGHT_TO_DAY
-    };
+        enum STATES
+        {
+            INACTIVE,
+            DAY,
+            NIGHT,
+            TRANSITION_FROM_DAY_TO_NIGHT,
+            TRANSITION_FROM_NIGHT_TO_DAY,
+	    TRANSITION_TO_DAY,
+	    TRANSITION_TO_NIGHT
+        };
 
     public:
         CColorTempPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxPoint(-1,15), const wxSize& size = wxSize(-1,-1), long style = wxTAB_TRAVERSAL);
         virtual ~CColorTempPanel();
 
-	void GetValues(bool& enable, double& longitude, double& latitude, long& color_temp_day, long& color_temp_night, long& transition);
-	void SetValues(bool enable, double longitude, double latitude, long color_temp_day, long color_temp_night, long transition);
+        void GetValues(bool& enable, double& longitude, double& latitude, long& color_temp_day, long& color_temp_night, long& transition);
+        void SetValues(bool enable, double longitude, double latitude, long color_temp_day, long color_temp_night, long transition);
 
     protected:
-	virtual void OnPaint(wxPaintEvent& event);
+        virtual void OnPaint(wxPaintEvent& event);
         virtual void mEnableOnCheckBox(wxCommandEvent& event);
         virtual void mLongitudeOnText(wxCommandEvent& event);
         virtual void mLatitudeOnText(wxCommandEvent& event);
@@ -62,24 +63,45 @@ class CColorTempPanel : public CColorTempPanelBase, public wxTimer
         virtual void mColorTempNightSliderOnScroll(wxScrollEvent& event);
         virtual void mTransitionSliderOnScroll(wxScrollEvent& event);
         virtual void mCurveOnLeftDown(wxMouseEvent& event);
+	virtual void mCurveOnLeftUp(wxMouseEvent& event);
         virtual void mCurveOnMotion(wxMouseEvent& event);
+        virtual void ButtonTestDayColorClick(wxCommandEvent& event);
+        virtual void ButtonTestNightColorClick(wxCommandEvent& event);
+	virtual void ButtonSetDayColorClick(wxCommandEvent& event);
+	virtual void ButtonSetNightColorClick(wxCommandEvent& event);
 
-	virtual void Notify();
+        virtual void Notify();
 
-	void CalculateSunriseAndSunset();
+        void CalculateSunriseAndSunset();
 
-	void DrawDiagram();
+        void DrawDiagram();
 
         bool MapPointFromScreen(wxPoint& p);
 
-	void SetMouseValues(wxPoint p);
+        void SetMouseValues(wxPoint p);
+
+	void TestColorTemperature(int color_temp);
+	void SetColorTemperature(int color_temp, unsigned char display = 255);
+	int GetColorTemperature(unsigned char display = 255);
+	void EnableColorTemperatureCtrl(bool enable = true);
 
 	ADL* adl;
+	int mNrOfDisplays;
+	LPADLDisplayInfo mpDisplayInfo;
+	unsigned long mValidDisplays;
 
-	wxDateTime mSunrise;
-	wxDateTime mSunset;
+	int* mpColorTempAtStartup;
+	int* mpColorTempDefault;
+	int mMinColorTemp;
+	int mMaxColorTemp;
+	int mColorTempStep;
 
-	STATES mState;		
+	int mColorTempScratch;
+
+        wxDateTime mSunrise;
+        wxDateTime mSunset;
+
+        STATES mState;
 
 };
 

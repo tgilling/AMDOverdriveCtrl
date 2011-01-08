@@ -1390,10 +1390,18 @@ CColorTempPanelBase::CColorTempPanelBase( wxWindow* parent, wxWindowID id, const
 	mColorTempDay = new wxTextCtrl( this, wxID_ANY, _("6500"), wxDefaultPosition, wxSize( 80,-1 ), wxTE_CENTRE|wxTE_READONLY );
 	bSizer29->Add( mColorTempDay, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
-	mColorTempDaySlider = new wxSlider( this, wxID_ANY, 1300, 600, 1400, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
-	mColorTempDaySlider->SetMinSize( wxSize( 280,-1 ) );
+	mColorTempDaySlider = new wxSlider( this, wxID_ANY, 1300, 600, 2000, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
+	mColorTempDaySlider->SetMinSize( wxSize( 170,-1 ) );
 	
 	bSizer29->Add( mColorTempDaySlider, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	mButtonTestDayColor = new wxButton( this, wxID_ANY, _("Test"), wxDefaultPosition, wxDefaultSize, 0 );
+	mButtonTestDayColor->SetMinSize( wxSize( 45,24 ) );
+	
+	bSizer29->Add( mButtonTestDayColor, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	mButtonSetDayColor = new wxButton( this, wxID_ANY, _("Set"), wxDefaultPosition, wxSize( 45,24 ), 0 );
+	bSizer29->Add( mButtonSetDayColor, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	fgSizer27->Add( bSizer29, 1, wxEXPAND, 5 );
 	
@@ -1416,10 +1424,18 @@ CColorTempPanelBase::CColorTempPanelBase( wxWindow* parent, wxWindowID id, const
 	mColorTempNight = new wxTextCtrl( this, wxID_ANY, _("3400"), wxDefaultPosition, wxSize( 80,-1 ), wxTE_CENTRE|wxTE_READONLY );
 	bSizer291->Add( mColorTempNight, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
-	mColorTempNightSlider = new wxSlider( this, wxID_ANY, 680, 600, 1400, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
-	mColorTempNightSlider->SetMinSize( wxSize( 280,-1 ) );
+	mColorTempNightSlider = new wxSlider( this, wxID_ANY, 680, 600, 2000, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
+	mColorTempNightSlider->SetMinSize( wxSize( 170,-1 ) );
 	
 	bSizer291->Add( mColorTempNightSlider, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	mButtonTestNightColor = new wxButton( this, wxID_ANY, _("Test"), wxDefaultPosition, wxDefaultSize, 0 );
+	mButtonTestNightColor->SetMinSize( wxSize( 45,24 ) );
+	
+	bSizer291->Add( mButtonTestNightColor, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	mButtonSetNightColor = new wxButton( this, wxID_ANY, _("Set"), wxDefaultPosition, wxSize( 45,24 ), 0 );
+	bSizer291->Add( mButtonSetNightColor, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	fgSizer271->Add( bSizer291, 1, wxEXPAND, 5 );
 	
@@ -1442,7 +1458,7 @@ CColorTempPanelBase::CColorTempPanelBase( wxWindow* parent, wxWindowID id, const
 	mTransition = new wxTextCtrl( this, wxID_ANY, _("30min"), wxDefaultPosition, wxSize( 80,-1 ), wxTE_CENTRE|wxTE_READONLY );
 	bSizer292->Add( mTransition, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
-	mTransitionSlider = new wxSlider( this, wxID_ANY, 30, 0, 60, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
+	mTransitionSlider = new wxSlider( this, wxID_ANY, 30, 1, 60, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
 	mTransitionSlider->SetMinSize( wxSize( 280,-1 ) );
 	
 	bSizer292->Add( mTransitionSlider, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
@@ -1474,6 +1490,8 @@ CColorTempPanelBase::CColorTempPanelBase( wxWindow* parent, wxWindowID id, const
 	mColorTempDaySlider->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
 	mColorTempDaySlider->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
 	mColorTempDaySlider->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
+	mButtonTestDayColor->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CColorTempPanelBase::ButtonTestDayColorClick ), NULL, this );
+	mButtonSetDayColor->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CColorTempPanelBase::ButtonSetDayColorClick ), NULL, this );
 	mColorTempNightSlider->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
 	mColorTempNightSlider->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
 	mColorTempNightSlider->Connect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
@@ -1483,6 +1501,8 @@ CColorTempPanelBase::CColorTempPanelBase( wxWindow* parent, wxWindowID id, const
 	mColorTempNightSlider->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
 	mColorTempNightSlider->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
 	mColorTempNightSlider->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
+	mButtonTestNightColor->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CColorTempPanelBase::ButtonTestNightColorClick ), NULL, this );
+	mButtonSetNightColor->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CColorTempPanelBase::ButtonSetNightColorClick ), NULL, this );
 	mTransitionSlider->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
 	mTransitionSlider->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
 	mTransitionSlider->Connect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
@@ -1493,6 +1513,7 @@ CColorTempPanelBase::CColorTempPanelBase( wxWindow* parent, wxWindowID id, const
 	mTransitionSlider->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
 	mTransitionSlider->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
 	mCurve->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( CColorTempPanelBase::mCurveOnLeftDown ), NULL, this );
+	mCurve->Connect( wxEVT_LEFT_UP, wxMouseEventHandler( CColorTempPanelBase::mCurveOnLeftUp ), NULL, this );
 	mCurve->Connect( wxEVT_MOTION, wxMouseEventHandler( CColorTempPanelBase::mCurveOnMotion ), NULL, this );
 }
 
@@ -1512,6 +1533,8 @@ CColorTempPanelBase::~CColorTempPanelBase()
 	mColorTempDaySlider->Disconnect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
 	mColorTempDaySlider->Disconnect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
 	mColorTempDaySlider->Disconnect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
+	mButtonTestDayColor->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CColorTempPanelBase::ButtonTestDayColorClick ), NULL, this );
+	mButtonSetDayColor->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CColorTempPanelBase::ButtonSetDayColorClick ), NULL, this );
 	mColorTempNightSlider->Disconnect( wxEVT_SCROLL_TOP, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
 	mColorTempNightSlider->Disconnect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
 	mColorTempNightSlider->Disconnect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
@@ -1521,6 +1544,8 @@ CColorTempPanelBase::~CColorTempPanelBase()
 	mColorTempNightSlider->Disconnect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
 	mColorTempNightSlider->Disconnect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
 	mColorTempNightSlider->Disconnect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
+	mButtonTestNightColor->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CColorTempPanelBase::ButtonTestNightColorClick ), NULL, this );
+	mButtonSetNightColor->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CColorTempPanelBase::ButtonSetNightColorClick ), NULL, this );
 	mTransitionSlider->Disconnect( wxEVT_SCROLL_TOP, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
 	mTransitionSlider->Disconnect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
 	mTransitionSlider->Disconnect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
@@ -1531,6 +1556,7 @@ CColorTempPanelBase::~CColorTempPanelBase()
 	mTransitionSlider->Disconnect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
 	mTransitionSlider->Disconnect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
 	mCurve->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( CColorTempPanelBase::mCurveOnLeftDown ), NULL, this );
+	mCurve->Disconnect( wxEVT_LEFT_UP, wxMouseEventHandler( CColorTempPanelBase::mCurveOnLeftUp ), NULL, this );
 	mCurve->Disconnect( wxEVT_MOTION, wxMouseEventHandler( CColorTempPanelBase::mCurveOnMotion ), NULL, this );
 	
 }

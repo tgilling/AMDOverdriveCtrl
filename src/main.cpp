@@ -48,6 +48,13 @@ bool MainApp::OnInit()
 {
     ADL* adl = ADL::Instance();
 
+    if (adl == NULL)
+    {
+        wxMessageBox(wxT("Unable to initialize AMD ADL Library.\n\nThis program depends on the proprietary Catalyst drivers.\n"\
+                         "Please check the driver installation."), wxT("Initialization problem"), wxOK|wxCENTRE|wxICON_ERROR);
+        return false;
+    }
+
     if(!adl->IsATICardAndCatalystPresent())
     {
         wxMessageBox(wxT("Unable to initialize AMD ADL Library.\n\nThis program depends on the proprietary Catalyst drivers.\n"\
@@ -318,13 +325,13 @@ void MainDialog::OnInit(wxInitDialogEvent& WXUNUSED(event))
 	    && mpMonitorPanel != NULL && mpFanControlPanel != NULL && mpAppProfilePanel != NULL
 	    && mpOvdrSettingsPanel != NULL && mpColorTempPanel != NULL)
 	{
-	    mNotebook->AddPage(mpColorTempPanel, wxT("Color"));
 	    mNotebook->AddPage(mpAuthorPanel, wxT("?"));
 	    mNotebook->AddPage(mpInfoPanel, wxT("Info"));
 	    mNotebook->AddPage(mpOvdrSettingsPanel, wxT("Overdrive"));
 	    mNotebook->AddPage(mpFanSpeedPanel, wxT("FanSpeed"));
 	    mNotebook->AddPage(mpFanControlPanel, wxT("FanCtrl"));
 	    mNotebook->AddPage(mpAppProfilePanel, wxT("AppProfile"));
+	    mNotebook->AddPage(mpColorTempPanel, wxT("Color"));
 	    mNotebook->AddPage(mpMonitorPanel, wxT("Monitor"));
 	}
 	else

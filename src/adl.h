@@ -30,6 +30,8 @@
 
 #include "adl_functions.h"
 
+#define SAVE_CALL(x) x != NULL && x
+
 class ADL
 {
     public:

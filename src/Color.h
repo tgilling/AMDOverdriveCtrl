@@ -36,6 +36,7 @@ class Color
 	static wxColour BLACK;
 	static wxColour WHITE;
 	static wxColour RED;
+	static wxColour LIGHT_RED;
 	static wxColour ORANGE;
 	static wxColour BLUE;
 	static wxColour LIGHT_BLUE;

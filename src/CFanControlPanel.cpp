@@ -334,7 +334,10 @@ void CFanControlPanel::DrawBezier(wxWindowDC& dc)
 	MapPointToScreen(p1);
 	MapPointToScreen(p2);
 
-	dc.SetPen(wxPen(Color::RED, 2));
+	dc.SetPen(wxPen(Color::RED, 3));
+	dc.DrawLine(p1, p2);
+
+	dc.SetPen(wxPen(Color::LIGHT_RED, 1));
 	dc.DrawLine(p1, p2);
 
 	dc.SetPen(wxPen(Color::DARK_GRAY, 1));
@@ -367,7 +370,11 @@ void CFanControlPanel::DrawSteps(wxWindowDC& dc)
 	MapPointToScreen(p2);
 	MapPointToScreen(p3);
 
-	dc.SetPen(wxPen(Color::RED, 2));
+	dc.SetPen(wxPen(Color::RED, 3));
+	dc.DrawLine(p1, p2);
+	dc.DrawLine(p2, p3);
+
+	dc.SetPen(wxPen(Color::LIGHT_RED, 1));
 	dc.DrawLine(p1, p2);
 	dc.DrawLine(p2, p3);
 
@@ -389,7 +396,10 @@ void CFanControlPanel::DrawLinear(wxWindowDC& dc)
 	MapPointToScreen(p1);
 	MapPointToScreen(p2);
 
-	dc.SetPen(wxPen(Color::RED, 2));
+	dc.SetPen(wxPen(Color::RED, 3));
+	dc.DrawLine(p1, p2);
+
+	dc.SetPen(wxPen(Color::LIGHT_RED, 1));
 	dc.DrawLine(p1, p2);
 
 	dc.SetPen(wxPen(Color::BLACK, 1));

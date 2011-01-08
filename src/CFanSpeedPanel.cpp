@@ -354,7 +354,7 @@ void CFanSpeedPanel::DrawFanProfile()
 
 	if(mFanProfileDataValid > 0)
 	{
-	    dc.SetPen(wxPen(Color::RED, 2));
+	    dc.SetPen(wxPen(Color::RED, 3));
 
 	    dc.DrawPoint(wxPoint((mFanProfileData[0][0]-adl->mFanSpeedInfo.iMinPercent) * 320 / (adl->mFanSpeedInfo.iMaxPercent-adl->mFanSpeedInfo.iMinPercent) + 10, 160 - (mFanProfileData[0][1] * 132 / adl->mFanSpeedInfo.iMaxRPM)));
 
@@ -363,6 +363,10 @@ void CFanSpeedPanel::DrawFanProfile()
 		wxPoint p1((mFanProfileData[i-1][0]-adl->mFanSpeedInfo.iMinPercent) * 320 / (adl->mFanSpeedInfo.iMaxPercent-adl->mFanSpeedInfo.iMinPercent) + 10, 160 - (mFanProfileData[i-1][1] * 132 / adl->mFanSpeedInfo.iMaxRPM));
 		wxPoint p2((mFanProfileData[i][0]-adl->mFanSpeedInfo.iMinPercent)   * 320 / (adl->mFanSpeedInfo.iMaxPercent-adl->mFanSpeedInfo.iMinPercent) + 10, 160 - (mFanProfileData[i][1]   * 132 / adl->mFanSpeedInfo.iMaxRPM));
 
+		dc.SetPen(wxPen(Color::RED, 3));
+		dc.DrawLine(p1, p2);
+
+		dc.SetPen(wxPen(Color::LIGHT_RED, 1));
 		dc.DrawLine(p1, p2);
 	    }
 

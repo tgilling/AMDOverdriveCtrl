@@ -32,6 +32,7 @@
 wxColour Color::BLACK = wxColour(0,0,0);
 wxColour Color::WHITE = wxColour(255,255,255);
 wxColour Color::RED = wxColour(240,50,50);
+wxColour Color::LIGHT_RED = wxColour(240,110,110);
 wxColour Color::ORANGE = wxColour(250,190,50);
 wxColour Color::BLUE = wxColour(100,100,240);
 wxColour Color::LIGHT_BLUE = wxColour(130,180,250);

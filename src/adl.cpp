@@ -524,7 +524,7 @@ bool ADL::Init()
 		{
 		    cout << "ERROR: no adapter info available!" << endl;
 		}
-		if (UpdateData() != 0)
+		if (UpdateData() == 0)
 		{
 		    cout << "ERROR: failed to read card values!" << endl;
 		}

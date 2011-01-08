@@ -29,7 +29,7 @@
 #define _Revision_h_
 
 const int VERSION  = 1;
-const int REVISION = 0; 
-const int BUILD    = 3;
+const int REVISION = 1;
+const int BUILD    = 0;
 
 #endif

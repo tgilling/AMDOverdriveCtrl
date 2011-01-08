@@ -1333,3 +1333,204 @@ COvdrSettingsPanelBase::~COvdrSettingsPanelBase()
 	mButtonSet->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( COvdrSettingsPanelBase::mButtonSetClick ), NULL, this );
 	
 }
+
+CColorTempPanelBase::CColorTempPanelBase( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
+{
+	wxFlexGridSizer* fgSizer26;
+	fgSizer26 = new wxFlexGridSizer( 7, 1, 0, 0 );
+	fgSizer26->SetFlexibleDirection( wxBOTH );
+	fgSizer26->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	
+	fgSizer26->Add( 0, 5, 1, wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer28;
+	bSizer28 = new wxBoxSizer( wxHORIZONTAL );
+	
+	bSizer28->SetMinSize( wxSize( 380,-1 ) ); 
+	mEnable = new wxCheckBox( this, wxID_ANY, _("enable"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer28->Add( mEnable, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	
+	bSizer28->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_staticText40 = new wxStaticText( this, wxID_ANY, _("Long."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText40->Wrap( -1 );
+	bSizer28->Add( m_staticText40, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	mLongitude = new wxTextCtrl( this, wxID_ANY, _("-13,5"), wxDefaultPosition, wxDefaultSize, wxTE_CENTRE );
+	bSizer28->Add( mLongitude, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	m_staticText41 = new wxStaticText( this, wxID_ANY, _("Lat."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText41->Wrap( -1 );
+	bSizer28->Add( m_staticText41, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	mLatitude = new wxTextCtrl( this, wxID_ANY, _("52,5"), wxDefaultPosition, wxDefaultSize, wxTE_CENTRE );
+	bSizer28->Add( mLatitude, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	
+	bSizer28->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	fgSizer26->Add( bSizer28, 1, wxEXPAND, 5 );
+	
+	wxFlexGridSizer* fgSizer27;
+	fgSizer27 = new wxFlexGridSizer( 2, 1, 0, 0 );
+	fgSizer27->SetFlexibleDirection( wxBOTH );
+	fgSizer27->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText42 = new wxStaticText( this, wxID_ANY, _("Color temperature day"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText42->Wrap( -1 );
+	m_staticText42->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
+	
+	fgSizer27->Add( m_staticText42, 0, wxLEFT|wxTOP, 5 );
+	
+	wxBoxSizer* bSizer29;
+	bSizer29 = new wxBoxSizer( wxHORIZONTAL );
+	
+	mColorTempDay = new wxTextCtrl( this, wxID_ANY, _("6500"), wxDefaultPosition, wxSize( 80,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	bSizer29->Add( mColorTempDay, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	mColorTempDaySlider = new wxSlider( this, wxID_ANY, 1300, 600, 1400, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
+	mColorTempDaySlider->SetMinSize( wxSize( 280,-1 ) );
+	
+	bSizer29->Add( mColorTempDaySlider, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	fgSizer27->Add( bSizer29, 1, wxEXPAND, 5 );
+	
+	fgSizer26->Add( fgSizer27, 1, wxEXPAND, 5 );
+	
+	wxFlexGridSizer* fgSizer271;
+	fgSizer271 = new wxFlexGridSizer( 2, 1, 0, 0 );
+	fgSizer271->SetFlexibleDirection( wxBOTH );
+	fgSizer271->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText421 = new wxStaticText( this, wxID_ANY, _("Color temperature night"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText421->Wrap( -1 );
+	m_staticText421->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
+	
+	fgSizer271->Add( m_staticText421, 0, wxLEFT|wxTOP, 5 );
+	
+	wxBoxSizer* bSizer291;
+	bSizer291 = new wxBoxSizer( wxHORIZONTAL );
+	
+	mColorTempNight = new wxTextCtrl( this, wxID_ANY, _("3400"), wxDefaultPosition, wxSize( 80,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	bSizer291->Add( mColorTempNight, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	mColorTempNightSlider = new wxSlider( this, wxID_ANY, 680, 600, 1400, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
+	mColorTempNightSlider->SetMinSize( wxSize( 280,-1 ) );
+	
+	bSizer291->Add( mColorTempNightSlider, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	fgSizer271->Add( bSizer291, 1, wxEXPAND, 5 );
+	
+	fgSizer26->Add( fgSizer271, 1, wxEXPAND, 5 );
+	
+	wxFlexGridSizer* fgSizer272;
+	fgSizer272 = new wxFlexGridSizer( 2, 1, 0, 0 );
+	fgSizer272->SetFlexibleDirection( wxBOTH );
+	fgSizer272->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText422 = new wxStaticText( this, wxID_ANY, _("Transition duration"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText422->Wrap( -1 );
+	m_staticText422->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
+	
+	fgSizer272->Add( m_staticText422, 0, wxLEFT|wxTOP, 5 );
+	
+	wxBoxSizer* bSizer292;
+	bSizer292 = new wxBoxSizer( wxHORIZONTAL );
+	
+	mTransition = new wxTextCtrl( this, wxID_ANY, _("30min"), wxDefaultPosition, wxSize( 80,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	bSizer292->Add( mTransition, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	mTransitionSlider = new wxSlider( this, wxID_ANY, 30, 0, 60, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
+	mTransitionSlider->SetMinSize( wxSize( 280,-1 ) );
+	
+	bSizer292->Add( mTransitionSlider, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	fgSizer272->Add( bSizer292, 1, wxEXPAND, 5 );
+	
+	fgSizer26->Add( fgSizer272, 1, wxEXPAND, 5 );
+	
+	m_staticline11 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	fgSizer26->Add( m_staticline11, 0, wxEXPAND | wxALL, 5 );
+	
+	mCurve = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( 370,160 ), wxTAB_TRAVERSAL );
+	fgSizer26->Add( mCurve, 1, wxEXPAND | wxALL, 5 );
+	
+	this->SetSizer( fgSizer26 );
+	this->Layout();
+	
+	// Connect Events
+	this->Connect( wxEVT_PAINT, wxPaintEventHandler( CColorTempPanelBase::OnPaint ) );
+	mEnable->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( CColorTempPanelBase::mEnableOnCheckBox ), NULL, this );
+	mLongitude->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( CColorTempPanelBase::mLongitudeOnText ), NULL, this );
+	mLatitude->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( CColorTempPanelBase::mLatitudeOnText ), NULL, this );
+	mColorTempDaySlider->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
+	mColorTempDaySlider->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
+	mColorTempDaySlider->Connect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
+	mColorTempDaySlider->Connect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
+	mColorTempDaySlider->Connect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
+	mColorTempDaySlider->Connect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
+	mColorTempDaySlider->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
+	mColorTempDaySlider->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
+	mColorTempDaySlider->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
+	mColorTempNightSlider->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
+	mColorTempNightSlider->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
+	mColorTempNightSlider->Connect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
+	mColorTempNightSlider->Connect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
+	mColorTempNightSlider->Connect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
+	mColorTempNightSlider->Connect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
+	mColorTempNightSlider->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
+	mColorTempNightSlider->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
+	mColorTempNightSlider->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
+	mTransitionSlider->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
+	mTransitionSlider->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
+	mTransitionSlider->Connect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
+	mTransitionSlider->Connect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
+	mTransitionSlider->Connect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
+	mTransitionSlider->Connect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
+	mTransitionSlider->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
+	mTransitionSlider->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
+	mTransitionSlider->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
+	mCurve->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( CColorTempPanelBase::mCurveOnLeftDown ), NULL, this );
+	mCurve->Connect( wxEVT_MOTION, wxMouseEventHandler( CColorTempPanelBase::mCurveOnMotion ), NULL, this );
+}
+
+CColorTempPanelBase::~CColorTempPanelBase()
+{
+	// Disconnect Events
+	this->Disconnect( wxEVT_PAINT, wxPaintEventHandler( CColorTempPanelBase::OnPaint ) );
+	mEnable->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( CColorTempPanelBase::mEnableOnCheckBox ), NULL, this );
+	mLongitude->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( CColorTempPanelBase::mLongitudeOnText ), NULL, this );
+	mLatitude->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( CColorTempPanelBase::mLatitudeOnText ), NULL, this );
+	mColorTempDaySlider->Disconnect( wxEVT_SCROLL_TOP, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
+	mColorTempDaySlider->Disconnect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
+	mColorTempDaySlider->Disconnect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
+	mColorTempDaySlider->Disconnect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
+	mColorTempDaySlider->Disconnect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
+	mColorTempDaySlider->Disconnect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
+	mColorTempDaySlider->Disconnect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
+	mColorTempDaySlider->Disconnect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
+	mColorTempDaySlider->Disconnect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( CColorTempPanelBase::mColorTempDaySliderOnScroll ), NULL, this );
+	mColorTempNightSlider->Disconnect( wxEVT_SCROLL_TOP, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
+	mColorTempNightSlider->Disconnect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
+	mColorTempNightSlider->Disconnect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
+	mColorTempNightSlider->Disconnect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
+	mColorTempNightSlider->Disconnect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
+	mColorTempNightSlider->Disconnect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
+	mColorTempNightSlider->Disconnect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
+	mColorTempNightSlider->Disconnect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
+	mColorTempNightSlider->Disconnect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( CColorTempPanelBase::mColorTempNightSliderOnScroll ), NULL, this );
+	mTransitionSlider->Disconnect( wxEVT_SCROLL_TOP, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
+	mTransitionSlider->Disconnect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
+	mTransitionSlider->Disconnect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
+	mTransitionSlider->Disconnect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
+	mTransitionSlider->Disconnect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
+	mTransitionSlider->Disconnect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
+	mTransitionSlider->Disconnect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
+	mTransitionSlider->Disconnect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
+	mTransitionSlider->Disconnect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( CColorTempPanelBase::mTransitionSliderOnScroll ), NULL, this );
+	mCurve->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( CColorTempPanelBase::mCurveOnLeftDown ), NULL, this );
+	mCurve->Disconnect( wxEVT_MOTION, wxMouseEventHandler( CColorTempPanelBase::mCurveOnMotion ), NULL, this );
+	
+}

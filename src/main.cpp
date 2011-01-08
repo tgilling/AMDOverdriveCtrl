@@ -268,6 +268,7 @@ MainDialog::MainDialog(wxWindow *parent)
     , mpMonitorPanel(NULL)
     , mpFanControlPanel(NULL)
     , mpAppProfilePanel(NULL)
+    , mpColorTempPanel(NULL)
 {
     wxImage::AddHandler(new wxPNGHandler);
 
@@ -283,10 +284,11 @@ MainDialog::MainDialog(wxWindow *parent)
     mpMonitorPanel = new CMonitorPanel(mNotebook);
     mpFanSpeedPanel = new CFanSpeedPanel(mNotebook);
     mpFanControlPanel = new CFanControlPanel(mpFanSpeedPanel, mNotebook);
-    mpFanSpeedPanel->SetFanControlPanel(mpFanControlPanel);
-
     mpAppProfilePanel = new CAppProfilePanel(mNotebook);
     mpOvdrSettingsPanel = new COvdrSettingsPanel(mNotebook);
+    mpColorTempPanel = new CColorTempPanel(mNotebook);
+
+    mpFanSpeedPanel->SetFanControlPanel(mpFanControlPanel);
 
     tmp.Rescale(20,20, wxIMAGE_QUALITY_HIGH);
     icon.CopyFromBitmap(tmp);
@@ -314,8 +316,9 @@ void MainDialog::OnInit(wxInitDialogEvent& WXUNUSED(event))
 
 	if (mpInfoPanel != NULL && mpFanSpeedPanel != NULL && mpAuthorPanel != NULL
 	    && mpMonitorPanel != NULL && mpFanControlPanel != NULL && mpAppProfilePanel != NULL
-	    && mpOvdrSettingsPanel != NULL)
+	    && mpOvdrSettingsPanel != NULL && mpColorTempPanel != NULL)
 	{
+	    mNotebook->AddPage(mpColorTempPanel, wxT("Color"));
 	    mNotebook->AddPage(mpAuthorPanel, wxT("?"));
 	    mNotebook->AddPage(mpInfoPanel, wxT("Info"));
 	    mNotebook->AddPage(mpOvdrSettingsPanel, wxT("Overdrive"));
@@ -512,6 +515,37 @@ bool MainDialog::LoadXML(wxString filename)
 
 			mpMonitorPanel->SetSampleTime(time);
 		    }
+		    else if (child->GetName() == wxT("COLOR_PROFILE"))
+		    {
+			bool enable;
+			double longitude;
+			double latitude;
+			long color_temp_day;
+			long color_temp_night;
+			long transition;
+
+			wxString tmp;
+
+			tmp = child->GetPropVal(wxT("enabled"), wxT("no"));
+			enable = tmp == wxT("yes") ? true : false;
+
+			tmp = child->GetPropVal(wxT("longitude"), wxT("-13,5"));
+			tmp.ToDouble(&longitude);
+
+			tmp = child->GetPropVal(wxT("latitude"), wxT("52,5"));
+			tmp.ToDouble(&latitude);
+
+			tmp = child->GetPropVal(wxT("color_temp_day"), wxT("6500"));
+			tmp.ToLong(&color_temp_day);
+
+			tmp = child->GetPropVal(wxT("color_temp_night"), wxT("3400"));
+			tmp.ToLong(&color_temp_night);
+
+			tmp = child->GetPropVal(wxT("transition"), wxT("30"));
+			tmp.ToLong(&transition);
+
+			mpColorTempPanel->SetValues(enable, longitude, latitude, color_temp_day, color_temp_night, transition);
+		    }
 
 		    child = child->GetNext();
 		}
@@ -588,6 +622,24 @@ bool MainDialog::SaveXML(wxString filename)
 
     node = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("MONITOR_SAMPLE_TIME"));
     node->AddProperty(wxT("interval"), wxString::Format(wxT("%d"), mpMonitorPanel->GetSampleTime()));
+    root->AddChild(node);
+
+    bool enable;
+    double longitude;
+    double latitude;
+    long color_temp_day;
+    long color_temp_night;
+    long transition;
+
+    mpColorTempPanel->GetValues(enable, longitude, latitude, color_temp_day, color_temp_night, transition);
+
+    node = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("COLOR_PROFILE"));
+    node->AddProperty(wxT("enabled"), enable ? wxT("yes") : wxT("no"));
+    node->AddProperty(wxT("longitude"), wxString::Format(wxT("%lf"), longitude));
+    node->AddProperty(wxT("latitude"), wxString::Format(wxT("%lf"), latitude));
+    node->AddProperty(wxT("color_temp_day"), wxString::Format(wxT("%d"), color_temp_day));
+    node->AddProperty(wxT("color_temp_night"), wxString::Format(wxT("%d"), color_temp_night));
+    node->AddProperty(wxT("transition"), wxString::Format(wxT("%d"), transition));
     root->AddChild(node);
 
     if(filename.Find(wxT(".ovdr")) == wxNOT_FOUND)

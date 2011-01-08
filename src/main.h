@@ -44,6 +44,7 @@
 #include "CAppProfilePanel.h"
 #include "COvdrSettingsPanel.h"
 #include "CTaskBarIcon.h"
+#include "CColorTempPanel.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // application class declaration
@@ -96,6 +97,7 @@ class MainDialog : public MainDialogBase, wxTimer
         CFanControlPanel* mpFanControlPanel;
         CAppProfilePanel* mpAppProfilePanel;
         COvdrSettingsPanel* mpOvdrSettingsPanel;
+	CColorTempPanel* mpColorTempPanel;
 
         CTaskBarIcon* mpTaskBarIcon;
 

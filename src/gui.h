@@ -454,4 +454,51 @@ class COvdrSettingsPanelBase : public wxPanel
 	
 };
 
+///////////////////////////////////////////////////////////////////////////////
+/// Class CColorTempPanelBase
+///////////////////////////////////////////////////////////////////////////////
+class CColorTempPanelBase : public wxPanel 
+{
+	private:
+	
+	protected:
+		
+		wxCheckBox* mEnable;
+		
+		wxStaticText* m_staticText40;
+		wxTextCtrl* mLongitude;
+		wxStaticText* m_staticText41;
+		wxTextCtrl* mLatitude;
+		
+		wxStaticText* m_staticText42;
+		wxTextCtrl* mColorTempDay;
+		wxSlider* mColorTempDaySlider;
+		wxStaticText* m_staticText421;
+		wxTextCtrl* mColorTempNight;
+		wxSlider* mColorTempNightSlider;
+		wxStaticText* m_staticText422;
+		wxTextCtrl* mTransition;
+		wxSlider* mTransitionSlider;
+		wxStaticLine* m_staticline11;
+		wxPanel* mCurve;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnPaint( wxPaintEvent& event ) { event.Skip(); }
+		virtual void mEnableOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
+		virtual void mLongitudeOnText( wxCommandEvent& event ) { event.Skip(); }
+		virtual void mLatitudeOnText( wxCommandEvent& event ) { event.Skip(); }
+		virtual void mColorTempDaySliderOnScroll( wxScrollEvent& event ) { event.Skip(); }
+		virtual void mColorTempNightSliderOnScroll( wxScrollEvent& event ) { event.Skip(); }
+		virtual void mTransitionSliderOnScroll( wxScrollEvent& event ) { event.Skip(); }
+		virtual void mCurveOnLeftDown( wxMouseEvent& event ) { event.Skip(); }
+		virtual void mCurveOnMotion( wxMouseEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		CColorTempPanelBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 385,-1 ), long style = wxTAB_TRAVERSAL ); 
+		~CColorTempPanelBase();
+	
+};
+
 #endif //__gui__

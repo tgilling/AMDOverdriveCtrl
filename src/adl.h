@@ -248,7 +248,7 @@ class ADL
 
 	bool IsATICardAndCatalystPresent() const;
 	int UpdateData();
-	int GetSupportedFeatures() { return ms_instance->mFeatures; }
+	int GetSupportedFeatures() const { return ms_instance->mFeatures; }
 
 	int mNrOfAdapters;
 	LPAdapterInfo mpAdapterInfo;

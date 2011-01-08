@@ -210,6 +210,7 @@ ADL::ADL()
     , mpAdapterInfo(NULL)
     , mpODPerformanceLevels(NULL)
     , hDLL(NULL)
+    , mFeatures(0)
 {
 }
 

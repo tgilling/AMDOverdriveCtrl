@@ -421,10 +421,11 @@ bool MainDialog::LoadXML(wxString filename)
 {
     CTRL_POINTS ctrl_points;
     bool enable_fan_ctrl = false;
-    wxXmlDocument doc;
 
     if(wxFileExists(filename))
     {
+	wxXmlDocument doc;
+
 	if(doc.Load(filename))
 	{
 	    if(doc.GetRoot()->GetName() == wxT("OVERDRIVE_PROFILE"))

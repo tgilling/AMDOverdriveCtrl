@@ -47,6 +47,10 @@ CColorTempPanel::CColorTempPanel(wxWindow* parent, wxWindowID id, const wxPoint&
     , mSunrise()
     , mSunset()
     , mState(INACTIVE)
+    , mTrDayNight(0,0)
+    , mTrNightDay(0,0)
+    , mDragDayColor(0,0)
+    , mDragNightColor(0,0)
 {
     adl = ADL::Instance();
 
@@ -214,10 +218,14 @@ void CColorTempPanel::mLongitudeOnText(wxCommandEvent& WXUNUSED(event))
 
 void CColorTempPanel::SetMouseValues(wxPoint p)
 {
-    int is_on_day_side = MapPointFromScreen(p);
+    bool only_color = false;
+    int is_on_day_side = MapPointFromScreen(p, only_color);
 
-    mTransitionSlider->SetValue(p.x);
-    mTransition->SetValue(wxString::Format(wxT("%dmin"), p.x));
+    if (!only_color)
+    {
+	mTransitionSlider->SetValue(p.x);
+	mTransition->SetValue(wxString::Format(wxT("%dmin"), p.x));
+    }
 
     wxScrollEvent ev;
     ev.SetInt(p.y);
@@ -294,8 +302,8 @@ void CColorTempPanel::CalculateSunriseAndSunset()
 
     longitude = fmod(longitude, 15.0);
 
-    sunrise += longitude/15.0;
-    sunset += longitude/15.0;
+    sunrise -= longitude/15.0;
+    sunset -= longitude/15.0;
 
     double sunrise_min = fmod(sunrise, 1.0)*60.0;
     double sunset_min = fmod(sunset, 1.0)*60.0;
@@ -347,32 +355,38 @@ void CColorTempPanel::DrawDiagram()
 
     dc.DrawLine(wxPoint(w/2, 17), wxPoint(w/2, h-17));
 
-    double day_color_y = h - ((h-30) * (mColorTempDaySlider->GetValue()-mMinColorTemp) / (mMaxColorTemp-mMinColorTemp) + 15);
-    double night_color_y = h - ((h-30) * (mColorTempNightSlider->GetValue()-mMinColorTemp) / (mMaxColorTemp-mMinColorTemp) + 15);
+    int day_color_y = h - ((h-30) * (mColorTempDaySlider->GetValue()-mMinColorTemp) / (mMaxColorTemp-mMinColorTemp) + 15);
+    int night_color_y = h - ((h-30) * (mColorTempNightSlider->GetValue()-mMinColorTemp) / (mMaxColorTemp-mMinColorTemp) + 15);
 
-    double transition_start = (w/2) - ((w-100) * mTransitionSlider->GetValue() / MAX_TRANSITION_TIME) / 2;
-    double transition_end   = (w/2) + ((w-100) * mTransitionSlider->GetValue() / MAX_TRANSITION_TIME) / 2;
+    int transition_start = (w/2) - ((w-100) * mTransitionSlider->GetValue() / MAX_TRANSITION_TIME) / 2;
+    int transition_end   = (w/2) + ((w-100) * mTransitionSlider->GetValue() / MAX_TRANSITION_TIME) / 2;
 
-    wxPoint p1(0,day_color_y);
-    wxPoint p2(transition_start, day_color_y);
-    wxPoint p3(transition_end, night_color_y);
-    wxPoint p4(w, night_color_y);
+    wxPoint Start(0, day_color_y);
+    mTrDayNight = wxPoint(transition_start, day_color_y);
+    mTrNightDay = wxPoint(transition_end, night_color_y);
+    wxPoint End(w, night_color_y);
+
+    mDragDayColor = wxPoint(40, day_color_y-2);
+    mDragNightColor = wxPoint(w-40, night_color_y-2);
 
     dc.SetPen(wxPen(Color::RED, 3));
-    dc.DrawLine(p1, p2);
-    dc.DrawLine(p2, p3);
-    dc.DrawLine(p3, p4);
+    dc.DrawLine(Start, mTrDayNight);
+    dc.DrawLine(mTrDayNight, mTrNightDay);
+    dc.DrawLine(mTrNightDay, End);
 
     dc.SetPen(wxPen(Color::LIGHT_RED, 1));
-    dc.DrawLine(p1, p2);
-    dc.DrawLine(p2, p3);
-    dc.DrawLine(p3, p4);
+    dc.DrawLine(Start, mTrDayNight);
+    dc.DrawLine(mTrDayNight, mTrNightDay);
+    dc.DrawLine(mTrNightDay, End);
 
     dc.SetBrush(Color::LIGHT_GRAY);
     dc.SetPen(wxPen(Color::BLACK));
 
-    dc.DrawCircle(p2, 2);
-    dc.DrawCircle(p3, 2);
+    dc.DrawCircle(mTrDayNight, 2);
+    dc.DrawCircle(mTrNightDay, 2);
+
+    dc.DrawRectangle(mDragDayColor, wxSize(5,5));
+    dc.DrawRectangle(mDragNightColor, wxSize(5,5));
 
     dc.SetTextForeground(Color::DARK_GRAY);
     dc.DrawText(wxString::Format(wxT("%d"), mColorTempDaySlider->GetValue()), wxPoint(2, day_color_y-16));
@@ -387,10 +401,35 @@ void CColorTempPanel::DrawDiagram()
     dc.DrawText(wxString::Format(wxT("%4dK"), GetColorTemperature()), wxPoint(w/2-17, h-16));
 }
 
-bool CColorTempPanel::MapPointFromScreen(wxPoint& p)
+double CColorTempPanel::Distance(wxPoint p1, wxPoint p2)
+{
+    double a = fabs(p1.x-p2.x);
+    double b = fabs(p1.y-p2.y);
+    double c = sqrt(a*a+b*b);
+    return c;
+}
+
+bool CColorTempPanel::MapPointFromScreen(wxPoint& p, bool& only_color)
 {
     int w, h;
     mCurve->GetSize(&w,&h);
+
+    only_color = false;
+
+    if (p.x <= w/2)
+    {
+	if (Distance(mDragDayColor, p) <= Distance(mTrDayNight, p))
+	{
+	    only_color = true;
+	}
+    }
+    else
+    {
+	if (Distance(mDragNightColor, p) <= Distance(mTrNightDay, p))
+	{
+	    only_color = true;
+	}
+    }
 
     double diff_x = w/2-p.x;
     double t = abs(diff_x) * MAX_TRANSITION_TIME / (double)(w-100.0);
@@ -436,8 +475,8 @@ void CColorTempPanel::GetValues(bool& enable, double& longitude, double& latitud
 void CColorTempPanel::SetValues(bool enable, double longitude, double latitude, long color_temp_day, long color_temp_night, long transition)
 {
     mEnable->SetValue(enable);
-    mLongitude->SetValue(wxString::Format(wxT("%lf"), longitude));
-    mLatitude->SetValue(wxString::Format(wxT("%lf"), latitude));
+    mLongitude->SetValue(wxString::Format(wxT("%.2lf"), longitude));
+    mLatitude->SetValue(wxString::Format(wxT("%.2lf"), latitude));
     mColorTempDaySlider->SetValue(color_temp_day);
     mColorTempDay->SetValue(wxString::Format(wxT("%d"), color_temp_day));
     mColorTempNightSlider->SetValue(color_temp_night);

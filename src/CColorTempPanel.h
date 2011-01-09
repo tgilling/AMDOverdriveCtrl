@@ -76,7 +76,8 @@ class CColorTempPanel : public CColorTempPanelBase, public wxTimer
 
         void DrawDiagram();
 
-        bool MapPointFromScreen(wxPoint& p);
+        bool MapPointFromScreen(wxPoint& p, bool& only_color);
+	double Distance(wxPoint p1, wxPoint p2);
 
         void SetMouseValues(wxPoint p);
 
@@ -102,6 +103,11 @@ class CColorTempPanel : public CColorTempPanelBase, public wxTimer
         wxDateTime mSunset;
 
         STATES mState;
+
+	wxPoint mTrDayNight;
+	wxPoint mTrNightDay;
+	wxPoint mDragDayColor;
+	wxPoint mDragNightColor;
 
 };
 

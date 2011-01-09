@@ -32,7 +32,7 @@
 #ifdef FAKE_ATI_CARD
 #define GPA(x,y) x=NULL;
 #else
-#define GPA(x,y) x=(y)GetProcAddress(hDLL, #x); if(x == NULL) { cout << "API: " << #x << " is missing." << endl; /*return false;*/ }
+#define GPA(x,y) x=(y)GetProcAddress(hDLL, #x); if(x == NULL) { cout << "ERR: ADL API function: " << #x << " is missing." << endl; /*return false;*/ }
 #endif
 
 using namespace std;
@@ -232,7 +232,7 @@ ADL* ADL::Instance()
         {
             if (!ms_instance->Init())
             {
-                cout << "Error: Could not Init library." << endl;
+                ERR_LOG("Error: Could not Init library.");
             }
         }
     }
@@ -523,11 +523,11 @@ bool ADL::Init()
 		memset (mpAdapterInfo, '\0', sizeof(AdapterInfo) * mNrOfAdapters);
 	        if (ADL_Adapter_AdapterInfo_Get (mpAdapterInfo, sizeof (AdapterInfo) * mNrOfAdapters) != ADL_OK)
 		{
-		    cout << "ERROR: no adapter info available!" << endl;
+		    ERR_LOG("ERROR: no adapter info available!");
 		}
 		if (UpdateData() == 0)
 		{
-		    cout << "ERROR: failed to read card values!" << endl;
+		    ERR_LOG("ERROR: failed to read card values!");
 		}
 	    }
 	    else

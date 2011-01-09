@@ -199,6 +199,7 @@ bool CFanSpeedPanel::SetDefaultFanSpeed()
     }
     else
     {
+	ACT_LOG("Set fan speed to default");
 	mTargetFanSpeed->SetValue(wxT("auto"));
 	mFanSpeedSlider->SetValue((adl->mFanSpeedInfo.iMaxPercent - adl->mFanSpeedInfo.iMinPercent)/2+adl->mFanSpeedInfo.iMinPercent);
 	mFanSpeedLevelFixed = false;
@@ -218,6 +219,10 @@ bool CFanSpeedPanel::SetFanSpeed(int percent, bool controller_mode)
     if(SAVE_CALL(adl->ADL_Overdrive5_FanSpeed_Set)(0, 0, &speed_value) != ADL_OK)
     {
 	return false;
+    }
+    else
+    {
+	ACT_LOG("Fan speed set to " << percent << "%");
     }
     
     if (controller_mode)

@@ -28,9 +28,17 @@
 #ifndef _ADL_h_
 #define _ADL_h_
 
+#include <iostream>
+using namespace std;
+
 #include "adl_functions.h"
 
 #define SAVE_CALL(x) x != NULL && x
+
+#define INF_LOG(x) cout << "INF: " << x << endl;
+#define ACT_LOG(x) cout << "ACT: " << x << endl;
+#define ERR_LOG(x) cout << "ERR: " << x << endl;
+#define WRN_LOG(x) cout << "WRN: " << x << endl;
 
 class ADL
 {

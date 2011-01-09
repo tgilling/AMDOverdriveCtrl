@@ -248,8 +248,6 @@ void CTaskBarIcon::OnMenuClick(wxCommandEvent& event)
 	    ProfileList::iterator it = AppProfiles.begin();
 	    advance(it, index);
 
-	    printf("Profile %d %s selected\n", index, (const char*)(*it).AppName.ToUTF8());
-
 	    mpAppProfilePanel->EnableAppProfiles(false);
 	    mpAppProfilePanel->SetManualProfile((*it).ProfileName);
 	    mpAppProfilePanel->SetActiveProfile((*it).AppName);

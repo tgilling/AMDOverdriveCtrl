@@ -81,7 +81,7 @@ bool COvdrSettingsPanel::CommitOverdriveValues()
     #ifdef FAKE_ATI_CARD
 	for (int i=0; i<NR_OF_LEVELS; i++)
 	{
-	    printf("SetOverdriveValues: Level %d, %dMHz, %dMHz, %.3fV\n", i, mGPU[i], mMem[i], (double)mVoltage[i]/1000.0);
+	    ACT_LOG("SetOverdriveValues: Level " << mGPU[i] << "MHz, " << mMem[i] << "MHz, " <<	"MHz, " << (double)mVoltage[i]/1000.0 << "V");
 	}
 	return true;
     #endif
@@ -105,7 +105,7 @@ bool COvdrSettingsPanel::CommitOverdriveValues()
 		    levels->aLevels[i].iMemoryClock = mMem[i] * 100;
 		    levels->aLevels[i].iVddc = mVoltage[i];
 
-		    printf("SetOverdriveValues: Level %d, %dMHz, %dMHz, %.3fV\n", i, mGPU[i], mMem[i], (double)mVoltage[i]/1000.0);
+		    ACT_LOG("SetOverdriveValues: Level " << mGPU[i] << "MHz, " << mMem[i] << "MHz, " <<	"MHz, " << (double)mVoltage[i]/1000.0 << "V");
 		}
 	    }
 

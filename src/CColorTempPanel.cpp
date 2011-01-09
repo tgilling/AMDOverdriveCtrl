@@ -76,6 +76,9 @@ CColorTempPanel::CColorTempPanel(wxWindow* parent, wxWindowID id, const wxPoint&
 	    return;
 	}
 
+	memset(mpColorTempAtStartup, 0, sizeof(int)*mNrOfDisplays);
+	memset(mpColorTempDefault, 0, sizeof(int)*mNrOfDisplays);
+
 	for (int i=0; i<mNrOfDisplays; i++)
 	{
 	    if ((mpDisplayInfo[i].iDisplayInfoValue & (ADL_DISPLAY_DISPLAYINFO_DISPLAYCONNECTED | ADL_DISPLAY_DISPLAYINFO_DISPLAYMAPPED)) ==
@@ -95,7 +98,9 @@ CColorTempPanel::CColorTempPanel(wxWindow* parent, wxWindowID id, const wxPoint&
 
 	        if (SAVE_CALL(adl->ADL_Display_Color_Get)(0, i, ADL_DISPLAY_COLOR_TEMPERATURE, &current, &def, &min, &max, &step) == ADL_OK)
 	        {
-		    cout << "Color disp(" << i << ") : " << current << " " << def << " " << min << " " << max << " " << step << endl;
+		    INF_LOG("Color temp disp(" << i << ") : ");
+		    INF_LOG("current " << current << "K default " << def << "K");
+		    INF_LOG("min " << min << "K max " << max << "K step " << step << "K");
 
 		    mpColorTempAtStartup[i] = current;
 		    mpColorTempDefault[i] = def;
@@ -177,6 +182,9 @@ void CColorTempPanel::mColorTempDaySliderOnScroll(wxScrollEvent& event)
 	mColorTempNight->SetValue(wxString::Format(wxT("%d"), value*mColorTempStep));
 	mColorTempNightSlider->SetValue(value);
     }
+
+    Stop();
+    mEnable->SetValue(false);
 }
 
 void CColorTempPanel::mColorTempNightSliderOnScroll(wxScrollEvent& event)
@@ -190,6 +198,9 @@ void CColorTempPanel::mColorTempNightSliderOnScroll(wxScrollEvent& event)
 	mColorTempDay->SetValue(wxString::Format(wxT("%d"), value*mColorTempStep));
 	mColorTempDaySlider->SetValue(value);
     }
+
+    Stop();
+    mEnable->SetValue(false);
 }
 
 void CColorTempPanel::mTransitionSliderOnScroll(wxScrollEvent& event)
@@ -249,10 +260,7 @@ void CColorTempPanel::mCurveOnLeftDown(wxMouseEvent& event)
 
 void CColorTempPanel::mCurveOnLeftUp(wxMouseEvent& WXUNUSED(event))
 {
-    for (int i=0; i<mNrOfDisplays; i++)
-    {
-	SetColorTemperature(mpColorTempAtStartup[i], i);
-    }
+    SetColorTemperature(mColorTempScratch, false);
     DrawDiagram();
 }
 
@@ -303,9 +311,6 @@ void CColorTempPanel::CalculateSunriseAndSunset()
 
     mSunrise = mSunrise.FromUTC();
     mSunset = mSunset.FromUTC();
-
-    cout << "Sunrise:" << mSunrise.GetHour() << ":" << mSunrise.GetMinute() << endl;
-    cout << "Sunset:" << mSunset.GetHour() << ":" << mSunset.GetMinute() << endl;
 
     DrawDiagram();
 }
@@ -478,6 +483,8 @@ void CColorTempPanel::SetValues(bool enable, double longitude, double latitude, 
 	mTransitionSlider->SetValue(transition);
 	mTransition->SetValue(wxString::Format(wxT("%dmin"), transition));
 	EnableColorTemperatureCtrl(enable);
+	INF_LOG("Sunrise:" << mSunrise.GetHour() << ":" << mSunrise.GetMinute());
+	INF_LOG("Sunset:" << mSunset.GetHour() << ":" << mSunset.GetMinute());
     }
 }
 
@@ -541,7 +548,11 @@ void CColorTempPanel::SetColorTemperature(int color_temp, bool manual_setting, u
 	    {
 		if (SAVE_CALL(adl->ADL_Display_Color_Set)(0, i, ADL_DISPLAY_COLOR_TEMPERATURE, color_temp) != ADL_OK)
 		{
-		    cout << "Could not set color temperature value : " << color_temp << endl;
+		    ERR_LOG("Could not set color temperature value : " << color_temp << " for display " << (int) i);
+		}
+		else
+		{
+		    ACT_LOG("Color temperature: " << color_temp << "K set for display " << (int)i);
 		}
 	    }
 	}
@@ -552,11 +563,15 @@ void CColorTempPanel::SetColorTemperature(int color_temp, bool manual_setting, u
 	{
 	    if (SAVE_CALL(adl->ADL_Display_Color_Set)(0, display, ADL_DISPLAY_COLOR_TEMPERATURE, color_temp) != ADL_OK)
 	    {
-		cout << "Could not set color temperature value : " << color_temp << endl;
+		ERR_LOG("Could not set color temperature value : " << color_temp << " for display " << (int) display);
+	    }
+	    else
+	    {
+		ACT_LOG("Color temperature: " << color_temp << "K set for display " << (int)display);
 	    }
 	}
     }
-    mManualColorSet = manual_setting;
+    mManualColorSet = manual_setting;    
 }
 
 void CColorTempPanel::mEnableOnCheckBox(wxCommandEvent& WXUNUSED(event))

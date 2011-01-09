@@ -89,6 +89,7 @@ CAppProfilePanel::CAppProfilePanel(wxWindow* parent, wxWindowID id, const wxPoin
 		    }
 		}
 	    }
+	    INF_LOG("Application profile XML parsed.");
 	}
     }
 

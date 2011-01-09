@@ -56,7 +56,10 @@ bool MainApp::OnCmdLineParsed(wxCmdLineParser& parser)
 
     mEnableAppProfiles = parser.Found(wxT("a"));
 
-    parser.Found(wxT("c"), &mColorTemp);
+    if (!parser.Found(wxT("c"), &mColorTemp))
+    {
+	mColorTemp = 0;
+    }
 
     if (parser.GetParamCount() > 0)
     {
@@ -243,7 +246,7 @@ bool MainApp::OnInit()
 	    {
 		if (main_dialog->LoadXML(filename))
 		{
-		    printf("Default profile found and loaded.\n");
+		    INF_LOG("Default profile found and loaded.");
 		}
 	    }
 	}
@@ -537,7 +540,7 @@ bool MainDialog::LoadXML(wxString filename)
 			if (nr == NR_OF_CTRL_POINTS-1)
 			{
 			    mpFanControlPanel->SetCtrlPoints(ctrl_points);
-			    mpFanControlPanel->EnableFanControllerMode(enable_fan_ctrl);
+			    mpFanControlPanel->EnableFanControllerMode(enable_fan_ctrl, false);
 			}
 		    }
 		    else if (child->GetName() == wxT("MONITOR_SAMPLE_TIME"))
@@ -701,7 +704,7 @@ void MainDialog::Notify()
 		{
 		    if (LoadXML((*it).ProfileName))
 		    {
-			printf("Profile: %s, %s activated\n", (const char*)(*it).AppName.ToUTF8(), (const char*)(*it).ProfileName.ToUTF8());
+			ACT_LOG("Profile: " << (*it).AppName.ToUTF8() << ", " << (*it).ProfileName.ToUTF8() << " activated");
 			mpAppProfilePanel->SetActiveProfile((*it).AppName);
 			mpAppProfilePanel->SetActiveProfileIndex(index);
 			mpAppProfilePanel->UpdateDisplay();
@@ -710,7 +713,7 @@ void MainDialog::Notify()
 		    }
 		    else
 		    {
-			printf("Failed to load profile %s\n", (const char*)(*it).AppName.ToUTF8());			
+			ERR_LOG("Failed to load profile " << (*it).AppName.ToUTF8());
 		    }
 		}
 
@@ -721,7 +724,7 @@ void MainDialog::Notify()
 	{
 	    if (!IsAppRunning(mpAppProfilePanel->GetActiveProfile()))
 	    {
-		printf("%s closed.\n", (const char*)mpAppProfilePanel->GetActiveProfile().ToUTF8());
+		ACT_LOG(mpAppProfilePanel->GetActiveProfile().ToUTF8() << " closed.");
 		if (mpAppProfilePanel->GetDefaultProfile().IsEmpty())
 		{
 		    mpFanSpeedPanel->SetDefaultFanSpeed();
@@ -731,7 +734,7 @@ void MainDialog::Notify()
 		}
 		else
 		{
-		    printf("Default Profile activated\n");
+		    ACT_LOG("Default Profile activated");
 		    if (LoadXML(mpAppProfilePanel->GetDefaultProfile()))
 		    {
 			mpAppProfilePanel->SetActiveProfile(wxT(""));
@@ -740,7 +743,7 @@ void MainDialog::Notify()
 		    }
 		    else
 		    {
-			printf("Failed to load default profile %s\n", (const char*)mpAppProfilePanel->GetDefaultProfile().ToUTF8());
+			ERR_LOG("Failed to load default profile " << mpAppProfilePanel->GetDefaultProfile().ToUTF8());
 		    }
 		}
 		mpAppProfilePanel->SetActiveProfile(wxT(""));
@@ -751,14 +754,14 @@ void MainDialog::Notify()
     }
     else if (!mpAppProfilePanel->GetManualProfile().IsEmpty())
     {
-	printf("Profile: %s activated\n", (const char*)mpAppProfilePanel->GetManualProfile().ToUTF8());
+	ACT_LOG("Profile: " << mpAppProfilePanel->GetManualProfile().ToUTF8() << " activated.");
 	if (LoadXML(mpAppProfilePanel->GetManualProfile()))
 	{
 	    mpAppProfilePanel->SetManualProfile(wxT(""));
 	}
 	else
 	{
-	    printf("Failed to load manual profile %s\n", (const char*)mpAppProfilePanel->GetManualProfile().ToUTF8());
+	    ERR_LOG("Failed to load manual selected profile " << mpAppProfilePanel->GetManualProfile().ToUTF8());
 	}
 	Stop();
 	Start(TIMER_INTERVAL);

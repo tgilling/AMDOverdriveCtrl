@@ -325,13 +325,13 @@ void MainDialog::OnInit(wxInitDialogEvent& WXUNUSED(event))
 	    && mpMonitorPanel != NULL && mpFanControlPanel != NULL && mpAppProfilePanel != NULL
 	    && mpOvdrSettingsPanel != NULL && mpColorTempPanel != NULL)
 	{
-	    mNotebook->AddPage(mpColorTempPanel, wxT("Color"));
 	    mNotebook->AddPage(mpAuthorPanel, wxT("?"));
 	    mNotebook->AddPage(mpInfoPanel, wxT("Info"));
 	    mNotebook->AddPage(mpOvdrSettingsPanel, wxT("Overdrive"));
 	    mNotebook->AddPage(mpFanSpeedPanel, wxT("FanSpeed"));
 	    mNotebook->AddPage(mpFanControlPanel, wxT("FanCtrl"));
 	    mNotebook->AddPage(mpAppProfilePanel, wxT("AppProfile"));
+	    mNotebook->AddPage(mpColorTempPanel, wxT("Color"));
 	    mNotebook->AddPage(mpMonitorPanel, wxT("Monitor"));
 	}
 	else

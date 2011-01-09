@@ -2,10 +2,10 @@
 <CodeLite_Workspace Name="AMDOverdriveCtrl" Database="./AMDOverdriveCtrl.tags">
   <Project Name="AMDOverdriveCtrl" Path="AMDOverdriveCtrl.project" Active="Yes"/>
   <BuildMatrix>
-    <WorkspaceConfiguration Name="Debug" Selected="yes">
+    <WorkspaceConfiguration Name="Debug" Selected="no">
       <Project Name="AMDOverdriveCtrl" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Release" Selected="no">
+    <WorkspaceConfiguration Name="Release" Selected="yes">
       <Project Name="AMDOverdriveCtrl" ConfigName="Release"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Debug fake ATI card" Selected="no">

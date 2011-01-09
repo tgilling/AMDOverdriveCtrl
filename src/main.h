@@ -54,19 +54,21 @@
 static const wxCmdLineEntryDesc g_cmdLineDesc [] =
 {
      { wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), wxT("displays help on the command line parameters"),
-          wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
+       wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
 
      { wxCMD_LINE_PARAM, wxT(""), wxT(""), wxT("profile name"),
        wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
 
-     { wxCMD_LINE_SWITCH, wxT("b"), wxT("batch-mode"), wxT("only set profile, no GUI") },
+     { wxCMD_LINE_SWITCH, wxT("b"), wxT("batch-mode"), wxT("only set profile, no GUI"),
+       wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL },
 
-     { wxCMD_LINE_SWITCH, wxT("a"), wxT("enable-app-profiles"), wxT("set color temperature") },
+     { wxCMD_LINE_SWITCH, wxT("a"), wxT("enable-app-profiles"), wxT("set color temperature"),
+       wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL },
 
      { wxCMD_LINE_OPTION, wxT("c"), wxT("color-temp"), wxT("set color temperature"),
        wxCMD_LINE_VAL_NUMBER, wxCMD_LINE_PARAM_OPTIONAL },
 
-     { wxCMD_LINE_NONE }
+     { wxCMD_LINE_NONE, wxT(""), wxT(""), wxT(""), wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL }
 };
 
 class MainApp : public wxApp

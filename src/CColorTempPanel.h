@@ -54,6 +54,10 @@ class CColorTempPanel : public CColorTempPanelBase, public wxTimer
         void GetValues(bool& enable, double& longitude, double& latitude, long& color_temp_day, long& color_temp_night, long& transition);
         void SetValues(bool enable, double longitude, double latitude, long color_temp_day, long color_temp_night, long transition);
 
+	void SetDefaultColorTemperature();
+	void SetDayColorTemperature();
+	void SetNightColorTemperature();
+
     protected:
         virtual void OnPaint(wxPaintEvent& event);
         virtual void mEnableOnCheckBox(wxCommandEvent& event);

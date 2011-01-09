@@ -32,17 +32,19 @@
 #include <wx/taskbar.h>
 
 class CAppProfilePanel;
+class CColorTempPanel;
 
 class CTaskBarIcon : public wxTaskBarIcon
 {
     public:
 
-        CTaskBarIcon(wxWindow* dialog, CAppProfilePanel* panel);
+        CTaskBarIcon(wxWindow* dialog, CAppProfilePanel* panel, CColorTempPanel* ctpanel);
         virtual ~CTaskBarIcon();
 
     protected:
         wxWindow* mpDialog;
 	CAppProfilePanel* mpAppProfilePanel;
+	CColorTempPanel* mpColorTempPanel;
 
         virtual wxMenu*	CreatePopupMenu();
         virtual void OnLeftDown(wxTaskBarIconEvent& event);

@@ -54,6 +54,9 @@ CColorTempPanel::CColorTempPanel(wxWindow* parent, wxWindowID id, const wxPoint&
 {
     adl = ADL::Instance();
 
+#ifdef FAKE_ATI_CARD
+    mValidDisplays = 0;
+#else
     if (SAVE_CALL(adl->ADL_Display_DisplayInfo_Get)(0, &mNrOfDisplays, &mpDisplayInfo, 0) != ADL_OK)
     {
 	Show(false);
@@ -114,6 +117,7 @@ CColorTempPanel::CColorTempPanel(wxWindow* parent, wxWindowID id, const wxPoint&
 	    }
 	}
     }
+#endif
 
     if (mValidDisplays == 0)
     {
@@ -458,16 +462,19 @@ void CColorTempPanel::GetValues(bool& enable, double& longitude, double& latitud
 
 void CColorTempPanel::SetValues(bool enable, double longitude, double latitude, long color_temp_day, long color_temp_night, long transition)
 {
-    mEnable->SetValue(enable);
-    mLongitude->SetValue(wxString::Format(wxT("%.2lf"), longitude));
-    mLatitude->SetValue(wxString::Format(wxT("%.2lf"), latitude));
-    mColorTempDaySlider->SetValue(color_temp_day/mColorTempStep);
-    mColorTempDay->SetValue(wxString::Format(wxT("%d"), color_temp_day));
-    mColorTempNightSlider->SetValue(color_temp_night/mColorTempStep);
-    mColorTempNight->SetValue(wxString::Format(wxT("%d"), color_temp_night));
-    mTransitionSlider->SetValue(transition);
-    mTransition->SetValue(wxString::Format(wxT("%dmin"), transition));
-    EnableColorTemperatureCtrl(enable);
+    if (mValidDisplays != 0)
+    {
+	mEnable->SetValue(enable);
+	mLongitude->SetValue(wxString::Format(wxT("%.2lf"), longitude));
+	mLatitude->SetValue(wxString::Format(wxT("%.2lf"), latitude));
+	mColorTempDaySlider->SetValue(color_temp_day/mColorTempStep);
+	mColorTempDay->SetValue(wxString::Format(wxT("%d"), color_temp_day));
+	mColorTempNightSlider->SetValue(color_temp_night/mColorTempStep);
+	mColorTempNight->SetValue(wxString::Format(wxT("%d"), color_temp_night));
+	mTransitionSlider->SetValue(transition);
+	mTransition->SetValue(wxString::Format(wxT("%dmin"), transition));
+	EnableColorTemperatureCtrl(enable);
+    }
 }
 
 void CColorTempPanel::ButtonTestDayColorClick(wxCommandEvent& WXUNUSED(event))
@@ -710,11 +717,38 @@ void CColorTempPanel::Notify()
 
 void CColorTempPanel::ButtonSetDayColorClick(wxCommandEvent& WXUNUSED(event))
 {
-    SetColorTemperature(mColorTempDaySlider->GetValue()*mColorTempStep);
+    SetDayColorTemperature();
 }
 
 void CColorTempPanel::ButtonSetNightColorClick(wxCommandEvent& WXUNUSED(event))
 {
+    SetNightColorTemperature();
+}
+
+void CColorTempPanel::SetDayColorTemperature()
+{
+    SetColorTemperature(mColorTempDaySlider->GetValue()*mColorTempStep);
+    Stop();
+    mEnable->SetValue(false);
+    DrawDiagram();
+}
+
+void CColorTempPanel::SetDefaultColorTemperature()
+{
+    for (int i=0; i<mNrOfDisplays; i++)
+    {
+	SetColorTemperature(mpColorTempDefault[i], i);
+    }
+    Stop();
+    mEnable->SetValue(false);
+    DrawDiagram();
+}
+
+void CColorTempPanel::SetNightColorTemperature()
+{
     SetColorTemperature(mColorTempNightSlider->GetValue()*mColorTempStep);
+    Stop();
+    mEnable->SetValue(false);
+    DrawDiagram();
 }
 

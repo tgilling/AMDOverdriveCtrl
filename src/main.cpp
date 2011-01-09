@@ -300,7 +300,7 @@ MainDialog::MainDialog(wxWindow *parent)
     tmp.Rescale(20,20, wxIMAGE_QUALITY_HIGH);
     icon.CopyFromBitmap(tmp);
 
-    mpTaskBarIcon = new CTaskBarIcon(this, mpAppProfilePanel);
+    mpTaskBarIcon = new CTaskBarIcon(this, mpAppProfilePanel, mpColorTempPanel);
     mpTaskBarIcon->SetIcon(icon, wxT("AMD OverdriveCtrl"));
 
     Start(TIMER_INTERVAL);

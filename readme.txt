@@ -1,7 +1,11 @@
 History:
 --------
 
-V1.0.3  :	check for supported HW features and disable parts of the program if necessary
+V1.1.0  :	new feature: Change color temperature (inspired by "f.lux" 
+		and "redshift")
+
+V1.0.3  :	check for supported HW features and disable parts of the program 
+		if necessary
 
 V1.0.2  :	corrected some minor deb packaging problems
 

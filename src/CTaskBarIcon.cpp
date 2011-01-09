@@ -29,6 +29,7 @@
 
 #include "CTaskBarIcon.h"
 #include "CAppProfilePanel.h"
+#include "CColorTempPanel.h"
 
 enum
 {
@@ -36,14 +37,18 @@ enum
     OVDR_TB_CMD_HIDE,
     OVDR_TB_CMD_EXIT,
     OVDR_TB_CMD_AUTOSTART,
+    OVDR_TB_CMD_DAY_COLOR,
+    OVDR_TB_CMD_NIGHT_COLOR,
+    OVDR_TB_CMD_DEFAULT_COLOR,
     OVDR_TB_CMD_PROFILE_DEFAULT,
     OVDR_TB_CMD_PROFILE
 };
 
-CTaskBarIcon::CTaskBarIcon(wxWindow* dialog, CAppProfilePanel* panel)
+CTaskBarIcon::CTaskBarIcon(wxWindow* dialog, CAppProfilePanel* panel, CColorTempPanel* ctpanel)
     : wxTaskBarIcon()
     , mpDialog(dialog)
     , mpAppProfilePanel(panel)
+    , mpColorTempPanel(ctpanel)
 {
     Connect(wxEVT_TASKBAR_LEFT_DOWN, wxTaskBarIconEventHandler(CTaskBarIcon::OnLeftDown), NULL, this);
 }
@@ -56,7 +61,6 @@ CTaskBarIcon::~CTaskBarIcon()
 wxMenu*	CTaskBarIcon::CreatePopupMenu()
 {
     wxMenu* menu = new wxMenu;
-    wxMenu* app_profiles = new wxMenu;
 
     if (mpDialog->IsShown())
     {
@@ -68,35 +72,53 @@ wxMenu*	CTaskBarIcon::CreatePopupMenu()
     }
     menu->AppendSeparator();
 
-    ProfileList AppProfiles = mpAppProfilePanel->GetProfiles();
-    ProfileList::iterator it;
-    int index = 0;
-
-    for (it = AppProfiles.begin(); it != AppProfiles.end(); ++it)
+    if (mpColorTempPanel->IsShown())
     {
-	app_profiles->Append(OVDR_TB_CMD_PROFILE+index, (*it).AppName, wxT(""), true);
-	++index;
-    }
+	wxMenu* color_temp = new wxMenu;
 
-    if (index>0)
-    {
-	app_profiles->AppendSeparator();
-	app_profiles->Append(OVDR_TB_CMD_PROFILE_DEFAULT, wxT("default"), wxT(""), true);
-	menu->AppendSubMenu(app_profiles, wxT("App Profiles"));
+	color_temp->Append(OVDR_TB_CMD_DAY_COLOR, wxT("Set day color temperatur"), wxT(""), false);
+	color_temp->Append(OVDR_TB_CMD_NIGHT_COLOR, wxT("Set night color temperatur"), wxT(""), false);
+	color_temp->Append(OVDR_TB_CMD_DEFAULT_COLOR, wxT("Set default color temperatur"), wxT(""), false);
+	menu->AppendSubMenu(color_temp, wxT("Color temperature"));
 	menu->AppendSeparator();
 
-	if (mpAppProfilePanel->GetActiveProfileIndex() != -1)
+	color_temp->Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CTaskBarIcon::OnMenuClick), NULL, this);
+    }
+
+    if (mpAppProfilePanel->IsShown())
+    {
+	wxMenu* app_profiles = new wxMenu;
+
+	ProfileList AppProfiles = mpAppProfilePanel->GetProfiles();
+	ProfileList::iterator it;
+	int index = 0;
+
+	for (it = AppProfiles.begin(); it != AppProfiles.end(); ++it)
 	{
-	    wxMenuItem* item = app_profiles->FindItem(OVDR_TB_CMD_PROFILE+mpAppProfilePanel->GetActiveProfileIndex());
-	    item->Check(true);
-	}
-	else
-	{
-	    wxMenuItem* item = app_profiles->FindItem(OVDR_TB_CMD_PROFILE_DEFAULT);
-	    item->Check(true);
+	    app_profiles->Append(OVDR_TB_CMD_PROFILE+index, (*it).AppName, wxT(""), true);
+	    ++index;
 	}
 
-	app_profiles->Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CTaskBarIcon::OnMenuClick), NULL, this);
+	if (index>0)
+	{
+	    app_profiles->AppendSeparator();
+	    app_profiles->Append(OVDR_TB_CMD_PROFILE_DEFAULT, wxT("default"), wxT(""), true);
+	    menu->AppendSubMenu(app_profiles, wxT("App Profiles"));
+	    menu->AppendSeparator();
+
+	    if (mpAppProfilePanel->GetActiveProfileIndex() != -1)
+	    {
+		wxMenuItem* item = app_profiles->FindItem(OVDR_TB_CMD_PROFILE+mpAppProfilePanel->GetActiveProfileIndex());
+		item->Check(true);
+	    }
+	    else
+	    {
+		wxMenuItem* item = app_profiles->FindItem(OVDR_TB_CMD_PROFILE_DEFAULT);
+		item->Check(true);
+	    }
+
+	    app_profiles->Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(CTaskBarIcon::OnMenuClick), NULL, this);
+	}
     }
 
     #ifdef LINUX
@@ -200,6 +222,23 @@ void CTaskBarIcon::OnMenuClick(wxCommandEvent& event)
 	}
 	break;
 
+	case OVDR_TB_CMD_DAY_COLOR:
+	{
+	    mpColorTempPanel->SetDayColorTemperature();
+	}
+	break;
+
+	case OVDR_TB_CMD_NIGHT_COLOR:
+	{
+	    mpColorTempPanel->SetNightColorTemperature();
+	}
+	break;
+
+	case OVDR_TB_CMD_DEFAULT_COLOR:
+	{
+	    mpColorTempPanel->SetDefaultColorTemperature();
+	}
+	break;
 
 	default:
 	{

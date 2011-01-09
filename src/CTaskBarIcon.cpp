@@ -76,9 +76,9 @@ wxMenu*	CTaskBarIcon::CreatePopupMenu()
     {
 	wxMenu* color_temp = new wxMenu;
 
-	color_temp->Append(OVDR_TB_CMD_DAY_COLOR, wxT("Set day color temperatur"), wxT(""), false);
-	color_temp->Append(OVDR_TB_CMD_NIGHT_COLOR, wxT("Set night color temperatur"), wxT(""), false);
-	color_temp->Append(OVDR_TB_CMD_DEFAULT_COLOR, wxT("Set default color temperatur"), wxT(""), false);
+	color_temp->Append(OVDR_TB_CMD_DAY_COLOR, wxT("Set day color temperature"), wxT(""), false);
+	color_temp->Append(OVDR_TB_CMD_NIGHT_COLOR, wxT("Set night color temperature"), wxT(""), false);
+	color_temp->Append(OVDR_TB_CMD_DEFAULT_COLOR, wxT("Set default color temperature"), wxT(""), false);
 	menu->AppendSubMenu(color_temp, wxT("Color temperature"));
 	menu->AppendSeparator();
 

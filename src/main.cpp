@@ -44,9 +44,36 @@ IMPLEMENT_APP(MainApp);
 
 static int MissingFeatures = 0;
 
+void MainApp::OnInitCmdLine(wxCmdLineParser& parser)
+{
+    parser.SetDesc (g_cmdLineDesc);
+    parser.SetSwitchChars (wxT("-"));
+}
+
+bool MainApp::OnCmdLineParsed(wxCmdLineParser& parser)
+{
+    mBatchMode = parser.Found(wxT("b"));
+
+    mEnableAppProfiles = parser.Found(wxT("a"));
+
+    parser.Found(wxT("c"), &mColorTemp);
+
+    if (parser.GetParamCount() > 0)
+    {
+        mProfileName = parser.GetParam(0);
+    }
+
+    return true;
+}
+
 bool MainApp::OnInit()
 {
     ADL* adl = ADL::Instance();
+
+    if (!wxApp::OnInit())
+    {
+        return false;
+    }
 
     if (adl == NULL)
     {
@@ -221,33 +248,28 @@ bool MainApp::OnInit()
 	    }
 	}
 
-	wxString tmp = wxString::Format(wxT("Usage: %s [overdrive_profile_filename [--batch-mode]] | [--enable-app-profiles]\n"), argv[0]);
-	printf("%s\n", (const char*)tmp.ToUTF8());
-
-	if(argc >= 2)
+	if (!mProfileName.IsEmpty())
 	{
-	    wxString tmp = wxT("--enable-app-profiles");
-	    if(tmp.CompareTo(argv[2], wxString::ignoreCase) == 0 ||
-	       tmp.CompareTo(argv[1], wxString::ignoreCase) == 0)
+	    if (!main_dialog->LoadXML(mProfileName))
 	    {
-		main_dialog->EnableAppProfiles();
+		wxMessageBox(wxT("\nThe specified startup profile '") + mProfileName + wxT("' is missing."), wxT("AMD/ATI OverdriveCtrl warning"), wxOK|wxCENTRE|wxICON_WARNING);
 	    }
-	    else
-	    {
-		if (!main_dialog->LoadXML(argv[1]))
-		{
-		    wxString profile = argv[1];
-		    wxMessageBox(wxT("\nThe specified startup profile '") + profile + wxT("' is missing."), wxT("AMD/ATI OverdriveCtrl warning"), wxOK|wxCENTRE|wxICON_WARNING);
-		}
-	    }
+	}
 
-	    tmp = wxT("--batch-mode");
-	    if(tmp.CompareTo(argv[2], wxString::ignoreCase) == 0)
-	    {
-		main_dialog->SetStartupProfileName(wxT(""));
-		delete main_dialog;
-		return false;
-	    }
+	if (mColorTemp != 0)
+	{
+	    main_dialog->SetColorTemperature(mColorTemp);
+	}
+
+	if (mBatchMode)
+	{
+	    main_dialog->SetStartupProfileName(wxT(""));
+	    delete main_dialog;
+	    return false;
+	}
+	else if (mEnableAppProfiles)
+	{
+	    main_dialog->EnableAppProfiles();
 	}
 
 	SetTopWindow(main_dialog);
@@ -415,6 +437,11 @@ void MainDialog::EnableAppProfiles()
     {
 	LoadXML(mpAppProfilePanel->GetDefaultProfile());
     }
+}
+
+void MainDialog::SetColorTemperature(int color_temp)
+{
+    mpColorTempPanel->SetColorTemperature(color_temp, true);
 }
 
 bool MainDialog::LoadXML(wxString filename)

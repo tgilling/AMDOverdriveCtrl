@@ -57,6 +57,7 @@ class CColorTempPanel : public CColorTempPanelBase, public wxTimer
 	void SetDefaultColorTemperature();
 	void SetDayColorTemperature();
 	void SetNightColorTemperature();
+	void SetColorTemperature(int color_temp, bool manual_setting, unsigned char display = 255);
 
     protected:
         virtual void OnPaint(wxPaintEvent& event);
@@ -86,7 +87,6 @@ class CColorTempPanel : public CColorTempPanelBase, public wxTimer
         void SetMouseValues(wxPoint p);
 
 	void TestColorTemperature(int color_temp);
-	void SetColorTemperature(int color_temp, unsigned char display = 255);
 	int GetColorTemperature(unsigned char display = 255);
 	void EnableColorTemperatureCtrl(bool enable = true);
 
@@ -112,6 +112,8 @@ class CColorTempPanel : public CColorTempPanelBase, public wxTimer
 	wxPoint mTrNightDay;
 	wxPoint mDragDayColor;
 	wxPoint mDragNightColor;
+
+	bool mManualColorSet;
 
 };
 

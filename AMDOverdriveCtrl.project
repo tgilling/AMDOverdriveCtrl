@@ -90,9 +90,7 @@
       </CustomBuild>
       <AdditionalRules>
         <CustomPostBuild/>
-        <CustomPreBuild>src/icon.png.h
-src/icon.png.h: create_deb/icon.png
-	./bin2h create_deb/icon.png ../src/icon.png</CustomPreBuild>
+        <CustomPreBuild/>
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Debug fake ATI card" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
@@ -126,9 +124,7 @@ src/icon.png.h: create_deb/icon.png
       </CustomBuild>
       <AdditionalRules>
         <CustomPostBuild/>
-        <CustomPreBuild>src/icon.png.h
-src/icon.png.h: create_deb/icon.png
-	./bin2h create_deb/icon.png ../src/icon.png</CustomPreBuild>
+        <CustomPreBuild/>
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
@@ -161,10 +157,7 @@ src/icon.png.h: create_deb/icon.png
       </CustomBuild>
       <AdditionalRules>
         <CustomPostBuild/>
-        <CustomPreBuild>src/icon.png.h
-src/icon.png.h: create_deb/icon.png
-	./bin2h create_deb/icon.png ../src/icon.png
-</CustomPreBuild>
+        <CustomPreBuild/>
       </AdditionalRules>
     </Configuration>
   </Settings>

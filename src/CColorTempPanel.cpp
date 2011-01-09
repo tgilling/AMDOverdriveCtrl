@@ -51,6 +51,7 @@ CColorTempPanel::CColorTempPanel(wxWindow* parent, wxWindowID id, const wxPoint&
     , mTrNightDay(0,0)
     , mDragDayColor(0,0)
     , mDragNightColor(0,0)
+    , mManualColorSet(true)
 {
     adl = ADL::Instance();
 
@@ -94,7 +95,7 @@ CColorTempPanel::CColorTempPanel(wxWindow* parent, wxWindowID id, const wxPoint&
 
 	        if (SAVE_CALL(adl->ADL_Display_Color_Get)(0, i, ADL_DISPLAY_COLOR_TEMPERATURE, &current, &def, &min, &max, &step) == ADL_OK)
 	        {
-		    cout << current << " " << def << " " << min << " " << max << " " << step << endl;
+		    cout << "Color disp(" << i << ") : " << current << " " << def << " " << min << " " << max << " " << step << endl;
 
 		    mpColorTempAtStartup[i] = current;
 		    mpColorTempDefault[i] = def;
@@ -147,11 +148,14 @@ CColorTempPanel::CColorTempPanel(wxWindow* parent, wxWindowID id, const wxPoint&
 
 CColorTempPanel::~CColorTempPanel()
 {
-    for (int i=0; i<mNrOfDisplays; i++)
+    if (!mManualColorSet)
     {
-	SetColorTemperature(mpColorTempAtStartup[i], i);
+	for (int i=0; i<mNrOfDisplays; i++)
+	{
+	    SetColorTemperature(mpColorTempAtStartup[i], true, i);
+	}
+	Stop();
     }
-    Stop();
 
     delete[] mpColorTempAtStartup;
     delete[] mpColorTempDefault;
@@ -222,13 +226,13 @@ void CColorTempPanel::SetMouseValues(wxPoint p)
     {
 	mColorTempDaySlider->SetValue(p.y);
 	mColorTempDaySliderOnScroll(ev);
-	SetColorTemperature(mColorTempDaySlider->GetValue()*mColorTempStep);
+	SetColorTemperature(mColorTempDaySlider->GetValue()*mColorTempStep, false);
     }
     else
     {
 	mColorTempNightSlider->SetValue(p.y);
 	mColorTempNightSliderOnScroll(ev);
-	SetColorTemperature(mColorTempNightSlider->GetValue()*mColorTempStep);
+	SetColorTemperature(mColorTempNightSlider->GetValue()*mColorTempStep, false);
     }
 
     DrawDiagram();
@@ -490,9 +494,9 @@ void CColorTempPanel::ButtonTestNightColorClick(wxCommandEvent& WXUNUSED(event))
 void CColorTempPanel::TestColorTemperature(int color_temp)
 {
     int temp = GetColorTemperature();
-    SetColorTemperature(color_temp);
+    SetColorTemperature(color_temp, false);
     wxMessageBox(wxString::Format(wxT("\nColor temperature value: %dK"), color_temp), wxT("Test color temperature"));
-    SetColorTemperature(temp);
+    SetColorTemperature(temp, false);
 }
 
 int CColorTempPanel::GetColorTemperature(unsigned char display)
@@ -527,7 +531,7 @@ int CColorTempPanel::GetColorTemperature(unsigned char display)
     return 6500;
 }
 
-void CColorTempPanel::SetColorTemperature(int color_temp, unsigned char display)
+void CColorTempPanel::SetColorTemperature(int color_temp, bool manual_setting, unsigned char display)
 {
     if (display == 255)
     {
@@ -552,6 +556,7 @@ void CColorTempPanel::SetColorTemperature(int color_temp, unsigned char display)
 	    }
 	}
     }
+    mManualColorSet = manual_setting;
 }
 
 void CColorTempPanel::mEnableOnCheckBox(wxCommandEvent& WXUNUSED(event))
@@ -582,13 +587,11 @@ void CColorTempPanel::EnableColorTemperatureCtrl(bool enable)
 	}
 
 	Start(100);
+
+	mManualColorSet = false;
     }
     else
     {
-	for (int i=0; i<mNrOfDisplays; i++)
-	{
-	    SetColorTemperature(mpColorTempAtStartup[i], i);
-	}
 	Stop();
 	DrawDiagram();
     }
@@ -702,7 +705,7 @@ void CColorTempPanel::Notify()
 		Stop();
 		Start(30*1000);
 	    }
-	    SetColorTemperature(current);
+	    SetColorTemperature(current, false);
 	    DrawDiagram();
 	}
 	break;
@@ -727,17 +730,17 @@ void CColorTempPanel::ButtonSetNightColorClick(wxCommandEvent& WXUNUSED(event))
 
 void CColorTempPanel::SetDayColorTemperature()
 {
-    SetColorTemperature(mColorTempDaySlider->GetValue()*mColorTempStep);
+    SetColorTemperature(mColorTempDaySlider->GetValue()*mColorTempStep, true);
     Stop();
     mEnable->SetValue(false);
-    DrawDiagram();
+    DrawDiagram();    
 }
 
 void CColorTempPanel::SetDefaultColorTemperature()
 {
     for (int i=0; i<mNrOfDisplays; i++)
     {
-	SetColorTemperature(mpColorTempDefault[i], i);
+	SetColorTemperature(mpColorTempDefault[i], true, i);
     }
     Stop();
     mEnable->SetValue(false);
@@ -746,9 +749,9 @@ void CColorTempPanel::SetDefaultColorTemperature()
 
 void CColorTempPanel::SetNightColorTemperature()
 {
-    SetColorTemperature(mColorTempNightSlider->GetValue()*mColorTempStep);
+    SetColorTemperature(mColorTempNightSlider->GetValue()*mColorTempStep, true);
     Stop();
     mEnable->SetValue(false);
-    DrawDiagram();
+    DrawDiagram();    
 }
 

@@ -1,6 +1,8 @@
 History:
 --------
 
+V1.1.1  :	Bugfix release
+
 V1.1.0  :	new feature: Change color temperature (inspired by "f.lux" 
 		and "redshift")
 

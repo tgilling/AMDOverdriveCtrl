@@ -65,6 +65,7 @@ CColorTempPanel::CColorTempPanel(wxWindow* parent, wxWindowID id, const wxPoint&
     }
     else
     {
+	INF_LOG("Nr. of Displays " << mNrOfDisplays);
 	mpColorTempAtStartup = new int[mNrOfDisplays];
 	mpColorTempDefault = new int[mNrOfDisplays];
 
@@ -127,6 +128,7 @@ CColorTempPanel::CColorTempPanel(wxWindow* parent, wxWindowID id, const wxPoint&
 
     if (mValidDisplays == 0)
     {
+	WRN_LOG("color temperature setting not supported.");
 	Show(false);
     }
     else

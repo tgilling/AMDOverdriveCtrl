@@ -591,33 +591,36 @@ int CFanControlPanel::CalcFanPercentage(int temperature)
 
 void CFanControlPanel::EnableFanControllerMode(bool enable, bool reset_to_default)
 {
-    mEnable->SetValue(enable);
-
-    if (!enable)
+    if (adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED)
     {
-	if (reset_to_default)
+	mEnable->SetValue(enable);
+
+	if (!enable)
 	{
-	    mpFanSpeedPanel->SetDefaultFanSpeed();
+	    if (reset_to_default)
+	    {
+		mpFanSpeedPanel->SetDefaultFanSpeed();
+	    }
+	    Stop();
+	    mCurrentTemperature->SetLabel(wxT(""));
+	    mCurrentFanSpeed->SetLabel(wxT(""));
+
+	    INF_LOG("FanCtrl mode off");
 	}
-	Stop();
-	mCurrentTemperature->SetLabel(wxT(""));
-	mCurrentFanSpeed->SetLabel(wxT(""));
-
-	INF_LOG("FanCtrl mode off");
-    }
-    else
-    {
-	if (!IsRunning())
+	else
 	{
-	    Start(TIMER_INTERVAL);
+	    if (!IsRunning())
+	    {
+		Start(TIMER_INTERVAL);
 
-	    adl->UpdateData();
+		adl->UpdateData();
 
-	    mCurrentTemperature->SetLabel(wxString::Format(wxT("%.1f °C"), adl->mTemperature.iTemperature / 1000.0));
-	    mCurrentFanSpeed->SetLabel(wxString::Format(wxT("%d rpm"), adl->mCurrentFanSpeed.iFanSpeed));
-	    mForceFanSpeedSetting = true;
+		mCurrentTemperature->SetLabel(wxString::Format(wxT("%.1f °C"), adl->mTemperature.iTemperature / 1000.0));
+		mCurrentFanSpeed->SetLabel(wxString::Format(wxT("%d rpm"), adl->mCurrentFanSpeed.iFanSpeed));
+		mForceFanSpeedSetting = true;
 
-	    INF_LOG("FanCtrl mode on");
+		INF_LOG("FanCtrl mode on");
+	    }
 	}
     }
 }

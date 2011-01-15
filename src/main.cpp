@@ -93,8 +93,9 @@ bool MainApp::OnInit()
     }
     else
     {
-	wxString problem = wxT("Some functions are not supported by\n"
-			       "either your hardware, the Catalyst driver or the ADL.\n\n"
+	wxString line;
+	wxString problem = wxT("Some functions are not supported by either\n"
+			       "your hardware, the Catalyst driver or the ADL.\n\n"
 			       "Here is a list of problems:\n");
 
 	MissingFeatures = ~adl->UpdateData();
@@ -103,88 +104,51 @@ bool MainApp::OnInit()
 	{
 	    if (MissingFeatures & ADL::ERR_GET_TEMPERATURE_FAILED)
 	    {
-		problem += wxT("\n - failed to read the GPU temperature.");
+		line = wxT("failed to read the GPU temperature.");
+		WRN_LOG(line.ToUTF8());
+		problem += wxT("\n - ") + line;
 	    }
 
 	    if (MissingFeatures & ADL::ERR_GET_FANSPEED_INFO_FAILED)
 	    {
-		problem += wxT("\n - failed to get fan speed information.");
+		line = wxT("failed to get fan speed information.");
+		WRN_LOG(line.ToUTF8());
+		problem += wxT("\n - ") + line;
 	    }
 
 	    if (MissingFeatures & ADL::ERR_GET_CURRENT_FANSPEED_FAILED)
 	    {
-		problem += wxT("\n - failed to read current fan speed.");
+		line = wxT("failed to read current fan speed.");
+		WRN_LOG(line.ToUTF8());
+		problem += wxT("\n - ") + line;
 	    }
 
 	    if (MissingFeatures & ADL::ERR_GET_OD_PARAMETERS_FAILED)
 	    {
-		problem += wxT("\n - failed to get Overdrive parameters.");
+		line = wxT("failed to get Overdrive parameters.");
+		WRN_LOG(line.ToUTF8());
+		problem += wxT("\n - ") + line;
 	    }
 
 	    if (MissingFeatures & ADL::ERR_GET_OD_PERF_LEVELS_FAILED)
 	    {
-		problem += wxT("\n - failed to get Overdrive performance levels.");
+		line = wxT("failed to get Overdrive performance levels.");
+		WRN_LOG(line.ToUTF8());
+		problem += wxT("\n - ") + line;
 	    }	    
 
 	    if (MissingFeatures & ADL::ERR_GET_ACTIVITY_FAILED)
 	    {
-		problem += wxT("\n - failed to read current GPU activity.");
+		line = wxT("failed to read current GPU activity.");
+		WRN_LOG(line.ToUTF8());
+		problem += wxT("\n - ") + line;
 	    }
 
 	    if (MissingFeatures & ADL::ERR_GET_DEFAULTCLOCKINFO_FAILED)
 	    {
-		problem += wxT("\n - failed to read default GPU/Memory clocks.");
-	    }
-	}
-
-	if (MissingFeatures == 0)
-	{
-	    if (adl->mODParameters.sEngineClock.iMin == adl->mODParameters.sEngineClock.iMax)
-	    {
-		problem += wxT("\n - the GPU clock seems not to be adjustable.");
-		MissingFeatures |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
-	    }
-
-	    if (adl->mODParameters.sMemoryClock.iMin == adl->mODParameters.sMemoryClock.iMax)
-	    {
-		problem += wxT("\n - the memory clock seems not to be adjustable.");
-		MissingFeatures |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
-	    }
-
-	    if (adl->mODParameters.sVddc.iMin == adl->mODParameters.sVddc.iMax)
-	    {
-		problem += wxT("\n - the voltage settings seem not to be adjustable.");
-		MissingFeatures |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
-	    }
-
-	    if (adl->mODParameters.sEngineClock.iMin > adl->mODParameters.sEngineClock.iMax)
-	    {
-		problem += wxT("\n - the reported GPU clock range makes no sense.");
-		MissingFeatures |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
-	    }
-
-	    if (adl->mODParameters.sMemoryClock.iMin > adl->mODParameters.sMemoryClock.iMax)
-	    {
-		problem += wxT("\n - the reported memory clock range makes no sense.");
-		MissingFeatures |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
-	    }
-
-	    if (adl->mODParameters.sVddc.iMin > adl->mODParameters.sVddc.iMax)
-	    {
-		problem += wxT("\n - the reported voltage adjustement range makes no sense.");
-		MissingFeatures |= ADL::ERR_GET_OD_PARAMETERS_FAILED;
-	    }
-
-	    if (adl->mFanSpeedInfo.iMinRPM == adl->mFanSpeedInfo.iMaxRPM || adl->mFanSpeedInfo.iMinPercent == adl->mFanSpeedInfo.iMaxPercent)
-	    {
-		problem += wxT("\n - fan speed controlling seems not to be supported.");
-		MissingFeatures |= ADL::ERR_GET_FANSPEED_INFO_FAILED;
-	    }
-
-	    if (adl->mFanSpeedInfo.iMinRPM > adl->mFanSpeedInfo.iMaxRPM || adl->mFanSpeedInfo.iMinPercent > adl->mFanSpeedInfo.iMaxPercent)
-	    {
-		problem += wxT("\n - the reported fan speed controlling range makes no sense.");
-		MissingFeatures |= ADL::ERR_GET_FANSPEED_INFO_FAILED;
+		line = wxT("failed to read default GPU/Memory clocks.");
+		WRN_LOG(line.ToUTF8());
+		problem += wxT("\n - ") + line;
 	    }
 	}
 
@@ -192,6 +156,13 @@ bool MainApp::OnInit()
 	{
 	    problem += wxT("\n\nSome parts of the program will be disabled.");
 	    wxMessageBox(problem, wxT("Problems occured!"), wxOK|wxCENTRE|wxICON_ERROR);
+
+	    wxString tmp = wxString::FromAscii(adl->mpAdapterInfo->strAdapterName);
+	    if (tmp.Find(wxT("Mobility")) != wxNOT_FOUND)
+	    {
+		INF_LOG("Mobility Radeon chip detected.");
+		wxMessageBox(wxT("Your hardware seems to be a Mobility Radeon chip.\nThe overdrive settings will probably only work, if your\nNotebook is connected to power."), wxT("Information"), wxOK|wxCENTRE|wxICON_INFORMATION);
+	    }
 	}
 
 	MainDialog* main_dialog = new MainDialog(NULL);

@@ -515,6 +515,7 @@ bool ADL::Init()
 
     if (ADL_Adapter_NumberOfAdapters_Get(&mNrOfAdapters) == ADL_OK)
     {
+	INF_LOG("Nr. of Adapters: " << mNrOfAdapters);
 	if (mNrOfAdapters > 0)
 	{
 	    mpAdapterInfo = (LPAdapterInfo) malloc (sizeof(AdapterInfo) * mNrOfAdapters);
@@ -528,6 +529,16 @@ bool ADL::Init()
 		if (UpdateData() == 0)
 		{
 		    ERR_LOG("ERROR: failed to read card values!");
+		}
+		else
+		{
+		    INF_LOG("Nr. of Performance Levels: " << mODParameters.iNumberOfPerformanceLevels);
+		    for (int i=0; i<mODParameters.iNumberOfPerformanceLevels; i++)
+		    {
+			INF_LOG("Perf Level " << i << ": GPU " << mpODPerformanceLevels->aLevels[i].iEngineClock / 100 <<
+			 "MHz Memory " << mpODPerformanceLevels->aLevels[i].iMemoryClock / 100 << "MHz Voltage " <<
+			 mpODPerformanceLevels->aLevels[i].iVddc / 1000.0 << "V");
+		    }
 		}
 	    }
 	    else
@@ -687,6 +698,14 @@ int ADL::UpdateData()
 	    mFanSpeedInfo.iMaxPercent = 0;
 	    result |= ERR_GET_FANSPEED_INFO_FAILED;
 	}
+	if (mFanSpeedInfo.iMaxRPM == 0 || mFanSpeedInfo.iMaxPercent == 0 ||
+	    mFanSpeedInfo.iMinRPM == mFanSpeedInfo.iMaxRPM ||
+	    mFanSpeedInfo.iMinPercent == mFanSpeedInfo.iMaxPercent ||
+	    mFanSpeedInfo.iMinRPM > mFanSpeedInfo.iMaxRPM ||
+	    mFanSpeedInfo.iMinPercent > mFanSpeedInfo.iMaxPercent)
+	{
+	    result |= ERR_GET_FANSPEED_INFO_FAILED;
+	}
 
 	mCurrentFanSpeed.iSize = sizeof(ADLFanSpeedValue);
 	mCurrentFanSpeed.iFlags = ADL_DL_FANCTRL_SPEED_TYPE_RPM;
@@ -699,18 +718,30 @@ int ADL::UpdateData()
 	mODParameters.iSize = sizeof(ADLODParameters);
 	if (SAVE_CALL(ADL_Overdrive5_ODParameters_Get)(0, &mODParameters) == ADL_OK)
 	{
-	    if (mpODPerformanceLevels == NULL)
+	    if (mODParameters.sEngineClock.iMin == mODParameters.sEngineClock.iMax ||
+		mODParameters.sMemoryClock.iMin == mODParameters.sMemoryClock.iMax ||
+		mODParameters.sVddc.iMin == mODParameters.sVddc.iMax ||
+		mODParameters.sEngineClock.iMin > mODParameters.sEngineClock.iMax ||
+		mODParameters.sMemoryClock.iMin > mODParameters.sMemoryClock.iMax ||
+		mODParameters.sVddc.iMin > mODParameters.sVddc.iMax)
 	    {
-		int perf_level_size = sizeof(ADLODPerformanceLevels) + sizeof(ADLODPerformanceLevel) * (mODParameters.iNumberOfPerformanceLevels - 1);
-		mpODPerformanceLevels = (ADLODPerformanceLevels*)malloc(perf_level_size);
-		mpODPerformanceLevels->iSize = perf_level_size;
+		result |= ERR_GET_OD_PARAMETERS_FAILED;
 	    }
-
-	    if (SAVE_CALL(ADL_Overdrive5_ODPerformanceLevels_Get)(0, 0, mpODPerformanceLevels) != ADL_OK)
+	    else
 	    {
-		free(mpODPerformanceLevels);
-		mpODPerformanceLevels = NULL;
-		result |= ERR_GET_OD_PERF_LEVELS_FAILED;
+		if (mpODPerformanceLevels == NULL)
+		{
+		    int perf_level_size = sizeof(ADLODPerformanceLevels) + sizeof(ADLODPerformanceLevel) * (mODParameters.iNumberOfPerformanceLevels - 1);
+		    mpODPerformanceLevels = (ADLODPerformanceLevels*)malloc(perf_level_size);
+		    mpODPerformanceLevels->iSize = perf_level_size;
+		}
+
+		if (SAVE_CALL(ADL_Overdrive5_ODPerformanceLevels_Get)(0, 0, mpODPerformanceLevels) != ADL_OK)
+		{
+		    free(mpODPerformanceLevels);
+		    mpODPerformanceLevels = NULL;
+		    result |= ERR_GET_OD_PERF_LEVELS_FAILED;
+		}
 	    }
 	}
 	else

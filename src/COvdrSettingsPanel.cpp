@@ -81,7 +81,7 @@ bool COvdrSettingsPanel::CommitOverdriveValues()
     #ifdef FAKE_ATI_CARD
 	for (int i=0; i<NR_OF_LEVELS; i++)
 	{
-	    ACT_LOG("SetOverdriveValues: Level " << mGPU[i] << "MHz, " << mMem[i] << "MHz, " <<	"MHz, " << (double)mVoltage[i]/1000.0 << "V");
+	    ACT_LOG("SetOverdriveValues: Level " i << " " << mGPU[i] << "MHz, " << mMem[i] << "MHz, " <<	"MHz, " << (double)mVoltage[i]/1000.0 << "V");
 	}
 	return true;
     #endif
@@ -105,7 +105,7 @@ bool COvdrSettingsPanel::CommitOverdriveValues()
 		    levels->aLevels[i].iMemoryClock = mMem[i] * 100;
 		    levels->aLevels[i].iVddc = mVoltage[i];
 
-		    ACT_LOG("SetOverdriveValues: Level " << mGPU[i] << "MHz, " << mMem[i] << "MHz, " <<	"MHz, " << (double)mVoltage[i]/1000.0 << "V");
+		    ACT_LOG("SetOverdriveValues: Level " << i << ": " << mGPU[i] << "MHz, " << mMem[i] << "MHz, " <<	"MHz, " << (double)mVoltage[i]/1000.0 << "V");
 		}
 	    }
 
@@ -162,13 +162,18 @@ void COvdrSettingsPanel::mButtonSetClick(wxCommandEvent& WXUNUSED(event))
     mpSettingsPanelMid->GetValues(level1, gpu1, mem1, v1);
     mpSettingsPanelHigh->GetValues(level2, gpu2, mem2, v2);
 
-    if (mem0 != mem1 || mem1 != mem2)
+    wxString tmp = wxString::FromAscii(adl->mpAdapterInfo->strAdapterName);
+    if (tmp.Find(wxT("Mobility")) == wxNOT_FOUND)
     {
-	if (wxMessageBox(wxT("You have choosen different memory clock settings\nfor the three performance levels.\n\n")
-			 wxT("This is not recommended because you will\nencounter screen flickering at level changes.\n\n")
-			 wxT("Are you sure you want to set these values?"), wxT("Are you sure?"), wxYES_NO|wxCENTRE|wxICON_WARNING) == wxNO)
+	// mobility chips seem to be OK, maybe only the HD48xx series has a problem, I don't know... so warn if desktop HW is detected
+	if (mem0 != mem1 || mem1 != mem2)
 	{
-	    return;
+	    if (wxMessageBox(wxT("You have choosen different memory clock settings\nfor the three performance levels.\n\n")
+			     wxT("This may result in screen flickering on certain hardware.\n\n")
+			     wxT("Are you sure you want to set these values?"), wxT("Are you sure?"), wxYES_NO|wxCENTRE|wxICON_WARNING) == wxNO)
+	    {
+		return;
+	    }
 	}
     }
 

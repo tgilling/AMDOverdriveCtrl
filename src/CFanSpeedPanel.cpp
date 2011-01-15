@@ -193,41 +193,48 @@ void CFanSpeedPanel::mButtonDefaultClick(wxCommandEvent& WXUNUSED(event))
 
 bool CFanSpeedPanel::SetDefaultFanSpeed()
 {
-    if(SAVE_CALL(adl->ADL_Overdrive5_FanSpeedToDefault_Set)(0, 0) != ADL_OK)
+    if (adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED)
     {
-        return false;
+	if(SAVE_CALL(adl->ADL_Overdrive5_FanSpeedToDefault_Set)(0, 0) != ADL_OK)
+	{
+	    return false;
+	}
+	else
+	{
+	    ACT_LOG("Set fan speed to default");
+	    mTargetFanSpeed->SetValue(wxT("auto"));
+	    mFanSpeedSlider->SetValue((adl->mFanSpeedInfo.iMaxPercent - adl->mFanSpeedInfo.iMinPercent)/2+adl->mFanSpeedInfo.iMinPercent);
+	    mFanSpeedLevelFixed = false;
+	    return true;
+	}
     }
-    else
-    {
-	ACT_LOG("Set fan speed to default");
-	mTargetFanSpeed->SetValue(wxT("auto"));
-	mFanSpeedSlider->SetValue((adl->mFanSpeedInfo.iMaxPercent - adl->mFanSpeedInfo.iMinPercent)/2+adl->mFanSpeedInfo.iMinPercent);
-	mFanSpeedLevelFixed = false;
-	return true;
-    }
+    return true;
 }
 
 bool CFanSpeedPanel::SetFanSpeed(int percent, bool controller_mode)
 {
-    ADLFanSpeedValue speed_value;
+    if (adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED)
+    {
+	ADLFanSpeedValue speed_value;
 
-    speed_value.iSize = sizeof(ADLFanSpeedValue);
-    speed_value.iFlags = ADL_DL_FANCTRL_FLAG_USER_DEFINED_SPEED;
-    speed_value.iFanSpeed = percent;
-    speed_value.iSpeedType = ADL_DL_FANCTRL_SPEED_TYPE_PERCENT;
+	speed_value.iSize = sizeof(ADLFanSpeedValue);
+	speed_value.iFlags = ADL_DL_FANCTRL_FLAG_USER_DEFINED_SPEED;
+	speed_value.iFanSpeed = percent;
+	speed_value.iSpeedType = ADL_DL_FANCTRL_SPEED_TYPE_PERCENT;
 
-    if(SAVE_CALL(adl->ADL_Overdrive5_FanSpeed_Set)(0, 0, &speed_value) != ADL_OK)
-    {
-	return false;
-    }
-    else
-    {
-	ACT_LOG("Fan speed set to " << percent << "%");
-    }
-    
-    if (controller_mode)
-    {
-	mTargetFanSpeed->SetValue(wxT("ctrl on"));
+	if(SAVE_CALL(adl->ADL_Overdrive5_FanSpeed_Set)(0, 0, &speed_value) != ADL_OK)
+	{
+	    return false;
+	}
+	else
+	{
+	    ACT_LOG("Fan speed set to " << percent << "%");
+	}
+
+	if (controller_mode)
+	{
+	    mTargetFanSpeed->SetValue(wxT("ctrl on"));
+	}
     }
     return true;
 }

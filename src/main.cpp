@@ -47,23 +47,40 @@ static int MissingFeatures = 0;
 void MainApp::OnInitCmdLine(wxCmdLineParser& parser)
 {
     parser.SetDesc (g_cmdLineDesc);
-    parser.SetSwitchChars (wxT("-"));
+    parser.SetSwitchChars (wxT("-/"));
 }
 
 bool MainApp::OnCmdLineParsed(wxCmdLineParser& parser)
 {
+    mStartHidden = false;
+
     mBatchMode = parser.Found(wxT("b"));
 
     mEnableAppProfiles = parser.Found(wxT("a"));
 
+    if (mBatchMode || mEnableAppProfiles)
+    {
+	mStartHidden = true;
+    }
+
     if (!parser.Found(wxT("c"), &mColorTemp))
     {
-	mColorTemp = 0;
+	mColorTemp = 0;	
+    }
+    else
+    {
+	mStartHidden = true;
+    }
+
+    if (!parser.Found(wxT("i"), &mGPUIndex))
+    {
+	mGPUIndex = 0;
     }
 
     if (parser.GetParamCount() > 0)
     {
         mProfileName = parser.GetParam(0);
+	mStartHidden = true;
     }
 
     return true;
@@ -84,6 +101,8 @@ bool MainApp::OnInit()
                          "Please check the driver installation."), wxT("Initialization problem"), wxOK|wxCENTRE|wxICON_ERROR);
         return false;
     }
+
+    adl->SetGPUIndex(&mGPUIndex);
 
     if(!adl->IsATICardAndCatalystPresent())
     {
@@ -157,11 +176,11 @@ bool MainApp::OnInit()
 	    problem += wxT("\n\nSome parts of the program will be disabled.");
 	    wxMessageBox(problem, wxT("Problems occured!"), wxOK|wxCENTRE|wxICON_ERROR);
 
-	    wxString tmp = wxString::FromAscii(adl->mpAdapterInfo->strAdapterName);
+	    wxString tmp = wxString::FromAscii(adl->mpAdapterInfo[adl->GetGPUIndex()].strAdapterName);
 	    if (tmp.Find(wxT("Mobility")) != wxNOT_FOUND)
 	    {
 		INF_LOG("Mobility Radeon chip detected.");
-		wxMessageBox(wxT("Your hardware seems to be a Mobility Radeon chip.\nThe overdrive settings will probably only work, if your\nNotebook is connected to power."), wxT("Information"), wxOK|wxCENTRE|wxICON_INFORMATION);
+		wxMessageBox(wxT("Your hardware seems to be a Mobility Radeon chip.\nThe overdrive settings will probably only work, if your\nNotebook is connected to power line."), wxT("Information"), wxOK|wxCENTRE|wxICON_INFORMATION);
 	    }
 	}
 
@@ -246,9 +265,14 @@ bool MainApp::OnInit()
 	    main_dialog->EnableAppProfiles();
 	}
 
+	if (mGPUIndex != 0)
+	{
+	    main_dialog->SetTitle(wxString::Format(wxT("AMDOverdriveCtrl  (Index %i)"),mGPUIndex));
+	}
+
 	SetTopWindow(main_dialog);
 
-	if (argc == 1)
+	if (!mStartHidden)
 	{
 	    GetTopWindow()->Show();
 	}

@@ -23,6 +23,9 @@ Start with application monitoring enabled.
 .TP
 .B -c, --color-temp=<num>
 Set color temperature.
+.TP
+.B -i, --adapter-index=<num>
+Choose adapter index (taken from console output).
 .SH HOMEPAGE
 http://sourceforge.net/projects/amdovdrvctrl/
 .SH EXAMPLE

@@ -58,14 +58,14 @@ CColorTempPanel::CColorTempPanel(wxWindow* parent, wxWindowID id, const wxPoint&
 #ifdef FAKE_ATI_CARD
     mValidDisplays = 0;
 #else
-    if (SAVE_CALL(adl->ADL_Display_DisplayInfo_Get)(0, &mNrOfDisplays, &mpDisplayInfo, 0) != ADL_OK)
+    if (SAVE_CALL(adl->ADL_Display_DisplayInfo_Get)(adl->GetGPUIndex(), &mNrOfDisplays, &mpDisplayInfo, 0) != ADL_OK)
     {
 	Show(false);
 	mEnable->SetValue(false);
     }
     else
     {
-	INF_LOG("Nr. of Displays " << mNrOfDisplays);
+	INF_LOG("Nr. of Displays to check " << mNrOfDisplays);
 	mpColorTempAtStartup = new int[mNrOfDisplays];
 	mpColorTempDefault = new int[mNrOfDisplays];
 
@@ -87,7 +87,7 @@ CColorTempPanel::CColorTempPanel(wxWindow* parent, wxWindowID id, const wxPoint&
 	    {
 		int caps = 0;
 		int valid = 0;
-		if (SAVE_CALL(adl->ADL_Display_ColorCaps_Get)(0, i, &caps, &valid) == ADL_OK)
+		if (SAVE_CALL(adl->ADL_Display_ColorCaps_Get)(adl->GetGPUIndex(), i, &caps, &valid) == ADL_OK)
 		{
 		    if (caps & valid & ADL_DISPLAY_COLOR_TEMPERATURE)
 		    {
@@ -97,7 +97,7 @@ CColorTempPanel::CColorTempPanel(wxWindow* parent, wxWindowID id, const wxPoint&
 
 	        int current, def, min, max, step;
 
-	        if (SAVE_CALL(adl->ADL_Display_Color_Get)(0, i, ADL_DISPLAY_COLOR_TEMPERATURE, &current, &def, &min, &max, &step) == ADL_OK)
+	        if (SAVE_CALL(adl->ADL_Display_Color_Get)(adl->GetGPUIndex(), i, ADL_DISPLAY_COLOR_TEMPERATURE, &current, &def, &min, &max, &step) == ADL_OK)
 	        {
 		    INF_LOG("Color temp disp(" << i << ") : ");
 		    INF_LOG("current " << current << "K default " << def << "K");
@@ -518,7 +518,7 @@ int CColorTempPanel::GetColorTemperature(unsigned char display)
 	    {
 		int current, def, min, max, step;
 
-		if (SAVE_CALL(adl->ADL_Display_Color_Get)(0, i, ADL_DISPLAY_COLOR_TEMPERATURE, &current, &def, &min, &max, &step) == ADL_OK)
+		if (SAVE_CALL(adl->ADL_Display_Color_Get)(adl->GetGPUIndex(), i, ADL_DISPLAY_COLOR_TEMPERATURE, &current, &def, &min, &max, &step) == ADL_OK)
 		{
 		    return current;
 		}
@@ -531,7 +531,7 @@ int CColorTempPanel::GetColorTemperature(unsigned char display)
 	{
 	    int current, def, min, max, step;
 
-	    if (SAVE_CALL(adl->ADL_Display_Color_Get)(0, display, ADL_DISPLAY_COLOR_TEMPERATURE, &current, &def, &min, &max, &step) == ADL_OK)
+	    if (SAVE_CALL(adl->ADL_Display_Color_Get)(adl->GetGPUIndex(), display, ADL_DISPLAY_COLOR_TEMPERATURE, &current, &def, &min, &max, &step) == ADL_OK)
 	    {
 		return current;
 	    }
@@ -548,7 +548,7 @@ void CColorTempPanel::SetColorTemperature(int color_temp, bool manual_setting, u
 	{
 	    if (mValidDisplays & (1<<i))
 	    {
-		if (SAVE_CALL(adl->ADL_Display_Color_Set)(0, i, ADL_DISPLAY_COLOR_TEMPERATURE, color_temp) != ADL_OK)
+		if (SAVE_CALL(adl->ADL_Display_Color_Set)(adl->GetGPUIndex(), i, ADL_DISPLAY_COLOR_TEMPERATURE, color_temp) != ADL_OK)
 		{
 		    ERR_LOG("Could not set color temperature value : " << color_temp << " for display " << (int) i);
 		}
@@ -563,7 +563,7 @@ void CColorTempPanel::SetColorTemperature(int color_temp, bool manual_setting, u
     {
 	if (mValidDisplays & (1<<display))
 	{
-	    if (SAVE_CALL(adl->ADL_Display_Color_Set)(0, display, ADL_DISPLAY_COLOR_TEMPERATURE, color_temp) != ADL_OK)
+	    if (SAVE_CALL(adl->ADL_Display_Color_Set)(adl->GetGPUIndex(), display, ADL_DISPLAY_COLOR_TEMPERATURE, color_temp) != ADL_OK)
 	    {
 		ERR_LOG("Could not set color temperature value : " << color_temp << " for display " << (int) display);
 	    }

@@ -195,7 +195,7 @@ bool CFanSpeedPanel::SetDefaultFanSpeed()
 {
     if (adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED)
     {
-	if(SAVE_CALL(adl->ADL_Overdrive5_FanSpeedToDefault_Set)(0, 0) != ADL_OK)
+	if(SAVE_CALL(adl->ADL_Overdrive5_FanSpeedToDefault_Set)(adl->GetGPUIndex(), 0) != ADL_OK)
 	{
 	    return false;
 	}
@@ -222,7 +222,7 @@ bool CFanSpeedPanel::SetFanSpeed(int percent, bool controller_mode)
 	speed_value.iFanSpeed = percent;
 	speed_value.iSpeedType = ADL_DL_FANCTRL_SPEED_TYPE_PERCENT;
 
-	if(SAVE_CALL(adl->ADL_Overdrive5_FanSpeed_Set)(0, 0, &speed_value) != ADL_OK)
+	if(SAVE_CALL(adl->ADL_Overdrive5_FanSpeed_Set)(adl->GetGPUIndex(), 0, &speed_value) != ADL_OK)
 	{
 	    return false;
 	}

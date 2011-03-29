@@ -258,6 +258,9 @@ class ADL
 	int UpdateData();
 	int GetSupportedFeatures() const { return ms_instance->mFeatures; }
 
+	void SetGPUIndex(long int* index);
+	int GetGPUIndex() { return ms_instance->mGPUIndex; }
+
 	int mNrOfAdapters;
 	LPAdapterInfo mpAdapterInfo;
 	ADLTemperature mTemperature;
@@ -289,6 +292,7 @@ class ADL
 	bool Init();
 
 	int mFeatures;
+	int mGPUIndex;
 
 };
 

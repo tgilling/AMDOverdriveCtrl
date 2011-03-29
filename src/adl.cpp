@@ -211,6 +211,7 @@ ADL::ADL()
     , mpODPerformanceLevels(NULL)
     , hDLL(NULL)
     , mFeatures(0)
+    , mGPUIndex(0)
 {
 }
 
@@ -526,19 +527,26 @@ bool ADL::Init()
 		{
 		    ERR_LOG("ERROR: no adapter info available!");
 		}
+
+		for (int i=0; i<mNrOfAdapters; i++)
+		{
+		    int status;
+		    SAVE_CALL(ADL_Adapter_Active_Get)(i, &status);
+		    if (status == ADL_TRUE)
+		    {
+			int id;
+			SAVE_CALL(ADL_Adapter_ID_Get)(i, &id);
+
+			INF_LOG("Adapter index: " << mpAdapterInfo[i].iAdapterIndex << ", card ID: " << id <<
+			    " = " << mpAdapterInfo[i].strAdapterName);
+
+		    }
+		}
+
+
 		if (UpdateData() == 0)
 		{
 		    ERR_LOG("ERROR: failed to read card values!");
-		}
-		else
-		{
-		    INF_LOG("Nr. of Performance Levels: " << mODParameters.iNumberOfPerformanceLevels);
-		    for (int i=0; i<mODParameters.iNumberOfPerformanceLevels; i++)
-		    {
-			INF_LOG("Perf Level " << i << ": GPU " << mpODPerformanceLevels->aLevels[i].iEngineClock / 100 <<
-			 "MHz Memory " << mpODPerformanceLevels->aLevels[i].iMemoryClock / 100 << "MHz Voltage " <<
-			 mpODPerformanceLevels->aLevels[i].iVddc / 1000.0 << "V");
-		    }
 		}
 	    }
 	    else
@@ -639,7 +647,7 @@ int ADL::UpdateData()
 	if (mpAdapterInfo != NULL)
 	{
 	    memset (mpAdapterInfo, 0, sizeof(AdapterInfo) * mNrOfAdapters);
-	    strncpy(mpAdapterInfo->strAdapterName, "Fake AMD/ATI Card", ADL_MAX_PATH-1);
+	    strncpy(mpAdapterInfo[mGPUIndex].strAdapterName, "Fake AMD/ATI Card", ADL_MAX_PATH-1);
 	}
 
 	mODParameters.sEngineClock.iMax = 85000;
@@ -683,14 +691,14 @@ int ADL::UpdateData()
     #else
 
 	mTemperature.iSize = sizeof(ADLTemperature);
-	if (SAVE_CALL(ADL_Overdrive5_Temperature_Get)(0, 0, &mTemperature) != ADL_OK)
+	if (SAVE_CALL(ADL_Overdrive5_Temperature_Get)(mGPUIndex, 0, &mTemperature) != ADL_OK)
 	{
 	    mTemperature.iTemperature = 0;
 	    result |= ERR_GET_TEMPERATURE_FAILED;
 	}
 
 	mFanSpeedInfo.iSize = sizeof(ADLFanSpeedInfo);
-	if (SAVE_CALL(ADL_Overdrive5_FanSpeedInfo_Get)(0, 0, &mFanSpeedInfo) != ADL_OK)
+	if (SAVE_CALL(ADL_Overdrive5_FanSpeedInfo_Get)(mGPUIndex, 0, &mFanSpeedInfo) != ADL_OK)
 	{
 	    mFanSpeedInfo.iMinRPM = 0;
 	    mFanSpeedInfo.iMaxRPM = 0;
@@ -709,14 +717,14 @@ int ADL::UpdateData()
 
 	mCurrentFanSpeed.iSize = sizeof(ADLFanSpeedValue);
 	mCurrentFanSpeed.iFlags = ADL_DL_FANCTRL_SPEED_TYPE_RPM;
-	if (SAVE_CALL(ADL_Overdrive5_FanSpeed_Get)(0, 0, &mCurrentFanSpeed) != ADL_OK)
+	if (SAVE_CALL(ADL_Overdrive5_FanSpeed_Get)(mGPUIndex, 0, &mCurrentFanSpeed) != ADL_OK)
 	{
 	    mCurrentFanSpeed.iFanSpeed = 0;
 	    result |= ERR_GET_CURRENT_FANSPEED_FAILED;
 	}
 
 	mODParameters.iSize = sizeof(ADLODParameters);
-	if (SAVE_CALL(ADL_Overdrive5_ODParameters_Get)(0, &mODParameters) == ADL_OK)
+	if (SAVE_CALL(ADL_Overdrive5_ODParameters_Get)(mGPUIndex, &mODParameters) == ADL_OK)
 	{
 	    if (mODParameters.sEngineClock.iMin == mODParameters.sEngineClock.iMax ||
 		mODParameters.sMemoryClock.iMin == mODParameters.sMemoryClock.iMax ||
@@ -736,7 +744,7 @@ int ADL::UpdateData()
 		    mpODPerformanceLevels->iSize = perf_level_size;
 		}
 
-		if (SAVE_CALL(ADL_Overdrive5_ODPerformanceLevels_Get)(0, 0, mpODPerformanceLevels) != ADL_OK)
+		if (SAVE_CALL(ADL_Overdrive5_ODPerformanceLevels_Get)(mGPUIndex, 0, mpODPerformanceLevels) != ADL_OK)
 		{
 		    free(mpODPerformanceLevels);
 		    mpODPerformanceLevels = NULL;
@@ -750,7 +758,7 @@ int ADL::UpdateData()
 	}
 
 	mODActivity.iSize = sizeof(ADLPMActivity);
-	if (SAVE_CALL(ADL_Overdrive5_CurrentActivity_Get)(0, &mODActivity) != ADL_OK)
+	if (SAVE_CALL(ADL_Overdrive5_CurrentActivity_Get)(mGPUIndex, &mODActivity) != ADL_OK)
 	{
 	    mODActivity.iEngineClock = 0;
 	    mODActivity.iMemoryClock = 0;
@@ -761,7 +769,7 @@ int ADL::UpdateData()
 	}
 
 	mODClockInfo.iSize = sizeof(ADLAdapterODClockInfo);
-	if (SAVE_CALL(ADL_Display_ODClockInfo_Get)(0, &mODClockInfo) != ADL_OK)
+	if (SAVE_CALL(ADL_Display_ODClockInfo_Get)(mGPUIndex, &mODClockInfo) != ADL_OK)
 	{
 	    mODClockInfo.sEngineClock.iCurrentClock = 0;
 	    mODClockInfo.sEngineClock.iDefaultClock = 0;
@@ -775,4 +783,27 @@ int ADL::UpdateData()
     mFeatures = ~result;
 
     return mFeatures;
+}
+
+void ADL::SetGPUIndex(long int* index)
+{
+    if (*index >= mNrOfAdapters)
+    {
+	*index = 0;
+	WRN_LOG("Adapter index out of range. Index forced to zero.");
+    }
+
+    INF_LOG("Adapter index " << index << " choosen.");
+
+    mGPUIndex = *index;
+
+    UpdateData();
+
+    INF_LOG("Nr. of Performance Levels: " << mODParameters.iNumberOfPerformanceLevels);
+    for (int i=0; i<mODParameters.iNumberOfPerformanceLevels; i++)
+    {
+	INF_LOG("Perf Level " << i << ": GPU " << mpODPerformanceLevels->aLevels[i].iEngineClock / 100 <<
+	 "MHz Memory " << mpODPerformanceLevels->aLevels[i].iMemoryClock / 100 << "MHz Voltage " <<
+	 mpODPerformanceLevels->aLevels[i].iVddc / 1000.0 << "V");
+    }
 }

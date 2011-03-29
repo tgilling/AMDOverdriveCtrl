@@ -91,13 +91,13 @@ bool COvdrSettingsPanel::CommitOverdriveValues()
 
 	ADL* adl = ADL::Instance();
 
-	if(SAVE_CALL(adl->ADL_Overdrive5_ODParameters_Get)(0, &para) == ADL_OK)
+	if(SAVE_CALL(adl->ADL_Overdrive5_ODParameters_Get)(adl->GetGPUIndex(), &para) == ADL_OK)
 	{
 	    int perf_level_size = sizeof(ADLODPerformanceLevels) + sizeof(ADLODPerformanceLevel) * (para.iNumberOfPerformanceLevels - 1);
 	    levels = (ADLODPerformanceLevels*)malloc(perf_level_size);
 	    levels->iSize = perf_level_size;
 
-	    if(SAVE_CALL(adl->ADL_Overdrive5_ODPerformanceLevels_Get)(0, 0, levels) == ADL_OK)
+	    if(SAVE_CALL(adl->ADL_Overdrive5_ODPerformanceLevels_Get)(adl->GetGPUIndex(), 0, levels) == ADL_OK)
 	    {
 		for (int i=0; i<NR_OF_LEVELS; i++)
 		{
@@ -109,7 +109,7 @@ bool COvdrSettingsPanel::CommitOverdriveValues()
 		}
 	    }
 
-	    if(SAVE_CALL(adl->ADL_Overdrive5_ODPerformanceLevels_Set)(0, levels) != ADL_OK)
+	    if(SAVE_CALL(adl->ADL_Overdrive5_ODPerformanceLevels_Set)(adl->GetGPUIndex(), levels) != ADL_OK)
 	    {
 		return false;
 	    }

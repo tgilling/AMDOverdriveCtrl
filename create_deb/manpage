@@ -1,8 +1,8 @@
-.TH AMDOverdriveCtrl 1 "09 Januar 2011"
+.TH AMDOverdriveCtrl 1 "03 April 2011"
 .SH NAME
 AMDOverdriveCtrl \- Control and monitor frequencies and voltages
 .SH SYNOPSIS
-AMDOverdriveCtrl [-h] [-b] [-a] [-c <num>] [any_profile_name.ovdr]
+AMDOverdriveCtrl [-h] [-b] [-a] [-c <num>] [-i <num>] [any_profile_name.ovdr]
 .SH DESCRIPTION
 This tool let's you control the frequency and fan settings of your
 AMD/ATI video card. It depends on the proprietary AMD/ATI Catalyst 
@@ -26,8 +26,33 @@ Set color temperature.
 .TP
 .B -i, --adapter-index=<num>
 Choose adapter index (taken from console output).
-.SH HOMEPAGE
-http://sourceforge.net/projects/amdovdrvctrl/
+
+.SH Multi GPU support
+.PP
+.nf
+You can start multiple instances of AMDOverdriveCtrl for each graphic
+card of your system. All you need is to know the correct adapter index 
+of the corresponding card. You can use the help (-h) switch to get an 
+output like this:
+
+INF: Nr. of Adapters: 4
+.B INF: Adapter index: 0, card ID: xxxxxxxx = ATI Radeon HD 4800 Series         
+INF: Adapter index: 1, card ID: xxxxxxxx = ATI Radeon HD 4800 Series         
+.B INF: Adapter index: 2, card ID: yyyyyyyy = ATI Radeon HD 4800 Series         
+INF: Adapter index: 3, card ID: yyyyyyyy = ATI Radeon HD 4800 Series         
+Usage: AMDOverdriveCtrl [-h] [-b] [-a] [-c <num>] [-i <num>] [profile]
+  -h, --help               	displays help 
+  -b, --batch-mode         	only set profile, no GUI
+  -a, --enable-app-profiles	activate the app profile feature
+  -c, --color-temp=<num>   	set color temperature
+  -i, --adapter-index=<num>	choose adapter index
+
+For 'x' and 'y' you will see system individual numbers. The output means
+you have two cards installed with two controllers each. By default 
+AMDOverdriveCtrl will use adapter index zero (the first card). If you 
+call the program with '-i=2' the second card will be selected.
+.fi
+
 .SH EXAMPLE
 .PP
 .nf
@@ -40,5 +65,9 @@ Start with application monitoring
 .B AMDOverdriveCtrl HighPerformance.ovdr 
 Set 'HighPerformance.ovdr' values and minimize to tray
 .fi
+
+.SH HOMEPAGE
+http://sourceforge.net/projects/amdovdrvctrl/
+
 .SH AUTHOR
 Thorsten Gilling <tgilling@web.de>

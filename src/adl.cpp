@@ -793,7 +793,7 @@ void ADL::SetGPUIndex(long int* index)
 	WRN_LOG("Adapter index out of range. Index forced to zero.");
     }
 
-    INF_LOG("Adapter index " << index << " choosen.");
+    INF_LOG("Adapter index " << *index << " choosen.");
 
     mGPUIndex = *index;
 

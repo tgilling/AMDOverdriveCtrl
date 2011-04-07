@@ -532,15 +532,12 @@ bool ADL::Init()
 		{
 		    int status;
 		    SAVE_CALL(ADL_Adapter_Active_Get)(i, &status);
-		    if (status == ADL_TRUE)
-		    {
-			int id;
-			SAVE_CALL(ADL_Adapter_ID_Get)(i, &id);
 
-			INF_LOG("Adapter index: " << mpAdapterInfo[i].iAdapterIndex << ", card ID: " << id <<
-			    " = " << mpAdapterInfo[i].strAdapterName);
+		    int id;
+		    SAVE_CALL(ADL_Adapter_ID_Get)(i, &id);
 
-		    }
+		    INF_LOG("Adapter index: " << mpAdapterInfo[i].iAdapterIndex << (status == ADL_TRUE ? ", active" : ", inact.") <<
+			", ID:" << id << ", " << mpAdapterInfo[i].strAdapterName);
 		}
 
 

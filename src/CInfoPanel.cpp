@@ -47,7 +47,7 @@ CInfoPanel::CInfoPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
 	mInactiveTextColor = mInfoLevelLow->GetForegroundColour();
 	mActiveTextColor = Color::RED;
 
-	if (!(adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED_INFO) ||	!(adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED))
+	if (!(adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED_INFO) || !(adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED))
 	{
 	    mInfoMinFanSpeed->Disable();
 	    mInfoMaxFanSpeed->Disable();
@@ -110,32 +110,78 @@ void CInfoPanel::UpdateDisplayValues()
     {
         adl->UpdateData();
 
-        mInfoCardID->SetValue(wxString(adl->mpAdapterInfo->strAdapterName, wxConvUTF8));
-        mInfoTemperature->SetValue(wxString::Format(wxT("%.2f °C"), (float)adl->mTemperature.iTemperature/1000.0));
+        mInfoCardID->SetValue(wxString(adl->mpAdapterInfo[adl->GetGPUIndex()].strAdapterName, wxConvUTF8));
+
+	if (adl->GetSupportedFeatures() & ADL::FEAT_GET_TEMPERATURE)
+	{
+	    mInfoTemperature->SetValue(wxString::Format(wxT("%.2f °C"), (float)adl->mTemperature.iTemperature/1000.0));
+	}
+	else
+	{
+	    mInfoTemperature->SetValue(wxT("---"));
+	}
+
         mInfoCurrentGPU->SetValue(wxString::Format(wxT("%d MHz"), adl->mODActivity.iEngineClock/100));
         mInfoCurrentMemory->SetValue(wxString::Format(wxT("%d MHz"), adl->mODActivity.iMemoryClock/100));
-        mInfoCurrentVoltage->SetValue(wxString::Format(wxT("%.3f V"), (float)adl->mODActivity.iVddc/1000.0));
 
-	mInfoMinFanSpeed->SetValue(wxString::Format(wxT("%d rpm"), adl->mFanSpeedInfo.iMinRPM));
-	mInfoMaxFanSpeed->SetValue(wxString::Format(wxT("%d rpm"), adl->mFanSpeedInfo.iMaxRPM));
-	mInfoCurrentFanSpeed->SetValue(wxString::Format(wxT("%d rpm"), adl->mCurrentFanSpeed.iFanSpeed));
+	if (adl->mODActivity.iVddc != 0.0)
+	{
+	    mInfoCurrentVoltage->SetValue(wxString::Format(wxT("%.3f V"), (float)adl->mODActivity.iVddc/1000.0));
+	}
+	else
+	{
+	    mInfoCurrentVoltage->SetValue(wxT("---"));
+	}
 
-        mInfoOVGPULow->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[0].iEngineClock/100));
-        mInfoOVGPUMid->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[1].iEngineClock/100));
-        mInfoOVGPUHigh->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[2].iEngineClock/100));
+	if (adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED_INFO)
+	{
+	    mInfoMinFanSpeed->SetValue(wxString::Format(wxT("%d rpm"), adl->mFanSpeedInfo.iMinRPM));
+	    mInfoMaxFanSpeed->SetValue(wxString::Format(wxT("%d rpm"), adl->mFanSpeedInfo.iMaxRPM));
+	    mInfoCurrentFanSpeed->SetValue(wxString::Format(wxT("%d rpm"), adl->mCurrentFanSpeed.iFanSpeed));
+	}
+	else
+	{
+	    mInfoMinFanSpeed->SetValue(wxT("---"));
+	    mInfoMaxFanSpeed->SetValue(wxT("---"));
+	    mInfoCurrentFanSpeed->SetValue(wxT("---"));
+	}
 
-        mInfoOVMemLow->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[0].iMemoryClock/100));
-        mInfoOVMemMid->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[1].iMemoryClock/100));
-        mInfoOVMemHigh->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[2].iMemoryClock/100));
+	if (adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PARAMETERS)
+	{
+	    mInfoOVGPULow->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[0].iEngineClock/100));
+	    mInfoOVGPUMid->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[1].iEngineClock/100));
+	    mInfoOVGPUHigh->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[2].iEngineClock/100));
 
-        mInfoOVVoltLow->SetValue(wxString::Format(wxT("%.3f V"), (float)adl->mpODPerformanceLevels->aLevels[0].iVddc/1000.0));
-        mInfoOVVoltMid->SetValue(wxString::Format(wxT("%.3f V"), (float)adl->mpODPerformanceLevels->aLevels[1].iVddc/1000.0));
-        mInfoOVVoltHigh->SetValue(wxString::Format(wxT("%.3f V"), (float)adl->mpODPerformanceLevels->aLevels[2].iVddc/1000.0));
+	    mInfoOVMemLow->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[0].iMemoryClock/100));
+	    mInfoOVMemMid->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[1].iMemoryClock/100));
+	    mInfoOVMemHigh->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[2].iMemoryClock/100));
+
+	    mInfoOVVoltLow->SetValue(wxString::Format(wxT("%.3f V"), (float)adl->mpODPerformanceLevels->aLevels[0].iVddc/1000.0));
+	    mInfoOVVoltMid->SetValue(wxString::Format(wxT("%.3f V"), (float)adl->mpODPerformanceLevels->aLevels[1].iVddc/1000.0));
+	    mInfoOVVoltHigh->SetValue(wxString::Format(wxT("%.3f V"), (float)adl->mpODPerformanceLevels->aLevels[2].iVddc/1000.0));
+	}
+	else
+	{
+	    mInfoOVGPULow->SetValue(wxT("---"));
+	    mInfoOVGPUMid->SetValue(wxT("---"));
+	    mInfoOVGPUHigh->SetValue(wxT("---"));
+
+	    mInfoOVMemLow->SetValue(wxT("---"));
+	    mInfoOVMemMid->SetValue(wxT("---"));
+	    mInfoOVMemHigh->SetValue(wxT("---"));
+
+	    mInfoOVVoltLow->SetValue(wxT("---"));
+	    mInfoOVVoltMid->SetValue(wxT("---"));
+	    mInfoOVVoltHigh->SetValue(wxT("---"));
+	}
 
         mInfoActivity->SetValue(adl->mODActivity.iActivityPercent);
 
-        mPCILanes->SetLabel(wxString::Format(wxT("(%d/%d, %d)"), adl->mODActivity.iCurrentBusLanes,
+	if (adl->mODActivity.iCurrentBusLanes != 0 && adl->mODActivity.iMaximumBusLanes != 0)
+	{
+	    mPCILanes->SetLabel(wxString::Format(wxT("(%d/%d, %d)"), adl->mODActivity.iCurrentBusLanes,
                                              adl->mODActivity.iMaximumBusLanes, adl->mODActivity.iCurrentBusSpeed/50));
+	}
 
         switch(adl->mODActivity.iCurrentPerformanceLevel)
         {

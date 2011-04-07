@@ -42,20 +42,22 @@ COvdrSettingsPanel::COvdrSettingsPanel(wxWindow* parent, wxWindowID id, const wx
     {
 	Show(false);
     }
-
-    mpSettingsPanelLow = new CSettingsPanel(0, mOvdrNotebook);
-    mpSettingsPanelMid = new CSettingsPanel(1, mOvdrNotebook);
-    mpSettingsPanelHigh = new CSettingsPanel(2, mOvdrNotebook);
-
-    if(mpSettingsPanelLow != NULL && mpSettingsPanelMid != NULL && mpSettingsPanelHigh != NULL)
-    {
-        mOvdrNotebook->AddPage(mpSettingsPanelLow, wxT("Low"));
-        mOvdrNotebook->AddPage(mpSettingsPanelMid, wxT("Mid"));
-        mOvdrNotebook->AddPage(mpSettingsPanelHigh, wxT("High"));
-    }
     else
     {
-        wxMessageBox(wxT("Unable to create Panels"), wxT("ERROR"), wxOK|wxCENTRE|wxICON_ERROR);
+	mpSettingsPanelLow = new CSettingsPanel(0, mOvdrNotebook);
+	mpSettingsPanelMid = new CSettingsPanel(1, mOvdrNotebook);
+	mpSettingsPanelHigh = new CSettingsPanel(2, mOvdrNotebook);
+
+	if(mpSettingsPanelLow != NULL && mpSettingsPanelMid != NULL && mpSettingsPanelHigh != NULL)
+	{
+	    mOvdrNotebook->AddPage(mpSettingsPanelLow, wxT("Low"));
+	    mOvdrNotebook->AddPage(mpSettingsPanelMid, wxT("Mid"));
+	    mOvdrNotebook->AddPage(mpSettingsPanelHigh, wxT("High"));
+	}
+	else
+	{
+	    wxMessageBox(wxT("Unable to create Panels"), wxT("ERROR"), wxOK|wxCENTRE|wxICON_ERROR);
+	}
     }
 }
 
@@ -126,9 +128,12 @@ bool COvdrSettingsPanel::CommitOverdriveValues()
 
 void COvdrSettingsPanel::UpdateDisplayValues()
 {
-    mpSettingsPanelLow->UpdateDisplayValues();
-    mpSettingsPanelMid->UpdateDisplayValues();
-    mpSettingsPanelHigh->UpdateDisplayValues();
+    if (mpSettingsPanelLow != NULL && mpSettingsPanelMid != NULL && mpSettingsPanelHigh != NULL)
+    {
+	mpSettingsPanelLow->UpdateDisplayValues();
+	mpSettingsPanelMid->UpdateDisplayValues();
+	mpSettingsPanelHigh->UpdateDisplayValues();
+    }
 }
 
 void COvdrSettingsPanel::mButtonResetClick(wxCommandEvent& WXUNUSED(event))

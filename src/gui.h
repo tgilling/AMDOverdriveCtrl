@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Nov 18 2010)
+// C++ code generated with wxFormBuilder (version Apr 11 2011)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -438,11 +438,13 @@ class COvdrSettingsPanelBase : public wxPanel
 		
 		wxNotebook* mOvdrNotebook;
 		
+		wxButton* mButtonSaveDefault;
 		wxButton* mButtonReset;
 		wxButton* mButtonSet;
 		
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void mButtonSaveDefaultClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void mButtonResetClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void mButtonSetClick( wxCommandEvent& event ) { event.Skip(); }
 		

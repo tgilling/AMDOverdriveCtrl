@@ -26,8 +26,10 @@
 *******************************************************************************/
 
 
+#include <wx/event.h>
 #include "COvdrSettingsPanel.h"
 #include "adl.h"
+#include "main.h"
 
 COvdrSettingsPanel::COvdrSettingsPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
     : COvdrSettingsPanelBase(parent, id, pos, size, style)
@@ -195,4 +197,28 @@ void COvdrSettingsPanel::mButtonSetClick(wxCommandEvent& WXUNUSED(event))
 	wxMessageBox(wxT("\nThe choosen overdrive settings are not valid.\n\nFrequency settings must follow the rule:\n\n"
 	 "low level <= mid level <= high level"), wxT("Invalid settings"), wxOK|wxCENTRE|wxICON_ERROR);
     }
+}
+void COvdrSettingsPanel::mButtonSaveDefaultClick(wxCommandEvent& WXUNUSED(event))
+{
+	if(wxMessageBox(wxT("Saving these overdrive settings will override any previously saved default settings in ~/.AMDOverDriveCtrl/default.ovdr.\n\n")
+				wxT("Override default settings?"), wxT("Override default settings?"), wxYES_NO|wxICON_QUESTION) == wxYES) 
+	{
+		// Call mButtonSetClick to update Overdrive values
+		wxCommandEvent event;
+		this->mButtonSetClick(event);
+		
+		if(getenv("HOME"))
+		{
+			
+			// Get path of default.ovdr
+			wxString file_path = wxString::FromAscii(getenv("HOME"));
+			file_path += wxT("/.AMDOverdriveCtrl/default.ovdr");
+			
+			MainDialog* mMD;
+			mMD = (MainDialog*)this->GetParent()->GetParent(); // get a pointer to the MainDialog object
+			mMD->SaveXML(file_path); // reuse MainDialog::SaveXML
+			
+			INF_LOG("mButtonSaveDefaultClick: saved " << file_path.mb_str(wxConvUTF8));
+		}
+	}
 }

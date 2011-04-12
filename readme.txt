@@ -1,6 +1,8 @@
 History:
 --------
 
+V1.1.4  :	"save default" button added by SourceForge Member 'logion'
+
 V1.1.3  :	card ident string was wrong in multi GPU setup
 
 V1.1.2  :	choose GPU through command line switch (--adapter-index)

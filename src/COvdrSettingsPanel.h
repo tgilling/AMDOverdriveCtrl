@@ -61,6 +61,7 @@ class COvdrSettingsPanel : public COvdrSettingsPanelBase
 	int mMem[NR_OF_LEVELS];
 	int mVoltage[NR_OF_LEVELS];
 
+	virtual void mButtonSaveDefaultClick( wxCommandEvent& event );
 	virtual void mButtonResetClick( wxCommandEvent& event );
 	virtual void mButtonSetClick( wxCommandEvent& event );
 };

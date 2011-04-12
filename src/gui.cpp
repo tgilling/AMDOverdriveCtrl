@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Nov 18 2010)
+// C++ code generated with wxFormBuilder (version Apr 11 2011)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -1307,6 +1307,9 @@ COvdrSettingsPanelBase::COvdrSettingsPanelBase( wxWindow* parent, wxWindowID id,
 	
 	bSizer29->Add( 0, 0, 1, wxEXPAND, 5 );
 	
+	mButtonSaveDefault = new wxButton( this, wxID_ANY, _("Save default"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer29->Add( mButtonSaveDefault, 0, wxALL, 5 );
+	
 	mButtonReset = new wxButton( this, wxID_ANY, _("Reset"), wxDefaultPosition, wxSize( 80,-1 ), 0 );
 	bSizer29->Add( mButtonReset, 0, wxALL, 5 );
 	
@@ -1322,6 +1325,7 @@ COvdrSettingsPanelBase::COvdrSettingsPanelBase( wxWindow* parent, wxWindowID id,
 	this->Layout();
 	
 	// Connect Events
+	mButtonSaveDefault->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( COvdrSettingsPanelBase::mButtonSaveDefaultClick ), NULL, this );
 	mButtonReset->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( COvdrSettingsPanelBase::mButtonResetClick ), NULL, this );
 	mButtonSet->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( COvdrSettingsPanelBase::mButtonSetClick ), NULL, this );
 }
@@ -1329,6 +1333,7 @@ COvdrSettingsPanelBase::COvdrSettingsPanelBase( wxWindow* parent, wxWindowID id,
 COvdrSettingsPanelBase::~COvdrSettingsPanelBase()
 {
 	// Disconnect Events
+	mButtonSaveDefault->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( COvdrSettingsPanelBase::mButtonSaveDefaultClick ), NULL, this );
 	mButtonReset->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( COvdrSettingsPanelBase::mButtonResetClick ), NULL, this );
 	mButtonSet->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( COvdrSettingsPanelBase::mButtonSetClick ), NULL, this );
 	

@@ -267,3 +267,8 @@ typedef int ( *ADL_DISPLAY_XRANDRDISPLAYNAME_GET ) (int iAdapterIndex, int iDisp
 // ------------------------------------------------------------------------------------------------------------
 
 
+// experimental undocumented
+typedef int ( *ADL_OVERDRIVE5_POWERCONTROL_GET ) (int iAdapterIndex, int* iPercentage, int* whatever);
+typedef int ( *ADL_OVERDRIVE5_POWERCONTROL_SET ) (int iAdapterIndex, int iPercentage);
+//typedef int ( *ADL_OVERDRIVE5_POWERCONTROL_CAPS ) (int iAdapterIndex, int* lpCaps, int* lpValid);
+//typedef int ( *ADL_OVERDRIVE5_POWERCONTROLINFO_GET) (int iAdapterIndex, ...)

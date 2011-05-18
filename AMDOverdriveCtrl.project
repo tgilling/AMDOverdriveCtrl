@@ -22,6 +22,7 @@
     <File Name="src/CAppProfilePanel.cpp"/>
     <File Name="src/COvdrSettingsPanel.cpp"/>
     <File Name="src/CColorTempPanel.cpp"/>
+    <File Name="src/CPowertunePanel.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="include">
     <File Name="src/gui.h"/>
@@ -44,6 +45,7 @@
     <File Name="src/Revision.h"/>
     <File Name="src/CTaskBarIcon.h"/>
     <File Name="src/CColorTempPanel.h"/>
+    <File Name="src/CPowertunePanel.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="resources">
     <File Name="src/gui.fbp"/>

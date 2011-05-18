@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Apr 11 2011)
+// C++ code generated with wxFormBuilder (version May  5 2011)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -21,10 +21,10 @@
 #include <wx/dialog.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/statline.h>
-#include <wx/gauge.h>
-#include <wx/panel.h>
 #include <wx/slider.h>
+#include <wx/statline.h>
+#include <wx/panel.h>
+#include <wx/gauge.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
@@ -67,6 +67,53 @@ class MainDialogBase : public wxDialog
 		
 		MainDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AMDOverdriveCtrl"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 395,485 ), long style = wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE|wxMINIMIZE_BOX ); 
 		~MainDialogBase();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class CPowertunePanelBase
+///////////////////////////////////////////////////////////////////////////////
+class CPowertunePanelBase : public wxPanel 
+{
+	private:
+	
+	protected:
+		
+		wxStaticText* m_staticText171;
+		
+		
+		wxTextCtrl* mTargetPowertune;
+		
+		
+		wxTextCtrl* mMinPowertune;
+		wxButton* mPowertuneMinus;
+		wxSlider* mPowertuneSlider;
+		wxButton* mPowertunePlus;
+		wxTextCtrl* mPowertuneMax;
+		
+		
+		wxStaticText* mCurrentPowertune;
+		
+		
+		
+		wxButton* mButtonSet;
+		
+		wxStaticLine* m_staticline12;
+		
+		wxStaticText* mExperimental;
+		
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void mPowertuneMinusOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void mPowertuneSliderOnScroll( wxScrollEvent& event ) { event.Skip(); }
+		virtual void mPowertunePlusOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void mButtonSetOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		CPowertunePanelBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 385,-1 ), long style = wxTAB_TRAVERSAL ); 
+		~CPowertunePanelBase();
 	
 };
 

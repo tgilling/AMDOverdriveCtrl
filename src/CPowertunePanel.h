@@ -25,11 +25,29 @@
 
 *******************************************************************************/
 
-#ifndef _Revision_h_
-#define _Revision_h_
 
-const int VERSION  = 1;
-const int REVISION = 2;
-const int BUILD    = 0;
+#ifndef _CPowertunePanel_h_
+#define _CPowertunePanel_h_
+
+#include <wx/wx.h>
+#include "gui.h"
+
+class ADL;
+
+class CPowertunePanel : public CPowertunePanelBase
+{
+    public:
+        CPowertunePanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxPoint(-1,15), const wxSize& size = wxSize(-1,-1), long style = wxTAB_TRAVERSAL);
+        virtual ~CPowertunePanel();
+
+    protected:
+	ADL* adl;
+	
+        virtual void mPowertuneMinusOnButtonClick( wxCommandEvent& event );
+        virtual void mPowertuneSliderOnScroll( wxScrollEvent& event );
+        virtual void mPowertunePlusOnButtonClick( wxCommandEvent& event );
+        virtual void mButtonSetOnButtonClick( wxCommandEvent& event );
+
+};
 
 #endif

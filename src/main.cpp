@@ -89,7 +89,7 @@ bool MainApp::OnCmdLineParsed(wxCmdLineParser& parser)
 bool MainApp::OnInit()
 {
     ADL* adl = ADL::Instance();
-
+    
     if (!wxApp::OnInit())
     {
         return false;
@@ -192,7 +192,7 @@ bool MainApp::OnInit()
 	    file_path += wxT("/.AMDOverdriveCtrl");
 
 	    #ifdef LINUX
-		mkdir(file_path.ToUTF8(), 700);
+		mkdir(file_path.ToUTF8(), 0700);
 	    #else
 		mkdir(file_path.ToUTF8());
 	    #endif
@@ -296,6 +296,7 @@ MainDialog::MainDialog(wxWindow *parent)
     , mpFanControlPanel(NULL)
     , mpAppProfilePanel(NULL)
     , mpColorTempPanel(NULL)
+    , mpPowertunePanel(NULL)
 {
     wxImage::AddHandler(new wxPNGHandler);
 
@@ -314,6 +315,7 @@ MainDialog::MainDialog(wxWindow *parent)
     mpAppProfilePanel = new CAppProfilePanel(mNotebook);
     mpOvdrSettingsPanel = new COvdrSettingsPanel(mNotebook);
     mpColorTempPanel = new CColorTempPanel(mNotebook);
+    mpPowertunePanel = new CPowertunePanel(mNotebook);
 
     mpFanSpeedPanel->SetFanControlPanel(mpFanControlPanel);
 
@@ -343,8 +345,9 @@ void MainDialog::OnInit(wxInitDialogEvent& WXUNUSED(event))
 
 	if (mpInfoPanel != NULL && mpFanSpeedPanel != NULL && mpAuthorPanel != NULL
 	    && mpMonitorPanel != NULL && mpFanControlPanel != NULL && mpAppProfilePanel != NULL
-	    && mpOvdrSettingsPanel != NULL && mpColorTempPanel != NULL)
+	    && mpOvdrSettingsPanel != NULL && mpColorTempPanel != NULL && mpPowertunePanel != NULL)
 	{
+	    mNotebook->AddPage(mpPowertunePanel, wxT("Powertune"));
 	    mNotebook->AddPage(mpAuthorPanel, wxT("?"));
 	    mNotebook->AddPage(mpInfoPanel, wxT("Info"));
 	    mNotebook->AddPage(mpOvdrSettingsPanel, wxT("Overdrive"));

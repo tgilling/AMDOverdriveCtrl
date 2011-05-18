@@ -45,6 +45,7 @@
 #include "CFanControlPanel.h"
 #include "CAppProfilePanel.h"
 #include "COvdrSettingsPanel.h"
+#include "CPowertunePanel.h"
 #include "CTaskBarIcon.h"
 #include "CColorTempPanel.h"
 
@@ -134,6 +135,7 @@ class MainDialog : public MainDialogBase, wxTimer
         CAppProfilePanel* mpAppProfilePanel;
         COvdrSettingsPanel* mpOvdrSettingsPanel;
 	CColorTempPanel* mpColorTempPanel;
+	CPowertunePanel* mpPowertunePanel;
 
         CTaskBarIcon* mpTaskBarIcon;
 

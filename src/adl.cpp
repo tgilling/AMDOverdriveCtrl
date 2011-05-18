@@ -206,6 +206,10 @@ ADL::ADL()
     , ADL_Adapter_XScreenInfo_Get(NULL)
     , ADL_Display_XrandrDisplayName_Get(NULL)
 #endif
+//    , ADL_Overdrive5_PowerControl_Caps(NULL)
+//    , ADL_Overdrive5_PowerControlInfo_Get(NULL)
+    , ADL_Overdrive5_PowerControl_Get(NULL)
+    , ADL_Overdrive5_PowerControl_Set(NULL)
     , mNrOfAdapters(0)
     , mpAdapterInfo(NULL)
     , mpODPerformanceLevels(NULL)
@@ -505,6 +509,11 @@ bool ADL::Init()
     GPA(ADL_Adapter_XScreenInfo_Get, ADL_ADAPTER_XSCREENINFO_GET)
     GPA(ADL_Display_XrandrDisplayName_Get, ADL_DISPLAY_XRANDRDISPLAYNAME_GET)
 #endif
+
+//    GPA(ADL_Overdrive5_PowerControl_Caps, ADL_OVERDRIVE5_POWERCONTROL_CAPS)
+//    GPA(ADL_Overdrive5_PowerControlInfo_Get, ADL_OVERDRIVE5_POWERCONTROLINFO_GET)
+    GPA(ADL_Overdrive5_PowerControl_Get, ADL_OVERDRIVE5_POWERCONTROL_GET)
+    GPA(ADL_Overdrive5_PowerControl_Set, ADL_OVERDRIVE5_POWERCONTROL_SET)
 
 #ifndef FAKE_ATI_CARD
     // Initialize ADL. The second parameter is 1, which means:

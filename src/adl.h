@@ -248,6 +248,12 @@ class ADL
 	ADL_DISPLAY_XRANDRDISPLAYNAME_GET		ADL_Display_XrandrDisplayName_Get;
 #endif
 
+	// experimental
+//ř	ADL_OVERDRIVE5_POWERCONTROL_CAPS		ADL_Overdrive5_PowerControl_Caps;
+//	ADL_OVERDRIVE5_POWERCONTROLINFO_GET		ADL_Overdrive5_PowertControlInfo_Get;
+	ADL_OVERDRIVE5_POWERCONTROL_GET			ADL_Overdrive5_PowerControl_Get;
+	ADL_OVERDRIVE5_POWERCONTROL_SET			ADL_Overdrive5_PowerControl_Set;
+
 	// Optional Memory de-allocation function
 	void __stdcall ADL_Main_Memory_Free (void** lpBuffer);
 

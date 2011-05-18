@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Apr 11 2011)
+// C++ code generated with wxFormBuilder (version May  5 2011)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -76,6 +76,161 @@ MainDialogBase::~MainDialogBase()
 	mSaveButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::mSaveButtonClick ), NULL, this );
 	mExit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::mExitButtonClick ), NULL, this );
 	mOKButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainDialogBase::OnOKClick ), NULL, this );
+	
+}
+
+CPowertunePanelBase::CPowertunePanelBase( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
+{
+	wxBoxSizer* bSizer34;
+	bSizer34 = new wxBoxSizer( wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer31;
+	fgSizer31 = new wxFlexGridSizer( 5, 1, 0, 0 );
+	fgSizer31->SetFlexibleDirection( wxBOTH );
+	fgSizer31->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	
+	fgSizer31->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer14;
+	bSizer14 = new wxBoxSizer( wxVERTICAL );
+	
+	m_staticText171 = new wxStaticText( this, wxID_ANY, _("Powertune"), wxPoint( -1,-1 ), wxDefaultSize, 0 );
+	m_staticText171->Wrap( -1 );
+	m_staticText171->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
+	
+	bSizer14->Add( m_staticText171, 0, wxLEFT|wxTOP, 5 );
+	
+	fgSizer31->Add( bSizer14, 1, wxEXPAND, 5 );
+	
+	wxFlexGridSizer* fgSizer8;
+	fgSizer8 = new wxFlexGridSizer( 3, 5, 0, 0 );
+	fgSizer8->AddGrowableCol( 3 );
+	fgSizer8->SetFlexibleDirection( wxBOTH );
+	fgSizer8->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	fgSizer8->SetMinSize( wxSize( 380,-1 ) ); 
+	
+	fgSizer8->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	
+	fgSizer8->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	mTargetPowertune = new wxTextCtrl( this, wxID_ANY, _("0%"), wxDefaultPosition, wxSize( 50,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	fgSizer8->Add( mTargetPowertune, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
+	
+	
+	fgSizer8->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	
+	fgSizer8->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	mMinPowertune = new wxTextCtrl( this, wxID_ANY, _("-20%"), wxDefaultPosition, wxSize( 50,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	fgSizer8->Add( mMinPowertune, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	mPowertuneMinus = new wxButton( this, wxID_ANY, _("-"), wxDefaultPosition, wxSize( 23,23 ), 0 );
+	mPowertuneMinus->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
+	
+	fgSizer8->Add( mPowertuneMinus, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	mPowertuneSlider = new wxSlider( this, wxID_ANY, 0, -20, 20, wxDefaultPosition, wxSize( 183,-1 ), wxSL_HORIZONTAL );
+	fgSizer8->Add( mPowertuneSlider, 0, wxALL|wxEXPAND, 5 );
+	
+	mPowertunePlus = new wxButton( this, wxID_ANY, _("+"), wxDefaultPosition, wxSize( 23,23 ), 0 );
+	mPowertunePlus->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
+	
+	fgSizer8->Add( mPowertunePlus, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	mPowertuneMax = new wxTextCtrl( this, wxID_ANY, _("20%"), wxDefaultPosition, wxSize( 50,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	fgSizer8->Add( mPowertuneMax, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	
+	fgSizer8->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	
+	fgSizer8->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	mCurrentPowertune = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	mCurrentPowertune->Wrap( -1 );
+	fgSizer8->Add( mCurrentPowertune, 0, wxALIGN_CENTER|wxALL, 5 );
+	
+	
+	fgSizer8->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	
+	fgSizer8->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	fgSizer31->Add( fgSizer8, 1, wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer40;
+	bSizer40 = new wxBoxSizer( wxHORIZONTAL );
+	
+	
+	bSizer40->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	mButtonSet = new wxButton( this, wxID_ANY, _("Set"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer40->Add( mButtonSet, 0, wxALL, 5 );
+	
+	
+	bSizer40->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	fgSizer31->Add( bSizer40, 1, wxEXPAND, 5 );
+	
+	m_staticline12 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	fgSizer31->Add( m_staticline12, 0, wxEXPAND | wxALL, 5 );
+	
+	wxBoxSizer* bSizer36;
+	bSizer36 = new wxBoxSizer( wxHORIZONTAL );
+	
+	
+	bSizer36->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	mExperimental = new wxStaticText( this, wxID_ANY, _("\nThis feature is not (yet) documented\nin the ADL SDK.\n\nIt's not guaranteed to work."), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	mExperimental->Wrap( -1 );
+	mExperimental->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
+	
+	bSizer36->Add( mExperimental, 0, wxALL, 5 );
+	
+	
+	bSizer36->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	fgSizer31->Add( bSizer36, 1, wxEXPAND, 5 );
+	
+	bSizer34->Add( fgSizer31, 1, wxEXPAND, 5 );
+	
+	this->SetSizer( bSizer34 );
+	this->Layout();
+	
+	// Connect Events
+	mPowertuneMinus->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CPowertunePanelBase::mPowertuneMinusOnButtonClick ), NULL, this );
+	mPowertuneSlider->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( CPowertunePanelBase::mPowertuneSliderOnScroll ), NULL, this );
+	mPowertuneSlider->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( CPowertunePanelBase::mPowertuneSliderOnScroll ), NULL, this );
+	mPowertuneSlider->Connect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( CPowertunePanelBase::mPowertuneSliderOnScroll ), NULL, this );
+	mPowertuneSlider->Connect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( CPowertunePanelBase::mPowertuneSliderOnScroll ), NULL, this );
+	mPowertuneSlider->Connect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( CPowertunePanelBase::mPowertuneSliderOnScroll ), NULL, this );
+	mPowertuneSlider->Connect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( CPowertunePanelBase::mPowertuneSliderOnScroll ), NULL, this );
+	mPowertuneSlider->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( CPowertunePanelBase::mPowertuneSliderOnScroll ), NULL, this );
+	mPowertuneSlider->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( CPowertunePanelBase::mPowertuneSliderOnScroll ), NULL, this );
+	mPowertuneSlider->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( CPowertunePanelBase::mPowertuneSliderOnScroll ), NULL, this );
+	mPowertunePlus->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CPowertunePanelBase::mPowertunePlusOnButtonClick ), NULL, this );
+	mButtonSet->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CPowertunePanelBase::mButtonSetOnButtonClick ), NULL, this );
+}
+
+CPowertunePanelBase::~CPowertunePanelBase()
+{
+	// Disconnect Events
+	mPowertuneMinus->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CPowertunePanelBase::mPowertuneMinusOnButtonClick ), NULL, this );
+	mPowertuneSlider->Disconnect( wxEVT_SCROLL_TOP, wxScrollEventHandler( CPowertunePanelBase::mPowertuneSliderOnScroll ), NULL, this );
+	mPowertuneSlider->Disconnect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( CPowertunePanelBase::mPowertuneSliderOnScroll ), NULL, this );
+	mPowertuneSlider->Disconnect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( CPowertunePanelBase::mPowertuneSliderOnScroll ), NULL, this );
+	mPowertuneSlider->Disconnect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( CPowertunePanelBase::mPowertuneSliderOnScroll ), NULL, this );
+	mPowertuneSlider->Disconnect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( CPowertunePanelBase::mPowertuneSliderOnScroll ), NULL, this );
+	mPowertuneSlider->Disconnect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( CPowertunePanelBase::mPowertuneSliderOnScroll ), NULL, this );
+	mPowertuneSlider->Disconnect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( CPowertunePanelBase::mPowertuneSliderOnScroll ), NULL, this );
+	mPowertuneSlider->Disconnect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( CPowertunePanelBase::mPowertuneSliderOnScroll ), NULL, this );
+	mPowertuneSlider->Disconnect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( CPowertunePanelBase::mPowertuneSliderOnScroll ), NULL, this );
+	mPowertunePlus->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CPowertunePanelBase::mPowertunePlusOnButtonClick ), NULL, this );
+	mButtonSet->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CPowertunePanelBase::mButtonSetOnButtonClick ), NULL, this );
 	
 }
 

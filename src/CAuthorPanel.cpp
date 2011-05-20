@@ -40,11 +40,11 @@ CAuthorPanel::CAuthorPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, 
         wxString::Format(wxT("\n\nAMDOverdriveCtrl\n\nV%d.%d.%d\n"), VERSION, REVISION, BUILD);
 
     wxString text2 = wxT("Copyright(c) Thorsten Gilling\n<tgilling@web.de>\n"
-			 "\nThanks to SourceForge member 'logion'\nfor code contribution.\n\nThis program is free software\nYou can redistribute it "
+			 "\n\nThis program is free software\nYou can redistribute it "
 			 "and/or modify it\nunder the terms of the GNU GPL2"
                      );
 
-    wxString text3 = wxT("\n!!! USE AT YOUR OWN RISK !!!\n\n");
+    wxString text3 = wxT("\n!!! USE AT YOUR OWN RISK !!!\n\nExperimental 'Powertune' feature\nwill only work on HD6xxx cards.");
 
     mText1->SetLabel(text1);
     mText2->SetLabel(text2);

@@ -33,64 +33,83 @@ CPowertunePanel::CPowertunePanel(wxWindow* parent, wxWindowID id, const wxPoint&
     , adl(NULL)
 {
     adl = ADL::Instance();
-    
+
     mExperimental->SetForegroundColour(wxColour(250, 50, 50));
-    
+
     if (adl->ADL_Overdrive5_PowerControl_Get == NULL || adl->ADL_Overdrive5_PowerControl_Set == NULL)
     {
-	Show(false);
+        Show(false);
     }
     else
-    {   
-	int percentage, dummy;
-	SAVE_CALL(adl->ADL_Overdrive5_PowerControl_Get)(adl->GetGPUIndex(), &percentage, &dummy);
-	mCurrentPowertune->SetLabel(wxString::Format(wxT("%d%%"), percentage));    	
+    {
+        int percentage, dummy;
+        SAVE_CALL(adl->ADL_Overdrive5_PowerControl_Get)(adl->GetGPUIndex(), &percentage, &dummy);
+        mCurrentPowertune->SetLabel(wxString::Format(wxT("%d%%"), percentage));
     }
 }
 
 CPowertunePanel::~CPowertunePanel()
 {
-    
+
 }
 
-void CPowertunePanel::mPowertuneMinusOnButtonClick( wxCommandEvent& event )
+void CPowertunePanel::mPowertuneMinusOnButtonClick( wxCommandEvent& WXUNUSED(event) )
 {
     int tmp = mPowertuneSlider->GetValue();
+
     if (tmp > -20)
     {
-	--tmp;
-	mPowertuneSlider->SetValue(tmp);
-	mTargetPowertune->SetValue(wxString::Format(wxT("%d%%"), tmp));
+        --tmp;
+        mPowertuneSlider->SetValue(tmp);
+        mTargetPowertune->SetValue(wxString::Format(wxT("%d%%"), tmp));
     }
 }
 
-void CPowertunePanel::mPowertuneSliderOnScroll( wxScrollEvent& event )
+void CPowertunePanel::mPowertuneSliderOnScroll( wxScrollEvent& WXUNUSED(event) )
 {
     int tmp = mPowertuneSlider->GetValue();
     mTargetPowertune->SetValue(wxString::Format(wxT("%d%%"), tmp));
 }
 
-void CPowertunePanel::mPowertunePlusOnButtonClick( wxCommandEvent& event )
+void CPowertunePanel::mPowertunePlusOnButtonClick( wxCommandEvent& WXUNUSED(event))
 {
     int tmp = mPowertuneSlider->GetValue();
+
     if (tmp < 20)
     {
-	++tmp;
-	mPowertuneSlider->SetValue(tmp);
-	mTargetPowertune->SetValue(wxString::Format(wxT("%d%%"), tmp));
-    }    
+        ++tmp;
+        mPowertuneSlider->SetValue(tmp);
+        mTargetPowertune->SetValue(wxString::Format(wxT("%d%%"), tmp));
+    }
 }
 
-void CPowertunePanel::mButtonSetOnButtonClick( wxCommandEvent& event )
+void CPowertunePanel::mButtonSetOnButtonClick( wxCommandEvent& WXUNUSED(event ))
 {
     if (SAVE_CALL(adl->ADL_Overdrive5_PowerControl_Set)(adl->GetGPUIndex(), mPowertuneSlider->GetValue()) == ADL_OK)
     {
-	int percentage, dummy;
-	SAVE_CALL(adl->ADL_Overdrive5_PowerControl_Get)(adl->GetGPUIndex(), &percentage, &dummy);
-	mCurrentPowertune->SetLabel(wxString::Format(wxT("%d%%"), percentage));
+        int percentage, dummy;
+        SAVE_CALL(adl->ADL_Overdrive5_PowerControl_Get)(adl->GetGPUIndex(), &percentage, &dummy);
+        mCurrentPowertune->SetLabel(wxString::Format(wxT("%d%%"), percentage));
     }
     else
     {
-	wxMessageBox(wxT("Failed to set Powertune value."), wxT("Problem!"), wxOK|wxCENTRE|wxICON_ERROR);
+        wxMessageBox(wxT("Failed to set Powertune value."), wxT("Problem!"), wxOK|wxCENTRE|wxICON_ERROR);
+    }
+}
+
+long CPowertunePanel::GetPowertuneSetting()
+{
+    int percentage, dummy;
+    SAVE_CALL(adl->ADL_Overdrive5_PowerControl_Get)(adl->GetGPUIndex(), &percentage, &dummy);
+    return percentage;
+}
+
+void CPowertunePanel::SetPowertuneSetting(long value)
+{
+    if (SAVE_CALL(adl->ADL_Overdrive5_PowerControl_Set)(adl->GetGPUIndex(), value) == ADL_OK)
+    {
+        int percentage, dummy;
+        SAVE_CALL(adl->ADL_Overdrive5_PowerControl_Get)(adl->GetGPUIndex(), &percentage, &dummy);
+        mCurrentPowertune->SetLabel(wxString::Format(wxT("%d%%"), percentage));
     }
 }

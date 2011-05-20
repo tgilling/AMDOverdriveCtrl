@@ -39,6 +39,9 @@ class CPowertunePanel : public CPowertunePanelBase
     public:
         CPowertunePanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxPoint(-1,15), const wxSize& size = wxSize(-1,-1), long style = wxTAB_TRAVERSAL);
         virtual ~CPowertunePanel();
+	
+	long GetPowertuneSetting();
+	void SetPowertuneSetting(long value);
 
     protected:
 	ADL* adl;

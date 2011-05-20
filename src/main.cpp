@@ -347,10 +347,10 @@ void MainDialog::OnInit(wxInitDialogEvent& WXUNUSED(event))
 	    && mpMonitorPanel != NULL && mpFanControlPanel != NULL && mpAppProfilePanel != NULL
 	    && mpOvdrSettingsPanel != NULL && mpColorTempPanel != NULL && mpPowertunePanel != NULL)
 	{
-	    mNotebook->AddPage(mpPowertunePanel, wxT("Powertune"));
 	    mNotebook->AddPage(mpAuthorPanel, wxT("?"));
 	    mNotebook->AddPage(mpInfoPanel, wxT("Info"));
 	    mNotebook->AddPage(mpOvdrSettingsPanel, wxT("Overdrive"));
+	    mNotebook->AddPage(mpPowertunePanel, wxT("Powertune"));
 	    mNotebook->AddPage(mpFanSpeedPanel, wxT("FanSpeed"));
 	    mNotebook->AddPage(mpFanControlPanel, wxT("FanCtrl"));
 	    mNotebook->AddPage(mpAppProfilePanel, wxT("AppProfile"));
@@ -582,6 +582,16 @@ bool MainDialog::LoadXML(wxString filename)
 
 			mpColorTempPanel->SetValues(enable, longitude, latitude, color_temp_day, color_temp_night, transition);
 		    }
+		    else if (child->GetName() == wxT("POWERTUNE"))
+		    {
+			wxString tmp;
+			long percentage;
+			
+			tmp = child->GetPropVal(wxT("percentage"), wxT("0"));
+			tmp.ToLong(&percentage);
+			
+			mpPowertunePanel->SetPowertuneSetting(percentage);			
+		    }
 
 		    child = child->GetNext();
 		}
@@ -676,6 +686,11 @@ bool MainDialog::SaveXML(wxString filename)
     node->AddProperty(wxT("color_temp_day"), wxString::Format(wxT("%d"), color_temp_day));
     node->AddProperty(wxT("color_temp_night"), wxString::Format(wxT("%d"), color_temp_night));
     node->AddProperty(wxT("transition"), wxString::Format(wxT("%d"), transition));
+    root->AddChild(node);
+
+    int percentage = mpPowertunePanel->GetPowertuneSetting();
+    node = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("POWERTUNE"));
+    node->AddProperty(wxT("percentage"), wxString::Format(wxT("%d"), percentage));
     root->AddChild(node);
 
     if(filename.Find(wxT(".ovdr")) == wxNOT_FOUND)

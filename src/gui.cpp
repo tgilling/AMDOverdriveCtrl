@@ -90,7 +90,7 @@ CPowertunePanelBase::CPowertunePanelBase( wxWindow* parent, wxWindowID id, const
 	fgSizer31->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
 	
-	fgSizer31->Add( 0, 0, 1, wxEXPAND, 5 );
+	fgSizer31->Add( 0, 5, 1, wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer14;
 	bSizer14 = new wxBoxSizer( wxVERTICAL );

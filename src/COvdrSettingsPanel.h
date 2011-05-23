@@ -34,8 +34,6 @@
 
 #include "CSettingsPanel.h"
 
-const int NR_OF_LEVELS = 3;
-
 class ADL;
 
 class COvdrSettingsPanel : public COvdrSettingsPanelBase
@@ -57,9 +55,9 @@ class COvdrSettingsPanel : public COvdrSettingsPanelBase
         CSettingsPanel* mpSettingsPanelMid;
         CSettingsPanel* mpSettingsPanelHigh;
 
-	int mGPU[NR_OF_LEVELS];
-	int mMem[NR_OF_LEVELS];
-	int mVoltage[NR_OF_LEVELS];
+	int* mGPU;
+	int* mMem;
+	int* mVoltage;
 
 	virtual void mButtonSaveDefaultClick( wxCommandEvent& event );
 	virtual void mButtonResetClick( wxCommandEvent& event );

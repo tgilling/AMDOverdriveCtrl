@@ -36,41 +36,69 @@ COvdrSettingsPanel::COvdrSettingsPanel(wxWindow* parent, wxWindowID id, const wx
     , mpSettingsPanelLow(NULL)
     , mpSettingsPanelMid(NULL)
     , mpSettingsPanelHigh(NULL)
+    , mGPU(NULL)
+    , mMem(NULL)
+    , mVoltage(NULL)
+    
 {
     adl = ADL::Instance();
 
+    mGPU = new int[adl->mODParameters.iNumberOfPerformanceLevels];
+    mMem = new int[adl->mODParameters.iNumberOfPerformanceLevels];
+    mVoltage = new int[adl->mODParameters.iNumberOfPerformanceLevels];
+    
+    if (mGPU == NULL || mMem == NULL || mVoltage == NULL)
+    {
+	wxMessageBox(wxT("Unable to create Overdrive Panels (out of memory)"), wxT("ERROR"), wxOK|wxCENTRE|wxICON_ERROR);
+    }
+
     if(!(adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PARAMETERS) ||
-            !(adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PERF_LEVELS))
+       !(adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PERF_LEVELS))
     {
         Show(false);
     }
     else
-    {
-        mpSettingsPanelLow = new CSettingsPanel(0, mOvdrNotebook);
-        mpSettingsPanelMid = new CSettingsPanel(1, mOvdrNotebook);
-        mpSettingsPanelHigh = new CSettingsPanel(2, mOvdrNotebook);
+    {	
+	if (adl->mODParameters.iNumberOfPerformanceLevels == 3)
+	{
+	    mpSettingsPanelLow = new CSettingsPanel(0, mOvdrNotebook);
+	    mpSettingsPanelMid = new CSettingsPanel(1, mOvdrNotebook);
+	    mpSettingsPanelHigh = new CSettingsPanel(2, mOvdrNotebook);	    
+	}
+	else 
+	{
+	    mpSettingsPanelLow = new CSettingsPanel(0, mOvdrNotebook);
+	    mpSettingsPanelHigh = new CSettingsPanel(1, mOvdrNotebook);	    	    
+	}
 
-        if(mpSettingsPanelLow != NULL && mpSettingsPanelMid != NULL && mpSettingsPanelHigh != NULL)
+        if(mpSettingsPanelLow != NULL 
+	    && (mpSettingsPanelMid != NULL || adl->mODParameters.iNumberOfPerformanceLevels == 2)
+	    && mpSettingsPanelHigh != NULL)
         {
             mOvdrNotebook->AddPage(mpSettingsPanelLow, wxT("Low"));
-            mOvdrNotebook->AddPage(mpSettingsPanelMid, wxT("Mid"));
+	    if (adl->mODParameters.iNumberOfPerformanceLevels == 3)
+	    {           
+		mOvdrNotebook->AddPage(mpSettingsPanelMid, wxT("Mid"));
+	    }
             mOvdrNotebook->AddPage(mpSettingsPanelHigh, wxT("High"));
         }
         else
         {
-            wxMessageBox(wxT("Unable to create Panels"), wxT("ERROR"), wxOK|wxCENTRE|wxICON_ERROR);
+            wxMessageBox(wxT("Unable to create Overdrive Panels"), wxT("ERROR"), wxOK|wxCENTRE|wxICON_ERROR);
         }
     }
 }
 
 COvdrSettingsPanel::~COvdrSettingsPanel()
 {
-
-}
+    delete[] mGPU;
+    delete[] mMem;
+    delete[] mVoltage;
+}	
 
 void COvdrSettingsPanel::SetOverdriveValues(int PerfLevel, int gpu, int mem, int volt)
 {
-    if(PerfLevel >= 0 && PerfLevel < NR_OF_LEVELS)
+    if(PerfLevel >= 0 && PerfLevel < adl->mODParameters.iNumberOfPerformanceLevels)
     {
         mGPU[PerfLevel] = gpu;
         mMem[PerfLevel] = mem;
@@ -83,9 +111,9 @@ bool COvdrSettingsPanel::CommitOverdriveValues()
     if((adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PARAMETERS) && (adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PERF_LEVELS))
     {
 #ifdef FAKE_ATI_CARD
-        for(int i=0; i<NR_OF_LEVELS; i++)
+        for(int i=0; i<adl->mODParameters.iNumberOfPerformanceLevels; i++)
         {
-            ACT_LOG("SetOverdriveValues: Level " i << " " << mGPU[i] << "MHz, " << mMem[i] << "MHz, " <<	"MHz, " << (double)mVoltage[i]/1000.0 << "V");
+            ACT_LOG("SetOverdriveValues: Level " << i << " " << mGPU[i] << "MHz, " << mMem[i] << "MHz, " <<	"MHz, " << (double)mVoltage[i]/1000.0 << "V");
         }
         return true;
 #endif
@@ -103,7 +131,7 @@ bool COvdrSettingsPanel::CommitOverdriveValues()
 
             if(SAVE_CALL(adl->ADL_Overdrive5_ODPerformanceLevels_Get)(adl->GetGPUIndex(), 0, levels) == ADL_OK)
             {
-                for(int i=0; i<NR_OF_LEVELS; i++)
+                for(int i=0; i<para.iNumberOfPerformanceLevels; i++)
                 {
                     levels->aLevels[i].iEngineClock = mGPU[i] * 100;
                     levels->aLevels[i].iMemoryClock = mMem[i] * 100;
@@ -133,7 +161,10 @@ void COvdrSettingsPanel::UpdateDisplayValues()
     if(mpSettingsPanelLow != NULL && mpSettingsPanelMid != NULL && mpSettingsPanelHigh != NULL)
     {
         mpSettingsPanelLow->UpdateDisplayValues();
-        mpSettingsPanelMid->UpdateDisplayValues();
+	if (adl->mODParameters.iNumberOfPerformanceLevels == 3)
+	{       
+	    mpSettingsPanelMid->UpdateDisplayValues();
+	}
         mpSettingsPanelHigh->UpdateDisplayValues();
     }
 }
@@ -145,14 +176,22 @@ void COvdrSettingsPanel::mButtonResetClick(wxCommandEvent& WXUNUSED(event))
     int mem0, mem1, mem2;
     int v0, v1, v2;
 
-    mpSettingsPanelLow->GetResetValues(level0, gpu0, mem0, v0);
-    mpSettingsPanelMid->GetResetValues(level1, gpu1, mem1, v1);
-    mpSettingsPanelHigh->GetResetValues(level2, gpu2, mem2, v2);
-
+    mpSettingsPanelLow->GetResetValues(level0, gpu0, mem0, v0);    
     SetOverdriveValues(level0, gpu0, mem0, v0);
-    SetOverdriveValues(level1, gpu1, mem1, v1);
-    SetOverdriveValues(level2, gpu2, mem2, v2);
-
+    
+    if (adl->mODParameters.iNumberOfPerformanceLevels == 3)
+    {
+	mpSettingsPanelMid->GetResetValues(level1, gpu1, mem1, v1);
+	SetOverdriveValues(level1, gpu1, mem1, v1);
+	mpSettingsPanelHigh->GetResetValues(level2, gpu2, mem2, v2);
+	SetOverdriveValues(level2, gpu2, mem2, v2);    
+    }	
+    else
+    {
+	mpSettingsPanelHigh->GetResetValues(level1, gpu1, mem1, v1);
+	SetOverdriveValues(level1, gpu1, mem1, v1);    	
+    }
+    
     CommitOverdriveValues();
 
     UpdateDisplayValues();
@@ -166,8 +205,19 @@ void COvdrSettingsPanel::mButtonSetClick(wxCommandEvent& WXUNUSED(event))
     int v0, v1, v2;
 
     mpSettingsPanelLow->GetValues(level0, gpu0, mem0, v0);
-    mpSettingsPanelMid->GetValues(level1, gpu1, mem1, v1);
-    mpSettingsPanelHigh->GetValues(level2, gpu2, mem2, v2);
+    
+    if (adl->mODParameters.iNumberOfPerformanceLevels == 3)
+    {    
+	mpSettingsPanelMid->GetValues(level1, gpu1, mem1, v1);
+	mpSettingsPanelHigh->GetValues(level2, gpu2, mem2, v2);
+    }
+    else
+    {
+	mpSettingsPanelHigh->GetValues(level1, gpu1, mem1, v1);
+	mem2 = mem1;
+	gpu2 = gpu1;
+	v2 = v1;
+    }
 
     wxString tmp = wxString::FromAscii(adl->mpAdapterInfo->strAdapterName);
     if(tmp.Find(wxT("Mobility")) == wxNOT_FOUND)
@@ -188,7 +238,10 @@ void COvdrSettingsPanel::mButtonSetClick(wxCommandEvent& WXUNUSED(event))
     {
         SetOverdriveValues(level0, gpu0, mem0, v0);
         SetOverdriveValues(level1, gpu1, mem1, v1);
-        SetOverdriveValues(level2, gpu2, mem2, v2);
+	if (adl->mODParameters.iNumberOfPerformanceLevels == 3)
+	{    
+	    SetOverdriveValues(level2, gpu2, mem2, v2);
+	}
 
         CommitOverdriveValues();
     }

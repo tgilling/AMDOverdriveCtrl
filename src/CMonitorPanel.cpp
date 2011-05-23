@@ -60,7 +60,8 @@ CMonitorPanel::CMonitorPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos
 
     Start(mSampleInterval, false);
 
-    if (!(adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED) ||	!(adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED))
+    if (!(adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED) ||
+	!(adl->GetSupportedFeatures() & ADL::FEAT_GET_FANSPEED))
     {
 	mFanSpeedSlider->Disable();
     }
@@ -151,7 +152,14 @@ void CMonitorPanel::DrawGrid(wxPanel* panel)
 
             case 1:
             {
-                dc.DrawText(wxT("MID"), wxPoint(5, 0));
+		if (adl->mODParameters.iNumberOfPerformanceLevels == 3)
+		{
+		    dc.DrawText(wxT("MID"), wxPoint(5, 0));		    
+		}
+		else
+		{
+		    dc.DrawText(wxT("HIGH"), wxPoint(5, 0));
+		}
             }
             break;
 
@@ -242,7 +250,20 @@ void CMonitorPanel::DrawValues(wxPanel* panel, int* values, wxColour col)
                 switch(values[index])
                 {
                     case 3:  { level = wxT("HIGH"); } break;
-                    case 2:  { level = wxT("MID");  } break;
+		    
+                    case 2:  		    
+		    { 
+			if (adl->mODParameters.iNumberOfPerformanceLevels == 3)
+			{
+			    level = wxT("MID");  			    
+			}
+			else
+			{
+			    level = wxT("HIGH");
+			}
+		    } 
+		    break;
+		    
                     default: { level = wxT("LOW");  } break;
                 }
 

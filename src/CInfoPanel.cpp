@@ -79,6 +79,14 @@ CInfoPanel::CInfoPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
 	    mInfoLevelMid->Disable();
 	    mInfoLevelHigh->Disable();
 	}
+	
+	if (adl->mODParameters.iNumberOfPerformanceLevels == 2)
+	{
+	    mInfoOVGPUMid->Disable();
+	    mInfoOVMemMid->Disable();
+	    mInfoOVVoltMid->Disable();
+	    mInfoLevelMid->Disable();	    
+	}
     }
     else
     {
@@ -149,16 +157,30 @@ void CInfoPanel::UpdateDisplayValues()
 	if (adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PARAMETERS)
 	{
 	    mInfoOVGPULow->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[0].iEngineClock/100));
-	    mInfoOVGPUMid->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[1].iEngineClock/100));
-	    mInfoOVGPUHigh->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[2].iEngineClock/100));
-
 	    mInfoOVMemLow->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[0].iMemoryClock/100));
-	    mInfoOVMemMid->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[1].iMemoryClock/100));
-	    mInfoOVMemHigh->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[2].iMemoryClock/100));
-
 	    mInfoOVVoltLow->SetValue(wxString::Format(wxT("%.3f V"), (float)adl->mpODPerformanceLevels->aLevels[0].iVddc/1000.0));
-	    mInfoOVVoltMid->SetValue(wxString::Format(wxT("%.3f V"), (float)adl->mpODPerformanceLevels->aLevels[1].iVddc/1000.0));
-	    mInfoOVVoltHigh->SetValue(wxString::Format(wxT("%.3f V"), (float)adl->mpODPerformanceLevels->aLevels[2].iVddc/1000.0));
+	    
+	    if (adl->mODParameters.iNumberOfPerformanceLevels == 2)
+	    {
+		mInfoOVGPUMid->SetValue(wxT("---"));
+		mInfoOVMemMid->SetValue(wxT("---"));
+		mInfoOVVoltMid->SetValue(wxT("---"));
+		mInfoLevelMid->SetLabel(wxT("---"));
+
+		mInfoOVGPUHigh->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[1].iEngineClock/100));
+		mInfoOVMemHigh->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[1].iMemoryClock/100));
+		mInfoOVVoltHigh->SetValue(wxString::Format(wxT("%.3f V"), (float)adl->mpODPerformanceLevels->aLevels[1].iVddc/1000.0));
+	    }
+	    else
+	    {		
+		mInfoOVGPUMid->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[1].iEngineClock/100));
+		mInfoOVMemMid->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[1].iMemoryClock/100));
+		mInfoOVVoltMid->SetValue(wxString::Format(wxT("%.3f V"), (float)adl->mpODPerformanceLevels->aLevels[1].iVddc/1000.0));
+
+		mInfoOVGPUHigh->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[2].iEngineClock/100));
+		mInfoOVMemHigh->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[2].iMemoryClock/100));
+		mInfoOVVoltHigh->SetValue(wxString::Format(wxT("%.3f V"), (float)adl->mpODPerformanceLevels->aLevels[2].iVddc/1000.0));		
+	    }
 	}
 	else
 	{
@@ -174,7 +196,7 @@ void CInfoPanel::UpdateDisplayValues()
 	    mInfoOVVoltMid->SetValue(wxT("---"));
 	    mInfoOVVoltHigh->SetValue(wxT("---"));
 	}
-
+	
         mInfoActivity->SetValue(adl->mODActivity.iActivityPercent);
 
 	if (adl->mODActivity.iCurrentBusLanes != 0 && adl->mODActivity.iMaximumBusLanes != 0)
@@ -195,9 +217,19 @@ void CInfoPanel::UpdateDisplayValues()
 
             case 1:
             {
-                mInfoLevelLow->SetForegroundColour(mInactiveTextColor);
-                mInfoLevelMid->SetForegroundColour(mActiveTextColor);
-                mInfoLevelHigh->SetForegroundColour(mInactiveTextColor);
+		
+		if (adl->mODParameters.iNumberOfPerformanceLevels == 2)
+		{
+		    mInfoLevelLow->SetForegroundColour(mInactiveTextColor);
+		    mInfoLevelMid->SetForegroundColour(mInactiveTextColor);
+		    mInfoLevelHigh->SetForegroundColour(mActiveTextColor);				    
+		}
+		else
+		{
+		    mInfoLevelLow->SetForegroundColour(mInactiveTextColor);
+		    mInfoLevelMid->SetForegroundColour(mActiveTextColor);
+		    mInfoLevelHigh->SetForegroundColour(mInactiveTextColor);		
+		}
             }
             break;
 

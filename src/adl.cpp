@@ -635,7 +635,7 @@ int ADL::UpdateData()
 	mODClockInfo.sEngineClock.iDefaultClock = 75000;
 	mODClockInfo.sMemoryClock.iDefaultClock = 90000;
 
-	int perf_level_size = sizeof(ADLODPerformanceLevels) + sizeof(ADLODPerformanceLevel) * (3 - 1);
+	int perf_level_size = sizeof(ADLODPerformanceLevels) + sizeof(ADLODPerformanceLevel) * (2 - 1);
 	mpODPerformanceLevels = (ADLODPerformanceLevels*)malloc(perf_level_size);
 	mpODPerformanceLevels->iSize = perf_level_size;
 	mpODPerformanceLevels->aLevels[0].iEngineClock = 20000;
@@ -644,9 +644,9 @@ int ADL::UpdateData()
 	mpODPerformanceLevels->aLevels[1].iEngineClock = 30000;
 	mpODPerformanceLevels->aLevels[1].iMemoryClock = 40000;
 	mpODPerformanceLevels->aLevels[1].iVddc = 1263;
-	mpODPerformanceLevels->aLevels[2].iEngineClock = 40000;
-	mpODPerformanceLevels->aLevels[2].iMemoryClock = 50000;
-	mpODPerformanceLevels->aLevels[2].iVddc = 1263;
+	/*mpODPerformanceLevels->aLevels[2].iEngineClock = 0000;
+	mpODPerformanceLevels->aLevels[2].iMemoryClock = 0000;
+	mpODPerformanceLevels->aLevels[2].iVddc = 1263;*/
 
 	mNrOfAdapters = 1;
 	mpAdapterInfo = (LPAdapterInfo) malloc (sizeof(AdapterInfo) * mNrOfAdapters);
@@ -668,7 +668,7 @@ int ADL::UpdateData()
 	mODParameters.sVddc.iMin = 1023;
 	mODParameters.sVddc.iStep =  80;
 
-	mODParameters.iNumberOfPerformanceLevels = 3;
+	mODParameters.iNumberOfPerformanceLevels = 2;
 
 	result = 0;
 //	result = ERR_GET_CURRENT_FANSPEED_FAILED;

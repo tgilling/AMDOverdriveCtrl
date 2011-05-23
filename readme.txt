@@ -1,6 +1,8 @@
 History:
 --------
 
+V1.2.0  :	added (yet) undocumented 'AMD Powertune' setting - needs testing!
+
 V1.1.4  :	"save default" button added by SourceForge Member 'logion'
 
 V1.1.3  :	card ident string was wrong in multi GPU setup

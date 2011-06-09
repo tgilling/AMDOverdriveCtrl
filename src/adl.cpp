@@ -549,7 +549,6 @@ bool ADL::Init()
 			", ID:" << id << ", " << mpAdapterInfo[i].strAdapterName);
 		}
 
-
 		if (UpdateData() == 0)
 		{
 		    ERR_LOG("ERROR: failed to read card values!");
@@ -742,7 +741,7 @@ int ADL::UpdateData()
 		result |= ERR_GET_OD_PARAMETERS_FAILED;
 	    }
 	    else
-	    {
+	    {		
 		if (mpODPerformanceLevels == NULL)
 		{
 		    int perf_level_size = sizeof(ADLODPerformanceLevels) + sizeof(ADLODPerformanceLevel) * (mODParameters.iNumberOfPerformanceLevels - 1);
@@ -752,8 +751,7 @@ int ADL::UpdateData()
 
 		if (SAVE_CALL(ADL_Overdrive5_ODPerformanceLevels_Get)(mGPUIndex, 0, mpODPerformanceLevels) != ADL_OK)
 		{
-		    free(mpODPerformanceLevels);
-		    mpODPerformanceLevels = NULL;
+		    memset(mpODPerformanceLevels->aLevels, 0, sizeof(ADLODPerformanceLevel) * mODParameters.iNumberOfPerformanceLevels);
 		    result |= ERR_GET_OD_PERF_LEVELS_FAILED;
 		}
 	    }
@@ -804,12 +802,31 @@ void ADL::SetGPUIndex(long int* index)
     mGPUIndex = *index;
 
     UpdateData();
-
+    
     INF_LOG("Nr. of Performance Levels: " << mODParameters.iNumberOfPerformanceLevels);
-    for (int i=0; i<mODParameters.iNumberOfPerformanceLevels; i++)
+    
+    if (mFeatures & FEAT_GET_OD_PARAMETERS)
     {
-	INF_LOG("Perf Level " << i << ": GPU " << mpODPerformanceLevels->aLevels[i].iEngineClock / 100 <<
-	 "MHz Memory " << mpODPerformanceLevels->aLevels[i].iMemoryClock / 100 << "MHz Voltage " <<
-	 mpODPerformanceLevels->aLevels[i].iVddc / 1000.0 << "V");
+	ADLODPerformanceLevels* pDefaultLevels;
+	
+	int perf_level_size = sizeof(ADLODPerformanceLevels) + sizeof(ADLODPerformanceLevel) * (mODParameters.iNumberOfPerformanceLevels - 1);
+	pDefaultLevels = (ADLODPerformanceLevels*)malloc(perf_level_size);
+	pDefaultLevels->iSize = perf_level_size;
+	
+	if (SAVE_CALL(ADL_Overdrive5_ODPerformanceLevels_Get)(mGPUIndex, 1, pDefaultLevels) == ADL_OK)
+	{
+	    for (int i=0; i<mODParameters.iNumberOfPerformanceLevels; i++)
+	    {
+		INF_LOG("Card's default Perf Level " << i << ": GPU " << pDefaultLevels->aLevels[i].iEngineClock / 100 <<
+		 "MHz Memory " << pDefaultLevels->aLevels[i].iMemoryClock / 100 << "MHz Voltage " <<
+		 pDefaultLevels->aLevels[i].iVddc / 1000.0 << "V");
+	    }
+	}
+	else
+	{
+	    ERR_LOG("ADL does not report default performance levels.");
+	}
+
+	free(pDefaultLevels);
     }
 }

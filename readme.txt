@@ -1,6 +1,8 @@
 History:
 --------
 
+V1.2.1  :	Bugfix: correct segfault if no perf levels reported
+
 V1.2.0  :	added (yet) undocumented 'AMD Powertune' setting - needs testing!
 
 V1.1.4  :	"save default" button added by SourceForge Member 'logion'

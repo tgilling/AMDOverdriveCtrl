@@ -43,15 +43,6 @@ COvdrSettingsPanel::COvdrSettingsPanel(wxWindow* parent, wxWindowID id, const wx
 {
     adl = ADL::Instance();
 
-    mGPU = new int[adl->mODParameters.iNumberOfPerformanceLevels];
-    mMem = new int[adl->mODParameters.iNumberOfPerformanceLevels];
-    mVoltage = new int[adl->mODParameters.iNumberOfPerformanceLevels];
-    
-    if (mGPU == NULL || mMem == NULL || mVoltage == NULL)
-    {
-	wxMessageBox(wxT("Unable to create Overdrive Panels (out of memory)"), wxT("ERROR"), wxOK|wxCENTRE|wxICON_ERROR);
-    }
-
     if(!(adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PARAMETERS) ||
        !(adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PERF_LEVELS))
     {
@@ -59,6 +50,15 @@ COvdrSettingsPanel::COvdrSettingsPanel(wxWindow* parent, wxWindowID id, const wx
     }
     else
     {	
+	mGPU = new int[adl->mODParameters.iNumberOfPerformanceLevels];
+	mMem = new int[adl->mODParameters.iNumberOfPerformanceLevels];
+	mVoltage = new int[adl->mODParameters.iNumberOfPerformanceLevels];
+	
+	if (mGPU == NULL || mMem == NULL || mVoltage == NULL)
+	{
+	    wxMessageBox(wxT("Unable to create Overdrive Panels (out of memory)"), wxT("ERROR"), wxOK|wxCENTRE|wxICON_ERROR);
+	}
+    
 	if (adl->mODParameters.iNumberOfPerformanceLevels == 3)
 	{
 	    mpSettingsPanelLow = new CSettingsPanel(0, mOvdrNotebook);
@@ -91,18 +91,33 @@ COvdrSettingsPanel::COvdrSettingsPanel(wxWindow* parent, wxWindowID id, const wx
 
 COvdrSettingsPanel::~COvdrSettingsPanel()
 {
-    delete[] mGPU;
-    delete[] mMem;
-    delete[] mVoltage;
+    if (mGPU != NULL)
+    {
+	delete[] mGPU;
+	mGPU = NULL;
+    }
+    if (mGPU != NULL)
+    {
+	delete[] mMem;
+	mMem = NULL;
+    }
+    if (mGPU != NULL)
+    {
+	delete[] mVoltage;
+	mVoltage = NULL;
+    }
 }	
 
 void COvdrSettingsPanel::SetOverdriveValues(int PerfLevel, int gpu, int mem, int volt)
 {
-    if(PerfLevel >= 0 && PerfLevel < adl->mODParameters.iNumberOfPerformanceLevels)
+    if((adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PARAMETERS) && (adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PERF_LEVELS))
     {
-        mGPU[PerfLevel] = gpu;
-        mMem[PerfLevel] = mem;
-        mVoltage[PerfLevel] = volt;
+	if(PerfLevel >= 0 && PerfLevel < adl->mODParameters.iNumberOfPerformanceLevels)
+	{
+	    mGPU[PerfLevel] = gpu;
+	    mMem[PerfLevel] = mem;
+	    mVoltage[PerfLevel] = volt;
+	}
     }
 }
 

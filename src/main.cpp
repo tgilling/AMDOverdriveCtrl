@@ -625,27 +625,30 @@ bool MainDialog::SaveXML(wxString filename)
 
     wxXmlNode* node;
 
-    for(int i=adl->mODParameters.iNumberOfPerformanceLevels-1; i>=0; i--)
+    if((adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PARAMETERS) && (adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PERF_LEVELS))
     {
-        node = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("PERFORMANCE_LEVEL"));
-        node->AddProperty(wxT("level"), wxString::Format(wxT("%d"), i));
-        node->AddProperty(wxT("gpu"), wxString::Format(wxT("%d"), adl->mpODPerformanceLevels->aLevels[i].iEngineClock));
-        node->AddProperty(wxT("mem"), wxString::Format(wxT("%d"), adl->mpODPerformanceLevels->aLevels[i].iMemoryClock));
-        node->AddProperty(wxT("voltage"), wxString::Format(wxT("%d"), adl->mpODPerformanceLevels->aLevels[i].iVddc));
-        root->AddChild(node);
+	for(int i=adl->mODParameters.iNumberOfPerformanceLevels-1; i>=0; i--)
+	{
+	    node = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("PERFORMANCE_LEVEL"));
+	    node->AddProperty(wxT("level"), wxString::Format(wxT("%d"), i));
+	    node->AddProperty(wxT("gpu"), wxString::Format(wxT("%d"), adl->mpODPerformanceLevels->aLevels[i].iEngineClock));
+	    node->AddProperty(wxT("mem"), wxString::Format(wxT("%d"), adl->mpODPerformanceLevels->aLevels[i].iMemoryClock));
+	    node->AddProperty(wxT("voltage"), wxString::Format(wxT("%d"), adl->mpODPerformanceLevels->aLevels[i].iVddc));
+	    root->AddChild(node);
+	}
     }
-
+    
     node = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("FAN_SETTING"));
     if(mpFanSpeedPanel->HasFanSpeedFixedLevel())
     {
-        node->AddProperty(wxT("percentage"), wxString::Format(wxT("%d"), mpFanSpeedPanel->GetFanSpeedSetting()));
+	node->AddProperty(wxT("percentage"), wxString::Format(wxT("%d"), mpFanSpeedPanel->GetFanSpeedSetting()));
     }
     else
     {
-        node->AddProperty(wxT("percentage"), wxT("AUTO"));
+	node->AddProperty(wxT("percentage"), wxT("AUTO"));
     }
     root->AddChild(node);
-
+    
     node = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("FAN_CTRL"));
     node->AddProperty(wxT("enabled"), mpFanControlPanel->IsFanControllerEnabled() ? wxT("yes") : wxT("no"));
     root->AddChild(node);

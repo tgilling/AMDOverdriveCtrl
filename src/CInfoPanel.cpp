@@ -154,7 +154,7 @@ void CInfoPanel::UpdateDisplayValues()
 	    mInfoCurrentFanSpeed->SetValue(wxT("---"));
 	}
 
-	if (adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PARAMETERS)
+	if((adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PARAMETERS) && (adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PERF_LEVELS))	    
 	{
 	    mInfoOVGPULow->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[0].iEngineClock/100));
 	    mInfoOVMemLow->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[0].iMemoryClock/100));

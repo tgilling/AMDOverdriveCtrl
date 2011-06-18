@@ -148,11 +148,24 @@ bool COvdrSettingsPanel::CommitOverdriveValues()
             {
                 for(int i=0; i<para.iNumberOfPerformanceLevels; i++)
                 {
-                    levels->aLevels[i].iEngineClock = mGPU[i] * 100;
-                    levels->aLevels[i].iMemoryClock = mMem[i] * 100;
-                    levels->aLevels[i].iVddc = mVoltage[i];
+		    if (mGPU[i] != 0)
+		    { 
+			levels->aLevels[i].iEngineClock = mGPU[i] * 100;
+		    }
+		    
+		    if (mMem[i] != 0)
+		    {
+			levels->aLevels[i].iMemoryClock = mMem[i] * 100;
+		    }
+		    
+		    if (mVoltage[i] != 0)
+		    {
+			levels->aLevels[i].iVddc = mVoltage[i];			
+		    }
 
-                    ACT_LOG("SetOverdriveValues: Level " << i << ": " << mGPU[i] << "MHz, " << mMem[i] << "MHz, " <<	"MHz, " << (double)mVoltage[i]/1000.0 << "V");
+                    ACT_LOG("SetOverdriveValues: Level " << i << ": " << levels->aLevels[i].iEngineClock << "MHz, " 
+			<< levels->aLevels[i].iMemoryClock << "MHz, " << "MHz, " 
+			<< (double)levels->aLevels[i].iVddc/1000.0 << "V");
                 }
             }
 

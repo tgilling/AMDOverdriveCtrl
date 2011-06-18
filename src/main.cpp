@@ -230,9 +230,9 @@ bool MainApp::OnInit()
 	    }
 	    #endif
 
-	    // see if we have  a default profile
+	    // see if we have a default profile
 	    filename = file_path +wxT("/default.ovdr");
-	    if(wxFileExists(filename))
+	    if(mProfileName.IsEmpty() && wxFileExists(filename))
 	    {
 		if (main_dialog->LoadXML(filename))
 		{
@@ -246,6 +246,10 @@ bool MainApp::OnInit()
 	    if (!main_dialog->LoadXML(mProfileName))
 	    {
 		wxMessageBox(wxT("\nThe specified startup profile '") + mProfileName + wxT("' is missing."), wxT("AMD/ATI OverdriveCtrl warning"), wxOK|wxCENTRE|wxICON_WARNING);
+	    }
+	    else
+	    {
+		ACT_LOG("Profile '" << mProfileName.ToUTF8() << "' applied successfully.\n");
 	    }
 	}
 
@@ -476,10 +480,7 @@ bool MainDialog::LoadXML(wxString filename)
 			mem.ToLong(&lmem);
 			voltage.ToLong(&lvoltage);
 
-			if(lgpu != 0 && lmem != 0 && lvoltage != 0)
-			{
-			    mpOvdrSettingsPanel->SetOverdriveValues(llevel, lgpu/100, lmem/100, lvoltage);
-			}
+			mpOvdrSettingsPanel->SetOverdriveValues(llevel, lgpu/100, lmem/100, lvoltage);			
 		    }
 		    else if(child->GetName() == wxT("FAN_SETTING"))
 		    {

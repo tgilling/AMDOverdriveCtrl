@@ -249,7 +249,7 @@ bool MainApp::OnInit()
 	    }
 	    else
 	    {
-		ACT_LOG("Profile '" << mProfileName.ToUTF8() << "' applied successfully.\n");
+		INF_LOG("Profile '" << mProfileName.ToUTF8() << "' applied successfully.\n");
 	    }
 	}
 

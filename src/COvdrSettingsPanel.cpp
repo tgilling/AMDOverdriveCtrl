@@ -163,8 +163,8 @@ bool COvdrSettingsPanel::CommitOverdriveValues()
 			levels->aLevels[i].iVddc = mVoltage[i];			
 		    }
 
-                    ACT_LOG("SetOverdriveValues: Level " << i << ": " << levels->aLevels[i].iEngineClock << "MHz, " 
-			<< levels->aLevels[i].iMemoryClock << "MHz, " << "MHz, " 
+                    ACT_LOG("SetOverdriveValues: Level " << i << ": " << levels->aLevels[i].iEngineClock/100 << "MHz, " 
+			<< levels->aLevels[i].iMemoryClock/100 << "MHz, " << "MHz, " 
 			<< (double)levels->aLevels[i].iVddc/1000.0 << "V");
                 }
             }

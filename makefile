@@ -7,9 +7,13 @@ SOURCES = $(wildcard ./src/*.cpp)
 
 OBJECTS = $(SOURCES:.cpp=.o)
 
+ifndef OPTFLAGS
+       OPTFLAGS = -O3 -Wall
+endif
+
 CC = g++
-CFLAGS = -c -I./ADL_SDK/include -O3 -fexpensive-optimizations -W -Wall $(shell wx-config --cxxflags --unicode=yes --debug=no) -DLINUX
-LDFLAGS = -mwindows -s $(shell wx-config --debug=no --libs --unicode=yes) -ldl -o$(OUTPUT_DIR)/$(EXECUTABLE)
+CFLAGS = -c -I./ADL_SDK/include -fexpensive-optimizations -W $(shell wx-config --cxxflags --unicode=yes --debug=no) -DLINUX $(OPTFLAGS)
+LDFLAGS = -s $(shell wx-config --debug=no --libs --unicode=yes) -ldl
 
 .cpp.o:
 	$(CC) $(CFLAGS) $< -o $@
@@ -19,7 +23,7 @@ all: $(SOURCES) $(OUTPUT_DIR)/$(EXECUTABLE)
 $(OUTPUT_DIR)/$(EXECUTABLE): $(OBJECTS) 
 	@rm -rf $(OUTPUT_DIR)
 	@mkdir $(OUTPUT_DIR)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
 	@echo ...
 	@echo build completed.
 	@echo ...

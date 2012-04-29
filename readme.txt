@@ -28,6 +28,12 @@ V1.0.1  :	add some sanity checks at program startup and eventually report
 V1.0.0	:	initial public release
 
 
+Credits:
+--------
+
+Thanks to Alexey Svistunov and Cengiz Günay for suggesting changes to the makefile.
+
+
 Notes:
 ------
 

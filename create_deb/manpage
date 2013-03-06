@@ -1,4 +1,4 @@
-.TH AMDOverdriveCtrl 1 "03 April 2011"
+.TH AMDOverdriveCtrl 1 "06 March 2013"
 .SH NAME
 AMDOverdriveCtrl \- Control and monitor frequencies and voltages
 .SH SYNOPSIS
@@ -26,6 +26,9 @@ Set color temperature.
 .TP
 .B -i, --adapter-index=<num>
 Choose adapter index (taken from console output).
+.TP
+.B -n, --no-warnings
+Don't display any warnings at startup.
 
 .SH Multi GPU support
 .PP

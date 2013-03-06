@@ -1,5 +1,7 @@
-AMDOverdriveCtrl (1.0.2) all; urgency=low
+AMDOverdriveCtrl (1.2.3) all; urgency=low
 
-  * corrected some minor deb packaging problems
+  * new command line switch "--no-warnings" to suppress warning message box at startup
+  * patch included (detect if card supports fan speed setting by percentage) 
+  * patch included (makefile corrected)
 
- -- Thorsten Gilling <tgilling@web.de>  Thu, 30 Dec 2010 00:00:00 +0000
+ -- Thorsten Gilling <tgilling@web.de>  Wed, 06 Mar 2013 00:00:00 +0000

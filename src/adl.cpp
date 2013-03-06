@@ -722,10 +722,19 @@ int ADL::UpdateData()
 
 	mCurrentFanSpeed.iSize = sizeof(ADLFanSpeedValue);
 	mCurrentFanSpeed.iFlags = ADL_DL_FANCTRL_SPEED_TYPE_RPM;
+
 	if (SAVE_CALL(ADL_Overdrive5_FanSpeed_Get)(mGPUIndex, 0, &mCurrentFanSpeed) != ADL_OK)
 	{
-	    mCurrentFanSpeed.iFanSpeed = 0;
-	    result |= ERR_GET_CURRENT_FANSPEED_FAILED;
+	    mCurrentFanSpeed.iSpeedType = ADL_DL_FANCTRL_SPEED_TYPE_PERCENT;
+	    if (SAVE_CALL(ADL_Overdrive5_FanSpeed_Get)(mGPUIndex, 0, &mCurrentFanSpeed) != ADL_OK)
+	    {
+		mCurrentFanSpeed.iFanSpeed = 0;
+		result |= ERR_GET_CURRENT_FANSPEED_FAILED;
+	    }
+	    else
+	    {
+		mCurrentFanSpeed.iFanSpeed = (mFanSpeedInfo.iMaxRPM - mFanSpeedInfo.iMinRPM) * mCurrentFanSpeed.iFanSpeed / 100 + mFanSpeedInfo.iMinRPM;
+	    }
 	}
 
 	mODParameters.iSize = sizeof(ADLODParameters);

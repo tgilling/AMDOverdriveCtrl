@@ -30,6 +30,6 @@
 
 const int VERSION  = 1;
 const int REVISION = 2;
-const int BUILD    = 2;
+const int BUILD    = 3;
 
 #endif

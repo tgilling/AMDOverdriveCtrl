@@ -72,6 +72,9 @@ static const wxCmdLineEntryDesc g_cmdLineDesc [] =
      { wxCMD_LINE_OPTION, wxT("i"), wxT("adapter-index"), wxT("choose adapter index (taken from console output)"),
        wxCMD_LINE_VAL_NUMBER, wxCMD_LINE_PARAM_OPTIONAL },
 
+     { wxCMD_LINE_SWITCH, wxT("n"), wxT("no-warnings"), wxT("don't display any warnings at startup"),
+       wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL },
+
      { wxCMD_LINE_NONE, wxT(""), wxT(""), wxT(""), wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL }
 };
 
@@ -90,6 +93,7 @@ class MainApp : public wxApp
 	bool mSetColorTemp;
 	long int mGPUIndex;
 	bool mStartHidden;
+	bool mNoWarnings;
 };
 
 // declare global static function wxGetApp()

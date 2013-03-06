@@ -1,6 +1,10 @@
 History:
 --------
 
+V1.2.3  :	new command line switch "--no-warnings" to suppress warning message box at startup
+        	patch included (detect if card supports fan speed setting by percentage)
+        	patch included (makefile corrected)
+		
 V1.2.1  :	Bugfix: correct segfault if no perf levels reported
 
 V1.2.0  :	added (yet) undocumented 'AMD Powertune' setting - needs testing!
@@ -14,16 +18,16 @@ V1.1.2  :	choose GPU through command line switch (--adapter-index)
 V1.1.1  :	Bugfix release
 
 V1.1.0  :	new feature: Change color temperature (inspired by "f.lux" 
-		and "redshift")
+         	and "redshift")
 
 V1.0.3  :	check for supported HW features and disable parts of the program 
-		if necessary
+         	if necessary
 
 V1.0.2  :	corrected some minor deb packaging problems
 
 V1.0.1  :	add some sanity checks at program startup and eventually report
- 		problems 
-		created simple makefile for compiling without codelite
+         	problems 
+         	created simple makefile for compiling without codelite
 
 V1.0.0	:	initial public release
 

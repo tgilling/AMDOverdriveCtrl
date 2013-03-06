@@ -37,14 +37,14 @@ CAuthorPanel::CAuthorPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, 
     : CAuthorPanelBase(parent, id, pos, size, style)
 {
     wxString text1 =
-        wxString::Format(wxT("\n\nAMDOverdriveCtrl\n\nV%d.%d.%d\n"), VERSION, REVISION, BUILD);
+        wxString::Format(wxT("\n\n\nAMDOverdriveCtrl\n\nV%d.%d.%d\n"), VERSION, REVISION, BUILD);
 
     wxString text2 = wxT("Copyright(c) Thorsten Gilling\n<tgilling@web.de>\n"
 			 "\n\nThis program is free software\nYou can redistribute it "
 			 "and/or modify it\nunder the terms of the GNU GPL2"
                      );
 
-    wxString text3 = wxT("\n!!! USE AT YOUR OWN RISK !!!\n\nExperimental 'Powertune' feature\nwill only work on HD6xxx cards.");
+    wxString text3 = wxT("\n\n!!! USE AT YOUR OWN RISK !!!\n\n");
 
     mText1->SetLabel(text1);
     mText2->SetLabel(text2);

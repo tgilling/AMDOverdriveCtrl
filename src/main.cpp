@@ -58,6 +58,8 @@ bool MainApp::OnCmdLineParsed(wxCmdLineParser& parser)
 
     mEnableAppProfiles = parser.Found(wxT("a"));
 
+    mNoWarnings = parser.Found(wxT("n"));
+
     if (mBatchMode || mEnableAppProfiles)
     {
 	mStartHidden = true;
@@ -171,7 +173,7 @@ bool MainApp::OnInit()
 	    }
 	}
 
-	if (MissingFeatures != 0 && argc == 1)
+	if (MissingFeatures != 0 && !mNoWarnings && argc == 1)
 	{
 	    problem += wxT("\n\nSome parts of the program will be disabled.");
 	    wxMessageBox(problem, wxT("Problems occured!"), wxOK|wxCENTRE|wxICON_ERROR);
@@ -354,7 +356,7 @@ void MainDialog::OnInit(wxInitDialogEvent& WXUNUSED(event))
 	    mNotebook->AddPage(mpAuthorPanel, wxT("?"));
 	    mNotebook->AddPage(mpInfoPanel, wxT("Info"));
 	    mNotebook->AddPage(mpOvdrSettingsPanel, wxT("Overdrive"));
-	    mNotebook->AddPage(mpPowertunePanel, wxT("Powertune"));
+	    //mNotebook->AddPage(mpPowertunePanel, wxT("Powertune"));
 	    mNotebook->AddPage(mpFanSpeedPanel, wxT("FanSpeed"));
 	    mNotebook->AddPage(mpFanControlPanel, wxT("FanCtrl"));
 	    mNotebook->AddPage(mpAppProfilePanel, wxT("AppProfile"));

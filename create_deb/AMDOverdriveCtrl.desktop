@@ -1,11 +1,14 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=AMDOverdriveCtrl
+Name[de_DE]=AMDOverdriveCtrl
+GenericName=AMD Overdrive Control
+GenericName[ru]=Разгон видеокарт AMD
 Exec=AMDOverdriveCtrl
 Icon=/usr/share/AMDOverdriveCtrl/images/icon.xpm
 Terminal=false
 Type=Application
-Categories=System;
+Categories=System;Settings;HardwareSettings;
 StartupNotify=true
 Comment=Control AMD Catalyst Overdrive settings
-Name[de_DE]=AMDOverdriveCtrl
+Comment[ru]=Управляет разгоном видеокарт AMD, позволяет контролировать температуру, регулировать частоты и скорость вращения вентилятора

@@ -7,6 +7,9 @@ SOURCES = $(wildcard ./src/*.cpp)
 
 OBJECTS = $(SOURCES:.cpp=.o)
 
+DESTDIR =
+PREFIX = $(DESTDIR)/usr
+
 ifndef OPTFLAGS
        OPTFLAGS = -O3 -Wall
 endif
@@ -36,33 +39,38 @@ clean:
 	@echo ...
 
 install: $(OUTPUT_DIR)/$(EXECUTABLE)
-	@rm -f /usr/bin/$(EXECUTABLE)
-	@rm -rf /usr/share/$(EXECUTABLE)
-	@cp $(OUTPUT_DIR)/$(EXECUTABLE) /usr/bin/
-	@mkdir -p /usr/share/$(EXECUTABLE)/images
-	@mkdir -p /usr/share/doc/amdoverdrivectrl/
-	@mkdir -p /usr/share/applications/
-	@mkdir -p /usr/share/menu/
-	@cp -pr ./create_deb/*.png /usr/share/$(EXECUTABLE)/images/
-	@cp -pr ./create_deb/*.xpm /usr/share/$(EXECUTABLE)/images/
-	@cp -pr ./create_deb/AUTHORS /usr/share/$(EXECUTABLE)/
-	@cp -pr ./create_deb/LICENSE /usr/share/$(EXECUTABLE)/
-	@cp -pr ./create_deb/copyright /usr/share/doc/amdoverdrivectrl/copyright
-	@gzip -c -9 ./create_deb/changelog > /usr/share/doc/amdoverdrivectrl/changelog.gz
-	@gzip -c -9 ./create_deb/manpage > /usr/share/man/man1/amdoverdrivectrl.1.gz
-	@rm -rf /usr/share/applications/$(EXECUTABLE).desktop
-	@cp -rf create_deb/$(EXECUTABLE).desktop /usr/share/applications/$(EXECUTABLE).desktop
-	@chmod a+x /usr/share/applications/$(EXECUTABLE).desktop
+	@rm -f $(PREFIX)/bin/$(EXECUTABLE)
+	@rm -rf $(PREFIX)/share/$(EXECUTABLE)	
+	@mkdir -p $(PREFIX)/share/$(EXECUTABLE)/images
+	@mkdir -p $(PREFIX)/share/doc/packages/amdovdrvctrl/
+	@mkdir -p $(PREFIX)/share/applications/
+	@mkdir -p $(PREFIX)/share/menu/
+	@mkdir -p $(PREFIX)/share/man/man1/
+	@mkdir -p $(PREFIX)/bin/
+	@chmod a-x create_deb/*.png create_deb/*.xpm create_deb/AUTHORS create_deb/LICENSE
+	@chmod a-x create_deb/copyright create_deb/changelog create_deb/manpage readme.txt
+	@cp $(OUTPUT_DIR)/$(EXECUTABLE) $(PREFIX)/bin/ 
+	@cp -pr ./create_deb/*.png $(PREFIX)/share/$(EXECUTABLE)/images/
+	@cp -pr ./create_deb/*.xpm $(PREFIX)/share/$(EXECUTABLE)/images/
+	@cp -pr ./create_deb/AUTHORS $(PREFIX)/share/doc/packages/amdovdrvctrl/
+	@cp -pr ./create_deb/LICENSE $(PREFIX)/share/doc/packages/amdovdrvctrl/
+	@cp -pr ./create_deb/copyright $(PREFIX)/share/doc/packages/amdovdrvctrl/
+	@cp -pr ./readme.txt $(PREFIX)/share/doc/packages/amdovdrvctrl/
+	@gzip -c -9 ./create_deb/changelog > $(PREFIX)/share/doc/packages/amdovdrvctrl/changelog.gz
+	@gzip -c -9 ./create_deb/manpage > $(PREFIX)/share/man/man1/$(EXECUTABLE).1.gz
+	@rm -rf $(PREFIX)/share/applications/$(EXECUTABLE).desktop
+	@cp -rf create_deb/$(EXECUTABLE).desktop $(PREFIX)/share/applications/$(EXECUTABLE).desktop
+	@chmod a+x $(PREFIX)/share/applications/$(EXECUTABLE).desktop
 	@echo ...
 	@echo $(EXECUTABLE) installed.
 	@echo ...
 
 uninstall:
-	@rm -f /usr/bin/$(EXECUTABLE)
-	@rm -rf /usr/share/$(EXECUTABLE)
-	@rm -rf /usr/share/doc/amdoverdrivectrl
-	@rm -f /usr/share/man/man1/amdoverdrivectrl.1.gz
-	@rm -rf /usr/share/applications/$(EXECUTABLE).desktop
+	@rm -f $(PREFIX)/bin/$(EXECUTABLE)
+	@rm -rf $(PREFIX)/share/$(EXECUTABLE)
+	@rm -rf $(PREFIX)/share/doc/amdoverdrivectrl
+	@rm -f $(PREFIX)/share/man/man1/amdoverdrivectrl.1.gz
+	@rm -rf $(PREFIX)/share/applications/$(EXECUTABLE).desktop	
 	@echo ...
 	@echo $(EXECUTABLE) uninstalled.
 	@echo ...

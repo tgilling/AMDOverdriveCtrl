@@ -372,7 +372,7 @@ void MainDialog::OnInit(wxInitDialogEvent& WXUNUSED(event))
 
 void MainDialog::OnCloseDialog(wxCloseEvent& WXUNUSED(event))
 {
-    Destroy();
+    Show(false);
 }
 
 void MainDialog::OnOKClick(wxCommandEvent& WXUNUSED(event))

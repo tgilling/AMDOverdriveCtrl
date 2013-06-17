@@ -1,6 +1,8 @@
 History:
 --------
 
+V1.2.4  :	"Close to tray" instead of dialog destroy as suggested by David Keogh
+
 V1.2.3  :	new command line switch "--no-warnings" to suppress warning message box at startup
         	patch included (detect if card supports fan speed setting by percentage)
         	patch included (makefile corrected)

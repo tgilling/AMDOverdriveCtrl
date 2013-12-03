@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version May  5 2011)
+// C++ code generated with wxFormBuilder (version Nov  5 2013)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -49,9 +49,12 @@ MainDialogBase::MainDialogBase( wxWindow* parent, wxWindowID id, const wxString&
 	mOKButton->SetDefault(); 
 	bSizer21->Add( mOKButton, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
 	
+	
 	fgSizer19->Add( bSizer21, 1, wxEXPAND, 5 );
 	
+	
 	mainSizer->Add( fgSizer19, 1, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( mainSizer );
 	this->Layout();
@@ -101,6 +104,7 @@ CPowertunePanelBase::CPowertunePanelBase( wxWindow* parent, wxWindowID id, const
 	
 	bSizer14->Add( m_staticText171, 0, wxLEFT|wxTOP, 5 );
 	
+	
 	fgSizer31->Add( bSizer14, 1, wxEXPAND, 5 );
 	
 	wxFlexGridSizer* fgSizer8;
@@ -117,6 +121,7 @@ CPowertunePanelBase::CPowertunePanelBase( wxWindow* parent, wxWindowID id, const
 	fgSizer8->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	mTargetPowertune = new wxTextCtrl( this, wxID_ANY, _("0%"), wxDefaultPosition, wxSize( 50,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mTargetPowertune->SetMaxLength( 0 ); 
 	fgSizer8->Add( mTargetPowertune, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	
@@ -126,6 +131,7 @@ CPowertunePanelBase::CPowertunePanelBase( wxWindow* parent, wxWindowID id, const
 	fgSizer8->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	mMinPowertune = new wxTextCtrl( this, wxID_ANY, _("-20%"), wxDefaultPosition, wxSize( 50,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mMinPowertune->SetMaxLength( 0 ); 
 	fgSizer8->Add( mMinPowertune, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	mPowertuneMinus = new wxButton( this, wxID_ANY, _("-"), wxDefaultPosition, wxSize( 23,23 ), 0 );
@@ -142,6 +148,7 @@ CPowertunePanelBase::CPowertunePanelBase( wxWindow* parent, wxWindowID id, const
 	fgSizer8->Add( mPowertunePlus, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	mPowertuneMax = new wxTextCtrl( this, wxID_ANY, _("20%"), wxDefaultPosition, wxSize( 50,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mPowertuneMax->SetMaxLength( 0 ); 
 	fgSizer8->Add( mPowertuneMax, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	
@@ -160,6 +167,7 @@ CPowertunePanelBase::CPowertunePanelBase( wxWindow* parent, wxWindowID id, const
 	
 	fgSizer8->Add( 0, 0, 1, wxEXPAND, 5 );
 	
+	
 	fgSizer31->Add( fgSizer8, 1, wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer40;
@@ -173,6 +181,7 @@ CPowertunePanelBase::CPowertunePanelBase( wxWindow* parent, wxWindowID id, const
 	
 	
 	bSizer40->Add( 0, 0, 1, wxEXPAND, 5 );
+	
 	
 	fgSizer31->Add( bSizer40, 1, wxEXPAND, 5 );
 	
@@ -194,9 +203,12 @@ CPowertunePanelBase::CPowertunePanelBase( wxWindow* parent, wxWindowID id, const
 	
 	bSizer36->Add( 0, 0, 1, wxEXPAND, 5 );
 	
+	
 	fgSizer31->Add( bSizer36, 1, wxEXPAND, 5 );
 	
+	
 	bSizer34->Add( fgSizer31, 1, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( bSizer34 );
 	this->Layout();
@@ -260,7 +272,9 @@ CInfoPanelBase::CInfoPanelBase( wxWindow* parent, wxWindowID id, const wxPoint& 
 	fgSizer1->Add( m_staticText1, 0, wxALIGN_CENTER|wxALL, 5 );
 	
 	mInfoCardID = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE|wxTE_READONLY );
+	mInfoCardID->SetMaxLength( 0 ); 
 	fgSizer1->Add( mInfoCardID, 0, wxALL|wxEXPAND, 5 );
+	
 	
 	fgSizer6->Add( fgSizer1, 1, wxEXPAND, 5 );
 	
@@ -268,7 +282,7 @@ CInfoPanelBase::CInfoPanelBase( wxWindow* parent, wxWindowID id, const wxPoint& 
 	fgSizer6->Add( m_staticline3, 0, wxEXPAND | wxALL, 5 );
 	
 	wxFlexGridSizer* fgSizer2;
-	fgSizer2 = new wxFlexGridSizer( 1, 3, 0, 0 );
+	fgSizer2 = new wxFlexGridSizer( 1, 4, 0, 0 );
 	fgSizer2->SetFlexibleDirection( wxBOTH );
 	fgSizer2->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
@@ -279,11 +293,16 @@ CInfoPanelBase::CInfoPanelBase( wxWindow* parent, wxWindowID id, const wxPoint& 
 	
 	fgSizer2->Add( m_staticText2, 0, wxALIGN_CENTER|wxALL, 5 );
 	
-	mInfoTemperature = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE|wxTE_READONLY );
-	fgSizer2->Add( mInfoTemperature, 0, wxALL, 5 );
+	mButtonTempDisplay = new wxButton( this, wxID_ANY, _("°F"), wxDefaultPosition, wxSize( 30,-1 ), 0 );
+	fgSizer2->Add( mButtonTempDisplay, 0, wxALL, 5 );
 	
-	mInfoActivity = new wxGauge( this, wxID_ANY, 100, wxDefaultPosition, wxSize( 167,12 ), wxGA_HORIZONTAL );
-	fgSizer2->Add( mInfoActivity, 0, wxALIGN_CENTER|wxLEFT, 7 );
+	mInfoTemperature = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 90,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mInfoTemperature->SetMaxLength( 0 ); 
+	fgSizer2->Add( mInfoTemperature, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	mInfoActivity = new wxGauge( this, wxID_ANY, 100, wxDefaultPosition, wxSize( 115,12 ), wxGA_HORIZONTAL );
+	fgSizer2->Add( mInfoActivity, 0, wxALIGN_CENTER|wxALIGN_CENTER_VERTICAL|wxLEFT, 7 );
+	
 	
 	fgSizer6->Add( fgSizer2, 1, wxEXPAND, 5 );
 	
@@ -325,13 +344,17 @@ CInfoPanelBase::CInfoPanelBase( wxWindow* parent, wxWindowID id, const wxPoint& 
 	fgSizer3->Add( mPCILanes, 0, wxALIGN_CENTER|wxALL, 5 );
 	
 	mInfoCurrentGPU = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE|wxTE_READONLY );
+	mInfoCurrentGPU->SetMaxLength( 0 ); 
 	fgSizer3->Add( mInfoCurrentGPU, 0, wxALL, 5 );
 	
 	mInfoCurrentMemory = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE|wxTE_READONLY );
+	mInfoCurrentMemory->SetMaxLength( 0 ); 
 	fgSizer3->Add( mInfoCurrentMemory, 0, wxALL, 5 );
 	
 	mInfoCurrentVoltage = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mInfoCurrentVoltage->SetMaxLength( 0 ); 
 	fgSizer3->Add( mInfoCurrentVoltage, 0, wxALL, 5 );
+	
 	
 	fgSizer6->Add( fgSizer3, 1, wxEXPAND, 5 );
 	
@@ -372,13 +395,17 @@ CInfoPanelBase::CInfoPanelBase( wxWindow* parent, wxWindowID id, const wxPoint& 
 	fgSizer4->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	mInfoMinFanSpeed = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE|wxTE_READONLY );
+	mInfoMinFanSpeed->SetMaxLength( 0 ); 
 	fgSizer4->Add( mInfoMinFanSpeed, 0, wxALL, 5 );
 	
 	mInfoMaxFanSpeed = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE|wxTE_READONLY );
+	mInfoMaxFanSpeed->SetMaxLength( 0 ); 
 	fgSizer4->Add( mInfoMaxFanSpeed, 0, wxALL, 5 );
 	
 	mInfoCurrentFanSpeed = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE|wxTE_READONLY );
+	mInfoCurrentFanSpeed->SetMaxLength( 0 ); 
 	fgSizer4->Add( mInfoCurrentFanSpeed, 0, wxALL, 5 );
+	
 	
 	fgSizer6->Add( fgSizer4, 1, wxEXPAND, 5 );
 	
@@ -420,12 +447,15 @@ CInfoPanelBase::CInfoPanelBase( wxWindow* parent, wxWindowID id, const wxPoint& 
 	fgSizer5->Add( mInfoLevelLow, 0, wxALIGN_CENTER|wxALL, 5 );
 	
 	mInfoOVGPULow = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE|wxTE_READONLY );
+	mInfoOVGPULow->SetMaxLength( 0 ); 
 	fgSizer5->Add( mInfoOVGPULow, 0, wxALL, 5 );
 	
 	mInfoOVMemLow = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE|wxTE_READONLY );
+	mInfoOVMemLow->SetMaxLength( 0 ); 
 	fgSizer5->Add( mInfoOVMemLow, 0, wxALL, 5 );
 	
 	mInfoOVVoltLow = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE|wxTE_READONLY );
+	mInfoOVVoltLow->SetMaxLength( 0 ); 
 	fgSizer5->Add( mInfoOVVoltLow, 0, wxALL, 5 );
 	
 	mInfoLevelMid = new wxStaticText( this, wxID_ANY, _("Mid Level"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -433,12 +463,15 @@ CInfoPanelBase::CInfoPanelBase( wxWindow* parent, wxWindowID id, const wxPoint& 
 	fgSizer5->Add( mInfoLevelMid, 0, wxALIGN_CENTER|wxALL, 5 );
 	
 	mInfoOVGPUMid = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE|wxTE_READONLY );
+	mInfoOVGPUMid->SetMaxLength( 0 ); 
 	fgSizer5->Add( mInfoOVGPUMid, 0, wxALL, 5 );
 	
 	mInfoOVMemMid = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE|wxTE_READONLY );
+	mInfoOVMemMid->SetMaxLength( 0 ); 
 	fgSizer5->Add( mInfoOVMemMid, 0, wxALL, 5 );
 	
 	mInfoOVVoltMid = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE|wxTE_READONLY );
+	mInfoOVVoltMid->SetMaxLength( 0 ); 
 	fgSizer5->Add( mInfoOVVoltMid, 0, wxALL, 5 );
 	
 	mInfoLevelHigh = new wxStaticText( this, wxID_ANY, _("High Level"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -446,24 +479,36 @@ CInfoPanelBase::CInfoPanelBase( wxWindow* parent, wxWindowID id, const wxPoint& 
 	fgSizer5->Add( mInfoLevelHigh, 0, wxALIGN_CENTER|wxALL, 5 );
 	
 	mInfoOVGPUHigh = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE|wxTE_READONLY );
+	mInfoOVGPUHigh->SetMaxLength( 0 ); 
 	fgSizer5->Add( mInfoOVGPUHigh, 0, wxALL, 5 );
 	
 	mInfoOVMemHigh = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE|wxTE_READONLY );
+	mInfoOVMemHigh->SetMaxLength( 0 ); 
 	fgSizer5->Add( mInfoOVMemHigh, 0, wxALL, 5 );
 	
 	mInfoOVVoltHigh = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_CENTRE|wxTE_READONLY );
+	mInfoOVVoltHigh->SetMaxLength( 0 ); 
 	fgSizer5->Add( mInfoOVVoltHigh, 0, wxALL, 5 );
+	
 	
 	fgSizer6->Add( fgSizer5, 1, wxEXPAND, 5 );
 	
+	
 	bSizer2->Add( fgSizer6, 1, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( bSizer2 );
 	this->Layout();
+	
+	// Connect Events
+	mButtonTempDisplay->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CInfoPanelBase::mButtonTempDisplayOnButtonClick ), NULL, this );
 }
 
 CInfoPanelBase::~CInfoPanelBase()
 {
+	// Disconnect Events
+	mButtonTempDisplay->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CInfoPanelBase::mButtonTempDisplayOnButtonClick ), NULL, this );
+	
 }
 
 CSettingsPanelBase::CSettingsPanelBase( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
@@ -488,6 +533,7 @@ CSettingsPanelBase::CSettingsPanelBase( wxWindow* parent, wxWindowID id, const w
 	
 	bSizer14->Add( m_staticText17, 0, wxLEFT|wxTOP, 5 );
 	
+	
 	fgSizer7->Add( bSizer14, 1, wxEXPAND, 5 );
 	
 	wxFlexGridSizer* fgSizer8;
@@ -503,6 +549,7 @@ CSettingsPanelBase::CSettingsPanelBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer8->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	mCurrentGPUFreq = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mCurrentGPUFreq->SetMaxLength( 0 ); 
 	fgSizer8->Add( mCurrentGPUFreq, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	
@@ -512,6 +559,7 @@ CSettingsPanelBase::CSettingsPanelBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer8->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	mMinGPUFreq = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mMinGPUFreq->SetMaxLength( 0 ); 
 	fgSizer8->Add( mMinGPUFreq, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	mGPUFreqMinus = new wxButton( this, wxID_ANY, _("-"), wxDefaultPosition, wxSize( 23,23 ), 0 );
@@ -528,7 +576,9 @@ CSettingsPanelBase::CSettingsPanelBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer8->Add( mGPUFreqPlus, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	mMaxGPUFreq = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mMaxGPUFreq->SetMaxLength( 0 ); 
 	fgSizer8->Add( mMaxGPUFreq, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
 	
 	fgSizer7->Add( fgSizer8, 1, wxEXPAND, 5 );
 	
@@ -543,6 +593,7 @@ CSettingsPanelBase::CSettingsPanelBase( wxWindow* parent, wxWindowID id, const w
 	m_staticText171->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
 	
 	bSizer15->Add( m_staticText171, 0, wxLEFT|wxTOP, 5 );
+	
 	
 	fgSizer7->Add( bSizer15, 1, wxEXPAND, 5 );
 	
@@ -560,6 +611,7 @@ CSettingsPanelBase::CSettingsPanelBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer81->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	mCurrentMemFreq = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mCurrentMemFreq->SetMaxLength( 0 ); 
 	fgSizer81->Add( mCurrentMemFreq, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	
@@ -569,6 +621,7 @@ CSettingsPanelBase::CSettingsPanelBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer81->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	mMinMemFreq = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mMinMemFreq->SetMaxLength( 0 ); 
 	fgSizer81->Add( mMinMemFreq, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	mMemFreqMinus = new wxButton( this, wxID_ANY, _("-"), wxDefaultPosition, wxSize( 23,23 ), 0 );
@@ -585,7 +638,9 @@ CSettingsPanelBase::CSettingsPanelBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer81->Add( mMemFreqPlus, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	mMaxMemFreq = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mMaxMemFreq->SetMaxLength( 0 ); 
 	fgSizer81->Add( mMaxMemFreq, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
 	
 	fgSizer7->Add( fgSizer81, 1, wxEXPAND, 5 );
 	
@@ -600,6 +655,7 @@ CSettingsPanelBase::CSettingsPanelBase( wxWindow* parent, wxWindowID id, const w
 	m_staticText172->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
 	
 	bSizer16->Add( m_staticText172, 0, wxLEFT|wxTOP, 5 );
+	
 	
 	fgSizer7->Add( bSizer16, 1, wxEXPAND, 5 );
 	
@@ -617,6 +673,7 @@ CSettingsPanelBase::CSettingsPanelBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer82->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	mCurrentVoltage = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mCurrentVoltage->SetMaxLength( 0 ); 
 	fgSizer82->Add( mCurrentVoltage, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	
@@ -626,6 +683,7 @@ CSettingsPanelBase::CSettingsPanelBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer82->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	mMinVoltage = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mMinVoltage->SetMaxLength( 0 ); 
 	fgSizer82->Add( mMinVoltage, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	mVoltageMinus = new wxButton( this, wxID_ANY, _("-"), wxDefaultPosition, wxSize( 23,23 ), 0 );
@@ -642,11 +700,15 @@ CSettingsPanelBase::CSettingsPanelBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer82->Add( mVoltagePlus, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	mMaxVoltage = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mMaxVoltage->SetMaxLength( 0 ); 
 	fgSizer82->Add( mMaxVoltage, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
 	
 	fgSizer7->Add( fgSizer82, 1, wxEXPAND, 5 );
 	
+	
 	bSizer3->Add( fgSizer7, 1, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( bSizer3 );
 	this->Layout();
@@ -771,6 +833,7 @@ CFanSpeedPanelBase::CFanSpeedPanelBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer8->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	mTargetFanSpeed = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mTargetFanSpeed->SetMaxLength( 0 ); 
 	fgSizer8->Add( mTargetFanSpeed, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	
@@ -780,6 +843,7 @@ CFanSpeedPanelBase::CFanSpeedPanelBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer8->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	mMinFanSpeed = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mMinFanSpeed->SetMaxLength( 0 ); 
 	fgSizer8->Add( mMinFanSpeed, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	mFanSpeedMinus = new wxButton( this, wxID_ANY, _("-"), wxDefaultPosition, wxSize( 23,23 ), 0 );
@@ -796,6 +860,7 @@ CFanSpeedPanelBase::CFanSpeedPanelBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer8->Add( mFanSpeedPlus, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	mMaxFanSpeed = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mMaxFanSpeed->SetMaxLength( 0 ); 
 	fgSizer8->Add( mMaxFanSpeed, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	mMinRPM = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
@@ -816,6 +881,7 @@ CFanSpeedPanelBase::CFanSpeedPanelBase( wxWindow* parent, wxWindowID id, const w
 	mMaxRPM->Wrap( -1 );
 	fgSizer8->Add( mMaxRPM, 0, wxALIGN_CENTER|wxALL, 5 );
 	
+	
 	fgSizer12->Add( fgSizer8, 1, wxEXPAND, 5 );
 	
 	m_staticline8 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
@@ -829,6 +895,7 @@ CFanSpeedPanelBase::CFanSpeedPanelBase( wxWindow* parent, wxWindowID id, const w
 	m_staticText26->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), 70, 90, 92, false, wxEmptyString ) );
 	
 	bSizer8->Add( m_staticText26, 0, wxLEFT, 5 );
+	
 	
 	fgSizer12->Add( bSizer8, 1, wxEXPAND, 5 );
 	
@@ -859,9 +926,12 @@ CFanSpeedPanelBase::CFanSpeedPanelBase( wxWindow* parent, wxWindowID id, const w
 	
 	bSizer5->Add( 0, 0, 1, wxEXPAND, 5 );
 	
+	
 	fgSizer12->Add( bSizer5, 1, wxEXPAND, 5 );
 	
+	
 	bSizer4->Add( fgSizer12, 1, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( bSizer4 );
 	this->Layout();
@@ -930,8 +1000,8 @@ CAuthorPanelBase::CAuthorPanelBase( wxWindow* parent, wxWindowID id, const wxPoi
 	fgSizer17->SetFlexibleDirection( wxBOTH );
 	fgSizer17->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	mBitmap = new wxStaticBitmap( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( 128,120 ), 0 );
-	fgSizer17->Add( mBitmap, 0, wxLEFT, 5 );
+	mBitmap = new wxStaticBitmap( this, wxID_ANY, wxBitmap( wxT("../create_deb/icon.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxSize( 128,120 ), 0 );
+	fgSizer17->Add( mBitmap, 0, wxLEFT, 15 );
 	
 	
 	fgSizer17->Add( 20, 0, 1, wxEXPAND, 5 );
@@ -941,6 +1011,7 @@ CAuthorPanelBase::CAuthorPanelBase( wxWindow* parent, wxWindowID id, const wxPoi
 	mText1->SetFont( wxFont( 12, 70, 94, 92, false, wxEmptyString ) );
 	
 	fgSizer17->Add( mText1, 0, wxALIGN_CENTER_HORIZONTAL|wxEXPAND|wxLEFT|wxRIGHT, 5 );
+	
 	
 	fgSizer18->Add( fgSizer17, 1, wxEXPAND, 5 );
 	
@@ -963,9 +1034,12 @@ CAuthorPanelBase::CAuthorPanelBase( wxWindow* parent, wxWindowID id, const wxPoi
 	
 	bSizer20->Add( mText3, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 	
+	
 	fgSizer18->Add( bSizer20, 1, wxEXPAND, 5 );
 	
+	
 	bSizer7->Add( fgSizer18, 1, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( bSizer7 );
 	this->Layout();
@@ -1012,6 +1086,7 @@ CMonitorPanelBase::CMonitorPanelBase( wxWindow* parent, wxWindowID id, const wxP
 	mTimerInterval->Wrap( -1 );
 	bSizer13->Add( mTimerInterval, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
 	
+	
 	fgSizer14->Add( bSizer13, 1, wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer10;
@@ -1023,7 +1098,9 @@ CMonitorPanelBase::CMonitorPanelBase( wxWindow* parent, wxWindowID id, const wxP
 	mTemperature = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( 340,95 ), wxTAB_TRAVERSAL );
 	bSizer10->Add( mTemperature, 1, wxALL|wxEXPAND, 5 );
 	
+	
 	fgSizer14->Add( bSizer10, 1, wxEXPAND, 5 );
+	
 	
 	fgSizer15->Add( fgSizer14, 1, wxEXPAND, 5 );
 	
@@ -1047,7 +1124,9 @@ CMonitorPanelBase::CMonitorPanelBase( wxWindow* parent, wxWindowID id, const wxP
 	mFanSpeed = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( 340,95 ), wxTAB_TRAVERSAL );
 	bSizer11->Add( mFanSpeed, 1, wxEXPAND | wxALL, 5 );
 	
+	
 	fgSizer16->Add( bSizer11, 1, wxEXPAND, 5 );
+	
 	
 	fgSizer15->Add( fgSizer16, 1, wxEXPAND, 5 );
 	
@@ -1073,11 +1152,15 @@ CMonitorPanelBase::CMonitorPanelBase( wxWindow* parent, wxWindowID id, const wxP
 	mPerfLevel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( 340,95 ), wxTAB_TRAVERSAL );
 	fgSizer25->Add( mPerfLevel, 1, wxALL|wxEXPAND, 5 );
 	
+	
 	fgSizer161->Add( fgSizer25, 1, wxEXPAND, 5 );
+	
 	
 	fgSizer15->Add( fgSizer161, 1, wxEXPAND, 5 );
 	
+	
 	bSizer9->Add( fgSizer15, 1, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( bSizer9 );
 	this->Layout();
@@ -1195,6 +1278,7 @@ CFanControlPanelBase::CFanControlPanelBase( wxWindow* parent, wxWindowID id, con
 	mCurrentFanSpeed->Wrap( -1 );
 	bSizer211->Add( mCurrentFanSpeed, 0, wxALL, 5 );
 	
+	
 	bSizer21->Add( bSizer211, 1, wxEXPAND, 5 );
 	
 	wxArrayString mCurveTypeChoices;
@@ -1205,6 +1289,7 @@ CFanControlPanelBase::CFanControlPanelBase( wxWindow* parent, wxWindowID id, con
 	mButtonClear = new wxButton( this, wxID_ANY, _("Reset"), wxDefaultPosition, wxSize( 80,-1 ), 0 );
 	bSizer21->Add( mButtonClear, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
+	
 	fgSizer20->Add( bSizer21, 1, wxEXPAND, 5 );
 	
 	m_staticline10 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
@@ -1213,7 +1298,9 @@ CFanControlPanelBase::CFanControlPanelBase( wxWindow* parent, wxWindowID id, con
 	mCurve = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( 368,310 ), wxTAB_TRAVERSAL );
 	fgSizer20->Add( mCurve, 1, wxEXPAND | wxALL, 5 );
 	
+	
 	bSizer19->Add( fgSizer20, 1, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( bSizer19 );
 	this->Layout();
@@ -1273,7 +1360,9 @@ CAppProfilePanelBase::CAppProfilePanelBase( wxWindow* parent, wxWindowID id, con
 	bSizer30->Add( m_staticText41, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	mActiveProfileName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 170,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mActiveProfileName->SetMaxLength( 0 ); 
 	bSizer30->Add( mActiveProfileName, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
 	
 	fgSizer22->Add( bSizer30, 1, wxEXPAND, 5 );
 	
@@ -1291,10 +1380,12 @@ CAppProfilePanelBase::CAppProfilePanelBase( wxWindow* parent, wxWindowID id, con
 	bSizer23->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	mDefaultProfileName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 230,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mDefaultProfileName->SetMaxLength( 0 ); 
 	bSizer23->Add( mDefaultProfileName, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	mButtonChooseDefault = new wxButton( this, wxID_ANY, _("..."), wxDefaultPosition, wxSize( 24,24 ), 0 );
 	bSizer23->Add( mButtonChooseDefault, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxLEFT|wxTOP, 5 );
+	
 	
 	fgSizer22->Add( bSizer23, 1, wxALL|wxEXPAND, 5 );
 	
@@ -1327,11 +1418,15 @@ CAppProfilePanelBase::CAppProfilePanelBase( wxWindow* parent, wxWindowID id, con
 	
 	bSizer24->Add( 0, 0, 1, wxEXPAND, 5 );
 	
+	
 	fgSizer21->Add( bSizer24, 1, wxEXPAND, 5 );
+	
 	
 	fgSizer22->Add( fgSizer21, 1, wxEXPAND, 5 );
 	
+	
 	bSizer22->Add( fgSizer22, 1, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( bSizer22 );
 	this->Layout();
@@ -1380,7 +1475,9 @@ CProfileAddDialogBase::CProfileAddDialogBase( wxWindow* parent, wxWindowID id, c
 	bSizer27->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	mAppName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 240,-1 ), wxTE_CENTRE );
+	mAppName->SetMaxLength( 0 ); 
 	bSizer27->Add( mAppName, 0, wxALL, 5 );
+	
 	
 	fgSizer24->Add( bSizer27, 1, wxEXPAND, 5 );
 	
@@ -1395,10 +1492,12 @@ CProfileAddDialogBase::CProfileAddDialogBase( wxWindow* parent, wxWindowID id, c
 	bSizer29->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	mProfileName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 206,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mProfileName->SetMaxLength( 0 ); 
 	bSizer29->Add( mProfileName, 0, wxALL, 5 );
 	
 	mButtonChooseProfile = new wxButton( this, wxID_ANY, _("..."), wxDefaultPosition, wxSize( 24,24 ), 0 );
 	bSizer29->Add( mButtonChooseProfile, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
 	
 	fgSizer24->Add( bSizer29, 1, wxEXPAND, 5 );
 	
@@ -1414,12 +1513,15 @@ CProfileAddDialogBase::CProfileAddDialogBase( wxWindow* parent, wxWindowID id, c
 	mDialogButtonsCancel = new wxButton( this, wxID_CANCEL );
 	mDialogButtons->AddButton( mDialogButtonsCancel );
 	mDialogButtons->Realize();
+	
 	bSizer28->Add( mDialogButtons, 1, wxALL|wxEXPAND, 5 );
+	
 	
 	fgSizer24->Add( bSizer28, 1, wxEXPAND, 5 );
 	
 	
 	fgSizer24->Add( 0, 5, 1, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( fgSizer24 );
 	this->Layout();
@@ -1474,7 +1576,9 @@ COvdrSettingsPanelBase::COvdrSettingsPanelBase( wxWindow* parent, wxWindowID id,
 	
 	bSizer29->Add( 0, 0, 1, wxEXPAND, 5 );
 	
+	
 	fgSizer24->Add( bSizer29, 1, wxEXPAND, 5 );
+	
 	
 	this->SetSizer( fgSizer24 );
 	this->Layout();
@@ -1519,6 +1623,7 @@ CColorTempPanelBase::CColorTempPanelBase( wxWindow* parent, wxWindowID id, const
 	bSizer28->Add( m_staticText40, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	mLongitude = new wxTextCtrl( this, wxID_ANY, _("-13,5"), wxDefaultPosition, wxDefaultSize, wxTE_CENTRE );
+	mLongitude->SetMaxLength( 0 ); 
 	bSizer28->Add( mLongitude, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	m_staticText41 = new wxStaticText( this, wxID_ANY, _("Lat."), wxDefaultPosition, wxDefaultSize, 0 );
@@ -1526,10 +1631,12 @@ CColorTempPanelBase::CColorTempPanelBase( wxWindow* parent, wxWindowID id, const
 	bSizer28->Add( m_staticText41, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	mLatitude = new wxTextCtrl( this, wxID_ANY, _("52,5"), wxDefaultPosition, wxDefaultSize, wxTE_CENTRE );
+	mLatitude->SetMaxLength( 0 ); 
 	bSizer28->Add( mLatitude, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	
 	bSizer28->Add( 0, 0, 1, wxEXPAND, 5 );
+	
 	
 	fgSizer26->Add( bSizer28, 1, wxEXPAND, 5 );
 	
@@ -1548,6 +1655,7 @@ CColorTempPanelBase::CColorTempPanelBase( wxWindow* parent, wxWindowID id, const
 	bSizer29 = new wxBoxSizer( wxHORIZONTAL );
 	
 	mColorTempDay = new wxTextCtrl( this, wxID_ANY, _("6500"), wxDefaultPosition, wxSize( 80,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mColorTempDay->SetMaxLength( 0 ); 
 	bSizer29->Add( mColorTempDay, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	mColorTempDaySlider = new wxSlider( this, wxID_ANY, 1300, 600, 2000, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
@@ -1563,7 +1671,9 @@ CColorTempPanelBase::CColorTempPanelBase( wxWindow* parent, wxWindowID id, const
 	mButtonSetDayColor = new wxButton( this, wxID_ANY, _("Set"), wxDefaultPosition, wxSize( 45,24 ), 0 );
 	bSizer29->Add( mButtonSetDayColor, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
+	
 	fgSizer27->Add( bSizer29, 1, wxEXPAND, 5 );
+	
 	
 	fgSizer26->Add( fgSizer27, 1, wxEXPAND, 5 );
 	
@@ -1582,6 +1692,7 @@ CColorTempPanelBase::CColorTempPanelBase( wxWindow* parent, wxWindowID id, const
 	bSizer291 = new wxBoxSizer( wxHORIZONTAL );
 	
 	mColorTempNight = new wxTextCtrl( this, wxID_ANY, _("3400"), wxDefaultPosition, wxSize( 80,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mColorTempNight->SetMaxLength( 0 ); 
 	bSizer291->Add( mColorTempNight, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	mColorTempNightSlider = new wxSlider( this, wxID_ANY, 680, 600, 2000, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
@@ -1597,7 +1708,9 @@ CColorTempPanelBase::CColorTempPanelBase( wxWindow* parent, wxWindowID id, const
 	mButtonSetNightColor = new wxButton( this, wxID_ANY, _("Set"), wxDefaultPosition, wxSize( 45,24 ), 0 );
 	bSizer291->Add( mButtonSetNightColor, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
+	
 	fgSizer271->Add( bSizer291, 1, wxEXPAND, 5 );
+	
 	
 	fgSizer26->Add( fgSizer271, 1, wxEXPAND, 5 );
 	
@@ -1616,6 +1729,7 @@ CColorTempPanelBase::CColorTempPanelBase( wxWindow* parent, wxWindowID id, const
 	bSizer292 = new wxBoxSizer( wxHORIZONTAL );
 	
 	mTransition = new wxTextCtrl( this, wxID_ANY, _("30min"), wxDefaultPosition, wxSize( 80,-1 ), wxTE_CENTRE|wxTE_READONLY );
+	mTransition->SetMaxLength( 0 ); 
 	bSizer292->Add( mTransition, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	mTransitionSlider = new wxSlider( this, wxID_ANY, 30, 1, 60, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
@@ -1623,7 +1737,9 @@ CColorTempPanelBase::CColorTempPanelBase( wxWindow* parent, wxWindowID id, const
 	
 	bSizer292->Add( mTransitionSlider, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
+	
 	fgSizer272->Add( bSizer292, 1, wxEXPAND, 5 );
+	
 	
 	fgSizer26->Add( fgSizer272, 1, wxEXPAND, 5 );
 	
@@ -1632,6 +1748,7 @@ CColorTempPanelBase::CColorTempPanelBase( wxWindow* parent, wxWindowID id, const
 	
 	mCurve = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( 370,160 ), wxTAB_TRAVERSAL );
 	fgSizer26->Add( mCurve, 1, wxEXPAND | wxALL, 5 );
+	
 	
 	this->SetSizer( fgSizer26 );
 	this->Layout();

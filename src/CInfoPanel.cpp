@@ -33,7 +33,7 @@
 const int TIMER_INTERVAL = 500;
 
 CInfoPanel::CInfoPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
-    : CInfoPanelBase(parent, id, pos, size, style)
+    : CInfoPanelBase(parent, id, pos, size, style), mTemperatureDisplayAsCelsius(true)
 {
     if((adl = ADL::Instance()) != NULL)
     {
@@ -79,13 +79,13 @@ CInfoPanel::CInfoPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
 	    mInfoLevelMid->Disable();
 	    mInfoLevelHigh->Disable();
 	}
-	
+
 	if (adl->mODParameters.iNumberOfPerformanceLevels == 2)
 	{
 	    mInfoOVGPUMid->Disable();
 	    mInfoOVMemMid->Disable();
 	    mInfoOVVoltMid->Disable();
-	    mInfoLevelMid->Disable();	    
+	    mInfoLevelMid->Disable();
 	}
     }
     else
@@ -122,7 +122,17 @@ void CInfoPanel::UpdateDisplayValues()
 
 	if (adl->GetSupportedFeatures() & ADL::FEAT_GET_TEMPERATURE)
 	{
-	    mInfoTemperature->SetValue(wxString::Format(wxT("%.2f °C"), (float)adl->mTemperature.iTemperature/1000.0));
+	    float celsius = (float)adl->mTemperature.iTemperature/1000.0;
+	    float fahrenheit = 9.0/5.0 * celsius + 32.0;
+
+	    if (mTemperatureDisplayAsCelsius)
+	    {
+		mInfoTemperature->SetValue(wxString::Format(wxT("%.2f °C"), celsius));
+	    }
+	    else
+	    {
+		mInfoTemperature->SetValue(wxString::Format(wxT("%.2f °F"), fahrenheit));
+	    }
 	}
 	else
 	{
@@ -154,12 +164,12 @@ void CInfoPanel::UpdateDisplayValues()
 	    mInfoCurrentFanSpeed->SetValue(wxT("---"));
 	}
 
-	if((adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PARAMETERS) && (adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PERF_LEVELS))	    
+	if((adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PARAMETERS) && (adl->GetSupportedFeatures() & ADL::FEAT_GET_OD_PERF_LEVELS))
 	{
 	    mInfoOVGPULow->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[0].iEngineClock/100));
 	    mInfoOVMemLow->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[0].iMemoryClock/100));
 	    mInfoOVVoltLow->SetValue(wxString::Format(wxT("%.3f V"), (float)adl->mpODPerformanceLevels->aLevels[0].iVddc/1000.0));
-	    
+
 	    if (adl->mODParameters.iNumberOfPerformanceLevels == 2)
 	    {
 		mInfoOVGPUMid->SetValue(wxT("---"));
@@ -172,14 +182,14 @@ void CInfoPanel::UpdateDisplayValues()
 		mInfoOVVoltHigh->SetValue(wxString::Format(wxT("%.3f V"), (float)adl->mpODPerformanceLevels->aLevels[1].iVddc/1000.0));
 	    }
 	    else
-	    {		
+	    {
 		mInfoOVGPUMid->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[1].iEngineClock/100));
 		mInfoOVMemMid->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[1].iMemoryClock/100));
 		mInfoOVVoltMid->SetValue(wxString::Format(wxT("%.3f V"), (float)adl->mpODPerformanceLevels->aLevels[1].iVddc/1000.0));
 
 		mInfoOVGPUHigh->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[2].iEngineClock/100));
 		mInfoOVMemHigh->SetValue(wxString::Format(wxT("%d MHz"), adl->mpODPerformanceLevels->aLevels[2].iMemoryClock/100));
-		mInfoOVVoltHigh->SetValue(wxString::Format(wxT("%.3f V"), (float)adl->mpODPerformanceLevels->aLevels[2].iVddc/1000.0));		
+		mInfoOVVoltHigh->SetValue(wxString::Format(wxT("%.3f V"), (float)adl->mpODPerformanceLevels->aLevels[2].iVddc/1000.0));
 	    }
 	}
 	else
@@ -196,7 +206,7 @@ void CInfoPanel::UpdateDisplayValues()
 	    mInfoOVVoltMid->SetValue(wxT("---"));
 	    mInfoOVVoltHigh->SetValue(wxT("---"));
 	}
-	
+
         mInfoActivity->SetValue(adl->mODActivity.iActivityPercent);
 
 	if (adl->mODActivity.iCurrentBusLanes != 0 && adl->mODActivity.iMaximumBusLanes != 0)
@@ -217,18 +227,18 @@ void CInfoPanel::UpdateDisplayValues()
 
             case 1:
             {
-		
+
 		if (adl->mODParameters.iNumberOfPerformanceLevels == 2)
 		{
 		    mInfoLevelLow->SetForegroundColour(mInactiveTextColor);
 		    mInfoLevelMid->SetForegroundColour(mInactiveTextColor);
-		    mInfoLevelHigh->SetForegroundColour(mActiveTextColor);				    
+		    mInfoLevelHigh->SetForegroundColour(mActiveTextColor);
 		}
 		else
 		{
 		    mInfoLevelLow->SetForegroundColour(mInactiveTextColor);
 		    mInfoLevelMid->SetForegroundColour(mActiveTextColor);
-		    mInfoLevelHigh->SetForegroundColour(mInactiveTextColor);		
+		    mInfoLevelHigh->SetForegroundColour(mInactiveTextColor);
 		}
             }
             break;
@@ -249,3 +259,28 @@ void CInfoPanel::Notify()
 {
     UpdateDisplayValues();
 }
+
+void CInfoPanel::mButtonTempDisplayOnButtonClick(wxCommandEvent& event)
+{
+    SetTempDisplayAsCelsius(!mTemperatureDisplayAsCelsius);
+}
+
+bool CInfoPanel::GetTempDisplayAsCelsius()
+{
+    return mTemperatureDisplayAsCelsius;
+}
+
+void CInfoPanel::SetTempDisplayAsCelsius(bool celsius)
+{
+    mTemperatureDisplayAsCelsius = celsius;
+
+    if (mTemperatureDisplayAsCelsius)
+    {
+	mButtonTempDisplay->SetLabel(wxT("°F"));
+    }
+    else
+    {
+	mButtonTempDisplay->SetLabel(wxT("°C"));
+    }
+}
+

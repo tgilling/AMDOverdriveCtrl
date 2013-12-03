@@ -37,21 +37,28 @@ class ADL;
 class CInfoPanel : public CInfoPanelBase, wxTimer
 {
     public:
-        CInfoPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxPoint(-1,15), const wxSize& size = wxSize(-1,-1), long style = wxTAB_TRAVERSAL);
-        virtual ~CInfoPanel();
+       CInfoPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxPoint(-1,15), const wxSize& size = wxSize(-1,-1), long style = wxTAB_TRAVERSAL);
+       virtual ~CInfoPanel();
 
-        void StartTimer();
-        void StopTimer();
+       void StartTimer();
+       void StopTimer();
 
-        void UpdateDisplayValues();
+       void UpdateDisplayValues();
+
+       bool GetTempDisplayAsCelsius();
+       void SetTempDisplayAsCelsius(bool celsius);
 
     protected:
-        ADL* adl;
+       ADL* adl;
 
-        wxColour mInactiveTextColor;
-        wxColour mActiveTextColor;
+       wxColour mInactiveTextColor;
+       wxColour mActiveTextColor;
 
-        void Notify();
+	bool mTemperatureDisplayAsCelsius;
+
+       void Notify();
+
+       virtual void mButtonTempDisplayOnButtonClick( wxCommandEvent& event );
 };
 
 #endif

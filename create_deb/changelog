@@ -1,3 +1,7 @@
+AMDOverdriveCtrl (1.2.6) all; urgency=low
+
+  * added button to change temperature display from °C to °F
+
 AMDOverdriveCtrl (1.2.5) all; urgency=low
 
   * new command line switch "--minimized" to start minimized to tray

@@ -1,21 +1,22 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version May  5 2011)
+// C++ code generated with wxFormBuilder (version Nov  5 2013)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef __gui__
-#define __gui__
+#ifndef __GUI_H__
+#define __GUI_H__
 
+#include <wx/artprov.h>
+#include <wx/xrc/xmlres.h>
 #include <wx/intl.h>
-
 #include <wx/gdicmn.h>
 #include <wx/notebook.h>
-#include <wx/string.h>
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
+#include <wx/string.h>
 #include <wx/button.h>
 #include <wx/sizer.h>
 #include <wx/dialog.h>
@@ -46,10 +47,8 @@ class MainDialogBase : public wxDialog
 	
 	protected:
 		wxNotebook* mNotebook;
-		
 		wxButton* mLoadButton;
 		wxButton* mSaveButton;
-		
 		wxButton* mExit;
 		wxButton* mOKButton;
 		
@@ -78,30 +77,17 @@ class CPowertunePanelBase : public wxPanel
 	private:
 	
 	protected:
-		
 		wxStaticText* m_staticText171;
-		
-		
 		wxTextCtrl* mTargetPowertune;
-		
-		
 		wxTextCtrl* mMinPowertune;
 		wxButton* mPowertuneMinus;
 		wxSlider* mPowertuneSlider;
 		wxButton* mPowertunePlus;
 		wxTextCtrl* mPowertuneMax;
-		
-		
 		wxStaticText* mCurrentPowertune;
-		
-		
-		
 		wxButton* mButtonSet;
-		
 		wxStaticLine* m_staticline12;
-		
 		wxStaticText* mExperimental;
-		
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void mPowertuneMinusOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
@@ -125,11 +111,11 @@ class CInfoPanelBase : public wxPanel
 	private:
 	
 	protected:
-		
 		wxStaticText* m_staticText1;
 		wxTextCtrl* mInfoCardID;
 		wxStaticLine* m_staticline3;
 		wxStaticText* m_staticText2;
+		wxButton* mButtonTempDisplay;
 		wxTextCtrl* mInfoTemperature;
 		wxGauge* mInfoActivity;
 		wxStaticLine* m_staticline4;
@@ -146,7 +132,6 @@ class CInfoPanelBase : public wxPanel
 		wxStaticText* m_staticText7;
 		wxStaticText* m_staticText8;
 		wxStaticText* m_staticText9;
-		
 		wxTextCtrl* mInfoMinFanSpeed;
 		wxTextCtrl* mInfoMaxFanSpeed;
 		wxTextCtrl* mInfoCurrentFanSpeed;
@@ -167,6 +152,10 @@ class CInfoPanelBase : public wxPanel
 		wxTextCtrl* mInfoOVGPUHigh;
 		wxTextCtrl* mInfoOVMemHigh;
 		wxTextCtrl* mInfoOVVoltHigh;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void mButtonTempDisplayOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		
 	
 	public:
 		
@@ -183,13 +172,8 @@ class CSettingsPanelBase : public wxPanel
 	private:
 	
 	protected:
-		
 		wxStaticText* m_staticText17;
-		
-		
 		wxTextCtrl* mCurrentGPUFreq;
-		
-		
 		wxTextCtrl* mMinGPUFreq;
 		wxButton* mGPUFreqMinus;
 		wxSlider* mGPUFreqSlider;
@@ -197,11 +181,7 @@ class CSettingsPanelBase : public wxPanel
 		wxTextCtrl* mMaxGPUFreq;
 		wxStaticLine* m_staticline5;
 		wxStaticText* m_staticText171;
-		
-		
 		wxTextCtrl* mCurrentMemFreq;
-		
-		
 		wxTextCtrl* mMinMemFreq;
 		wxButton* mMemFreqMinus;
 		wxSlider* mMemFreqSlider;
@@ -209,11 +189,7 @@ class CSettingsPanelBase : public wxPanel
 		wxTextCtrl* mMaxMemFreq;
 		wxStaticLine* m_staticline6;
 		wxStaticText* m_staticText172;
-		
-		
 		wxTextCtrl* mCurrentVoltage;
-		
-		
 		wxTextCtrl* mMinVoltage;
 		wxButton* mVoltageMinus;
 		wxSlider* mVoltageSlider;
@@ -247,37 +223,23 @@ class CFanSpeedPanelBase : public wxPanel
 	private:
 	
 	protected:
-		
 		wxStaticText* m_staticText17;
-		
-		
-		
-		
-		
-		
 		wxTextCtrl* mTargetFanSpeed;
-		
-		
 		wxTextCtrl* mMinFanSpeed;
 		wxButton* mFanSpeedMinus;
 		wxSlider* mFanSpeedSlider;
 		wxButton* mFanSpeedPlus;
 		wxTextCtrl* mMaxFanSpeed;
 		wxStaticText* mMinRPM;
-		
 		wxStaticText* mCurrentFanSpeed;
-		
 		wxStaticText* mMaxRPM;
 		wxStaticLine* m_staticline8;
 		wxStaticText* m_staticText26;
 		wxPanel* mFanProfile;
 		wxStaticLine* m_staticline9;
-		
-		
 		wxButton* mButtonProfile;
 		wxButton* mButtonDefault;
 		wxButton* mButtonSet;
-		
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnPaint( wxPaintEvent& event ) { event.Skip(); }
@@ -309,7 +271,6 @@ class CAuthorPanelBase : public wxPanel
 	
 	protected:
 		wxStaticBitmap* mBitmap;
-		
 		wxStaticText* mText1;
 		wxHyperlinkCtrl* m_hyperlink1;
 		wxStaticText* mText2;
@@ -330,9 +291,7 @@ class CMonitorPanelBase : public wxPanel
 	private:
 	
 	protected:
-		
 		wxStaticText* m_staticText30;
-		
 		wxSlider* mTimerSlider;
 		wxStaticText* mTimerInterval;
 		wxSlider* mTempSlider;
@@ -341,7 +300,6 @@ class CMonitorPanelBase : public wxPanel
 		wxSlider* mFanSpeedSlider;
 		wxPanel* mFanSpeed;
 		wxStaticText* m_staticText321;
-		
 		wxPanel* mPerfLevel;
 		
 		// Virtual event handlers, overide them in your derived class
@@ -369,7 +327,6 @@ class CFanControlPanelBase : public wxPanel
 	private:
 	
 	protected:
-		
 		wxCheckBox* mEnable;
 		wxStaticText* mCurrentTemperature;
 		wxStaticText* mCurrentFanSpeed;
@@ -405,23 +362,17 @@ class CAppProfilePanelBase : public wxPanel
 	private:
 	
 	protected:
-		
 		wxCheckBox* mEnable;
-		
 		wxStaticText* m_staticText41;
 		wxTextCtrl* mActiveProfileName;
 		wxStaticLine* m_staticline16;
 		wxStaticText* m_staticText36;
-		
 		wxTextCtrl* mDefaultProfileName;
 		wxButton* mButtonChooseDefault;
-		
 		wxListCtrl* mProfileList;
-		
 		wxButton* mButtonDeleteProfile;
 		wxButton* mButtonEditProfile;
 		wxButton* mButtonAddProfile;
-		
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void mEnableOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
@@ -447,19 +398,14 @@ class CProfileAddDialogBase : public wxDialog
 	private:
 	
 	protected:
-		
 		wxStaticText* m_staticText38;
-		
 		wxTextCtrl* mAppName;
 		wxStaticText* m_staticText39;
-		
 		wxTextCtrl* mProfileName;
 		wxButton* mButtonChooseProfile;
-		
 		wxStdDialogButtonSizer* mDialogButtons;
 		wxButton* mDialogButtonsOK;
 		wxButton* mDialogButtonsCancel;
-		
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void mButtonChooseProfileClick( wxCommandEvent& event ) { event.Skip(); }
@@ -482,13 +428,10 @@ class COvdrSettingsPanelBase : public wxPanel
 	private:
 	
 	protected:
-		
 		wxNotebook* mOvdrNotebook;
-		
 		wxButton* mButtonSaveDefault;
 		wxButton* mButtonReset;
 		wxButton* mButtonSet;
-		
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void mButtonSaveDefaultClick( wxCommandEvent& event ) { event.Skip(); }
@@ -511,14 +454,11 @@ class CColorTempPanelBase : public wxPanel
 	private:
 	
 	protected:
-		
 		wxCheckBox* mEnable;
-		
 		wxStaticText* m_staticText40;
 		wxTextCtrl* mLongitude;
 		wxStaticText* m_staticText41;
 		wxTextCtrl* mLatitude;
-		
 		wxStaticText* m_staticText42;
 		wxTextCtrl* mColorTempDay;
 		wxSlider* mColorTempDaySlider;
@@ -559,4 +499,4 @@ class CColorTempPanelBase : public wxPanel
 	
 };
 
-#endif //__gui__
+#endif //__GUI_H__

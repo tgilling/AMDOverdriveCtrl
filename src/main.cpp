@@ -595,6 +595,14 @@ bool MainDialog::LoadXML(wxString filename)
 			
 			mpPowertunePanel->SetPowertuneSetting(percentage);			
 		    }
+		    else if (child->GetName() == wxT("TEMPERATURE_DISPLAY"))
+		    {
+			wxString tmp;
+
+			tmp = child->GetPropVal(wxT("mode"), wxT("Celsius"));
+
+			mpInfoPanel->SetTempDisplayAsCelsius(tmp == wxT("Celsius"));
+		    }
 
 		    child = child->GetNext();
 		}
@@ -694,9 +702,14 @@ bool MainDialog::SaveXML(wxString filename)
     node->AddProperty(wxT("transition"), wxString::Format(wxT("%d"), transition));
     root->AddChild(node);
 
-    int percentage = mpPowertunePanel->GetPowertuneSetting();
+    /*int percentage = mpPowertunePanel->GetPowertuneSetting();
     node = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("POWERTUNE"));
     node->AddProperty(wxT("percentage"), wxString::Format(wxT("%d"), percentage));
+    root->AddChild(node);*/
+
+    bool DisplayCelsius = mpInfoPanel->GetTempDisplayAsCelsius();
+    node = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("TEMPERATURE_DISPLAY"));
+    node->AddProperty(wxT("mode"), DisplayCelsius ? wxT("Celsius") : wxT("Fahrenheit"));
     root->AddChild(node);
 
     if(filename.Find(wxT(".ovdr")) == wxNOT_FOUND)

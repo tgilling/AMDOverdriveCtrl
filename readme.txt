@@ -1,6 +1,8 @@
 History:
 --------
 
+V1.2.5  :	new command line option "-m" to start the program minimized to tray as requested by user Photon
+
 V1.2.4  :	"Close to tray" instead of dialog destroy as suggested by David Keogh
 
 V1.2.3  :	new command line switch "--no-warnings" to suppress warning message box at startup

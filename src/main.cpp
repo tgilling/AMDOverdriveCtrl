@@ -60,7 +60,7 @@ bool MainApp::OnCmdLineParsed(wxCmdLineParser& parser)
 
     mNoWarnings = parser.Found(wxT("n"));
 
-    if (mBatchMode || mEnableAppProfiles)
+    if (mBatchMode || mEnableAppProfiles || parser.Found(wxT("m")))
     {
 	mStartHidden = true;
     }

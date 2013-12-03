@@ -1,3 +1,7 @@
+AMDOverdriveCtrl (1.2.5) all; urgency=low
+
+  * new command line switch "--minimized" to start minimized to tray
+
 AMDOverdriveCtrl (1.2.3) all; urgency=low
 
   * new command line switch "--no-warnings" to suppress warning message box at startup

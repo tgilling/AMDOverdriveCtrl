@@ -1,4 +1,4 @@
-.TH AMDOverdriveCtrl 1 "06 March 2013"
+.TH AMDOverdriveCtrl 1 "03 December 2013"
 .SH NAME
 AMDOverdriveCtrl \- Control and monitor frequencies and voltages
 .SH SYNOPSIS
@@ -18,7 +18,10 @@ Display usage help.
 .B -b, --batch-mode
 Set the values from the settings file and exit.
 .TP
-.B -p, --enable-app-profiles
+.B -m, --minimized
+Start minimized to tray.
+.TP
+.B -a, --enable-app-profiles
 Start with application monitoring enabled.
 .TP
 .B -c, --color-temp=<num>
@@ -46,9 +49,11 @@ INF: Adapter index: 3, card ID: yyyyyyyy = ATI Radeon HD 4800 Series
 Usage: AMDOverdriveCtrl [-h] [-b] [-a] [-c <num>] [-i <num>] [profile]
   -h, --help               	displays help 
   -b, --batch-mode         	only set profile, no GUI
+  -m, --minimized          	start minimized to tray
   -a, --enable-app-profiles	activate the app profile feature
   -c, --color-temp=<num>   	set color temperature
   -i, --adapter-index=<num>	choose adapter index
+  -n, --no-warnings		dont't display any warnings at startup
 
 For 'x' and 'y' you will see system individual numbers. The output means
 you have two cards installed with two controllers each. By default 

@@ -63,6 +63,9 @@ static const wxCmdLineEntryDesc g_cmdLineDesc [] =
      { wxCMD_LINE_SWITCH, wxT("b"), wxT("batch-mode"), wxT("only set profile, no GUI"),
        wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL },
 
+     { wxCMD_LINE_SWITCH, wxT("m"), wxT("minimized"), wxT("start minimized"),
+       wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL },
+
      { wxCMD_LINE_SWITCH, wxT("a"), wxT("enable-app-profiles"), wxT("activate the app profile feature"),
        wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL },
 

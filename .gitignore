@@ -19,3 +19,6 @@
 /Archiv/
 /*.workspace.thorsten_gilling
 /AMDOverdriveCtrl.txt
+/.codelite/
+/.clang/
+/Makefile

@@ -1000,7 +1000,7 @@ CAuthorPanelBase::CAuthorPanelBase( wxWindow* parent, wxWindowID id, const wxPoi
 	fgSizer17->SetFlexibleDirection( wxBOTH );
 	fgSizer17->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	mBitmap = new wxStaticBitmap( this, wxID_ANY, wxBitmap( wxT("../create_deb/icon.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxSize( 128,120 ), 0 );
+	mBitmap = new wxStaticBitmap( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( 128,120 ), 0 );
 	fgSizer17->Add( mBitmap, 0, wxLEFT, 15 );
 	
 	

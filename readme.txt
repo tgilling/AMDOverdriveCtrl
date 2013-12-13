@@ -1,6 +1,8 @@
 History:
 --------
 
+V1.2.7	:	Bugfix Release (Bugs #7, #9, #10 fixed)
+
 V1.2.6  :	added button to change temperature display from °C to °F
 
 V1.2.5  :	new command line option "-m" to start the program minimized to tray as requested by user Photon

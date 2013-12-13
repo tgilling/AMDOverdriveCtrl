@@ -1,3 +1,7 @@
+AMDOverdriveCtrl (1.2.7) all; urgency=low
+
+  * Bugfix release
+
 AMDOverdriveCtrl (1.2.6) all; urgency=low
 
   * added button to change temperature display from °C to °F

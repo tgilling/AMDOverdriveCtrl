@@ -26,6 +26,7 @@
 *******************************************************************************/
 
 #include <wx/wfstream.h>
+#include <wx/filename.h>
 
 #include "CTaskBarIcon.h"
 #include "CAppProfilePanel.h"
@@ -58,7 +59,7 @@ CTaskBarIcon::~CTaskBarIcon()
     Disconnect(wxEVT_TASKBAR_LEFT_DOWN, wxTaskBarIconEventHandler(CTaskBarIcon::OnLeftDown), NULL, this);
 }
 
-wxMenu*	CTaskBarIcon::CreatePopupMenu()
+wxMenu* CTaskBarIcon::CreatePopupMenu()
 {
     wxMenu* menu = new wxMenu;
 
@@ -181,7 +182,8 @@ void CTaskBarIcon::OnMenuClick(wxCommandEvent& event)
 	case OVDR_TB_CMD_AUTOSTART:
 	{
 	    wxString home_path = wxString::FromAscii(getenv("HOME"));
-	    wxString filename = home_path + wxT("/.config/autostart/AMDOverdriveCtrl.desktop");
+	    wxString autostart_path = wxT("/.config/autostart/");
+	    wxString filename = home_path + autostart_path + wxT("AMDOverdriveCtrl.desktop");
 
 	    if (wxFileExists(filename))
 	    {
@@ -199,7 +201,9 @@ void CTaskBarIcon::OnMenuClick(wxCommandEvent& event)
 		    wxT("Name=AMD OverdriveCtrl\n")
 		    wxT("Comment=AutoStart added by AMDOverdriveCtrl Tool\n");
 
-                wxFFileOutputStream file(filename, wxT("wt"));
+		wxFileName::Mkdir(home_path+autostart_path, 0755, wxPATH_MKDIR_FULL);
+
+		wxFFileOutputStream file(filename, wxT("wt"));
 		file.Write(script.ToUTF8(), script.Length());
 		file.Close();
 

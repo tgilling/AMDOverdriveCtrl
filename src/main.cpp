@@ -47,7 +47,7 @@ static int MissingFeatures = 0;
 void MainApp::OnInitCmdLine(wxCmdLineParser& parser)
 {
     parser.SetDesc (g_cmdLineDesc);
-    parser.SetSwitchChars (wxT("-/"));
+    parser.SetSwitchChars (wxT("-"));
 }
 
 bool MainApp::OnCmdLineParsed(wxCmdLineParser& parser)
@@ -81,7 +81,7 @@ bool MainApp::OnCmdLineParsed(wxCmdLineParser& parser)
 
     if (parser.GetParamCount() > 0)
     {
-        mProfileName = parser.GetParam(0);
+	mProfileName = parser.GetParam(0);
 	mStartHidden = true;
     }
 
@@ -310,6 +310,7 @@ MainDialog::MainDialog(wxWindow *parent)
     wxImage tmp(istream, wxBITMAP_TYPE_PNG);
     wxIcon icon;
     icon.CopyFromBitmap(tmp);
+
 
     SetIcon(icon);
 
